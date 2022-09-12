@@ -79,6 +79,11 @@ module TSOS {
                                   "- Displays the date and time");
             this.commandList[this.commandList.length] = sc;
 
+            // WhereAmI
+            sc = new ShellCommand(this.shellWhereAmI,
+                                  "whereami",
+                                  "- Tells you where you are");
+            this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -230,6 +235,10 @@ module TSOS {
 
         }
 
+        public shellWhereAmI(args: string[]){
+            _StdOut.putText("Did you hit your head? We are at war with the Banished.")
+        }
+
         public shellShutdown(args: string[]) {
              _StdOut.putText("Shutting down...");
              // Call Kernel shutdown routine.
@@ -275,6 +284,9 @@ module TSOS {
                     
                     case "date":
                         _StdOut.putText("Displays the current date and time");
+                    
+                    case "whereami":
+                        _StdOut.putText("Tells you where you are");
                             
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
