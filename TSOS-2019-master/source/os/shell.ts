@@ -73,6 +73,13 @@ module TSOS {
                                   "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
 
+            // date
+            sc = new ShellCommand(this.shellDate,
+                                  "date",
+                                  "- Displays the date and time");
+            this.commandList[this.commandList.length] = sc;
+
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -215,6 +222,14 @@ module TSOS {
             }
         }
 
+        public shellDate(args: string[]){
+            // Uses Date function builtin to Typescript. I'm deciding whether to use this for updating the home bar as well
+            var currentDate = new Date();
+            _StdOut.putText("Currently the date is " + currentDate.toLocaleDateString());
+            _StdOut.putText("Current time is " + currentDate.toLocaleTimeString());
+
+        }
+
         public shellShutdown(args: string[]) {
              _StdOut.putText("Shutting down...");
              // Call Kernel shutdown routine.
@@ -257,6 +272,9 @@ module TSOS {
 
                     case "prompt":
                         _StdOut.putText("Allows you to modify the initial propmt for the OS, used as follows: prompt <string>");
+                    
+                    case "date":
+                        _StdOut.putText("Displays the current date and time");
                             
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
