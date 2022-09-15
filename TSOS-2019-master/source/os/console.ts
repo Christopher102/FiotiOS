@@ -91,7 +91,7 @@ module TSOS {
             // TODO: Handle scrolling. (iProject 1)
             if(this.currentYPosition > _yDisplaySize){
                 let canvas = document.getElementById('display');
-                let tempBuffer = this.consoleList.substring(this.consoleList.indexOf("\n") + 1);
+                
 
 
                 
