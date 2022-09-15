@@ -85,6 +85,12 @@ module TSOS {
                                   "- Tells you where you are");
             this.commandList[this.commandList.length] = sc;
 
+            // Status
+            sc = new ShellCommand(this.shellStatus,
+                                  "status",
+                                  "<string> - Changes current status");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -287,6 +293,9 @@ module TSOS {
                     
                     case "whereami":
                         _StdOut.putText("Tells you where you are");
+                    
+                    case "status":
+                        _StdOut.putText("Allows you to change the current status, used as follows: status <string>")
                             
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -335,6 +344,10 @@ module TSOS {
             } else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
+        }
+
+        public shellStatus(args: string[]) {
+            document.getElementById("status").innerHTML = args[0];
         }
 
     }
