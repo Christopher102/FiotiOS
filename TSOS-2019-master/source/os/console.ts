@@ -13,7 +13,8 @@ module TSOS {
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
-                    public buffer = "") {
+                    public buffer = "",
+                    public consoleList = "") {
         }
 
         public init(): void {
@@ -40,7 +41,13 @@ module TSOS {
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
+                    this.consoleList.push(this.buffer);
                     this.buffer = "";
+                }  
+                else if (chr === String.fromCharCode(8)){
+                    // Backspace function call
+                    this.backspace()
+                    this.buffer = this.buffer.substring(0, this.buffer.length - 1);
                 } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -71,6 +78,7 @@ module TSOS {
 
         public advanceLine(): void {
             this.currentXPosition = 0;
+            this.consoleList += '/n';
             /*
              * Font size measures from the baseline to the highest point in the font.
              * Font descent measures from the baseline to the lowest point in the font.
@@ -81,6 +89,25 @@ module TSOS {
                                      _FontHeightMargin;
 
             // TODO: Handle scrolling. (iProject 1)
+            if(this.currentYPosition > _yDisplaySize){
+                let canvas = document.getElementById('display');
+                let tempBuffer = this.consoleList.substring(this.consoleList.indexOf("\n") + 1);
+
+
+                
+            }
+        }
+
+        public backspace() {
+            //Remove the last character and create a substring
+            var textString = this.buffer.substring(0, this.buffer.length - 1)
+            //Move context / cursor over by one
+            let xDifference = _DrawingContext.measureText(this.currentFont, this.currentFontSize, textString);
+            this.currentXPosition = this.currentXPosition - xDifference;
+            //Prevent from going off screen
+            if (this.currentXPosition < 0){
+                this.currentXPosition = 0
+            }
         }
     }
  }

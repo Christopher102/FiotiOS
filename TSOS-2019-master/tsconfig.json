@@ -2,7 +2,7 @@
     "compilerOptions": {
       "target"              : "ES2017",
       "rootDir"             : "source",
-      "outDir"              : "output",
+      "outDir"              : "distrib",
       "sourceMap"           : true,
       "extendedDiagnostics" : true,
       "listEmittedFiles"    : true

@@ -45,6 +45,15 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
+            // date
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "- Displays the date and time");
+            this.commandList[this.commandList.length] = sc;
+            // WhereAmI
+            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "- Tells you where you are");
+            this.commandList[this.commandList.length] = sc;
+            // Status
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Changes current status");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -176,6 +185,15 @@ var TSOS;
                 _StdOut.putText("  " + _OsShell.commandList[i].command + " " + _OsShell.commandList[i].description);
             }
         }
+        shellDate(args) {
+            // Uses Date function builtin to Typescript. I'm deciding whether to use this for updating the home bar as well
+            var currentDate = new Date();
+            _StdOut.putText("Currently the date is " + currentDate.toLocaleDateString());
+            _StdOut.putText("Current time is " + currentDate.toLocaleTimeString());
+        }
+        shellWhereAmI(args) {
+            _StdOut.putText("Did you hit your head? We are at war with the Banished.");
+        }
         shellShutdown(args) {
             _StdOut.putText("Shutting down...");
             // Call Kernel shutdown routine.
@@ -193,7 +211,28 @@ var TSOS;
                     case "help":
                         _StdOut.putText("Help displays a list of (hopefully) valid commands.");
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "ver":
+                        _StdOut.putText("Displays the current version of the OS");
+                    case "shutdown":
+                        _StdOut.putText("Shuts down the OS without closing the underlying hardware");
+                    case "cls":
+                        _StdOut.putText("Clears the screen and resets your current cursor position");
+                    case "man":
+                        _StdOut.putText("Displays the manual for a command when combined with the other command, i.e. man ver");
+                        _StdOut.advanceLine();
+                        _StdOut.putText("Although, if you didn't know this I'd imagine you wouldn't be able to even find this message anyway");
+                    case "trace":
+                        _StdOut.putText("Turns on or off OS trace, which will display actions as the OS takes them");
+                    case "rot13":
+                        _StdOut.putText("Does rot13 obfuscation on a string, used as follows: rot13 <string>");
+                    case "prompt":
+                        _StdOut.putText("Allows you to modify the initial propmt for the OS, used as follows: prompt <string>");
+                    case "date":
+                        _StdOut.putText("Displays the current date and time");
+                    case "whereami":
+                        _StdOut.putText("Tells you where you are");
+                    case "status":
+                        _StdOut.putText("Allows you to change the current status, used as follows: status <string>");
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -243,6 +282,9 @@ var TSOS;
             else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
+        }
+        shellStatus(args) {
+            document.getElementById("status").innerHTML = args[0];
         }
     }
     TSOS.Shell = Shell;

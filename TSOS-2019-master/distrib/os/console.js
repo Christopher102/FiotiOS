@@ -37,6 +37,11 @@ var TSOS;
                     // ... and reset our buffer.
                     this.buffer = "";
                 }
+                else if (chr === String.fromCharCode(8)) {
+                    // Backspace function call
+                    this.backspace();
+                    this.buffer = this.buffer.substring(0, this.buffer.length - 1);
+                }
                 else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -74,6 +79,17 @@ var TSOS;
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
             // TODO: Handle scrolling. (iProject 1)
+        }
+        backspace() {
+            //Remove the last character and create a substring
+            var textString = this.buffer.substring(0, this.buffer.length - 1);
+            //Move context / cursor over by one
+            let xDifference = _DrawingContext.measureText(this.currentFont, this.currentFontSize, textString);
+            this.currentXPosition = this.currentXPosition - xDifference;
+            //Prevent from going off screen
+            if (this.currentXPosition < 0) {
+                this.currentXPosition = 0;
+            }
         }
     }
     TSOS.Console = Console;
