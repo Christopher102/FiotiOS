@@ -54,6 +54,9 @@ var TSOS;
             // Status
             sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Changes current status");
             this.commandList[this.commandList.length] = sc;
+            // Display Button
+            sc = new TSOS.ShellCommand(this.shellSuprise, "suprise", "- Suprise!");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -233,6 +236,8 @@ var TSOS;
                         _StdOut.putText("Tells you where you are");
                     case "status":
                         _StdOut.putText("Allows you to change the current status, used as follows: status <string>");
+                    case "suprise":
+                        _StdOut.putText("It's a suprise! Just type it!");
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -285,6 +290,17 @@ var TSOS;
         }
         shellStatus(args) {
             document.getElementById("status").innerHTML = args[0];
+        }
+        shellSuprise(args) {
+            // I made this purposefully difficult to read by using hidden 6 times cause I thought that was funny since this is a gag.
+            let element = document.getElementById("suprise");
+            let hidden = element.getAttribute("hidden");
+            if (hidden) {
+                element.removeAttribute("hidden");
+            }
+            else {
+                element.setAttribute("hidden", "hidden");
+            }
         }
     }
     TSOS.Shell = Shell;

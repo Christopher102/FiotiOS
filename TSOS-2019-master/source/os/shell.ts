@@ -91,6 +91,12 @@ module TSOS {
                                   "<string> - Changes current status");
             this.commandList[this.commandList.length] = sc;
 
+            // Display Button
+            sc = new ShellCommand(this.shellSuprise,
+                                  "suprise",
+                                  "- Suprise!");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -295,7 +301,10 @@ module TSOS {
                         _StdOut.putText("Tells you where you are");
                     
                     case "status":
-                        _StdOut.putText("Allows you to change the current status, used as follows: status <string>")
+                        _StdOut.putText("Allows you to change the current status, used as follows: status <string>");
+                    
+                    case "suprise":
+                        _StdOut.putText("It's a suprise! Just type it!");
                             
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -348,6 +357,17 @@ module TSOS {
 
         public shellStatus(args: string[]) {
             document.getElementById("status").innerHTML = args[0];
+        }
+
+        public shellSuprise(args: string[]) {
+            // I made this purposefully difficult to read by using hidden 6 times cause I thought that was funny since this is a gag.
+            let element = document.getElementById("suprise");
+            let hidden = element.getAttribute("hidden");
+            if(hidden){
+                element.removeAttribute("hidden");
+            } else {
+                element.setAttribute("hidden", "hidden");
+            }
         }
 
     }

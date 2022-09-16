@@ -42,9 +42,8 @@ module TSOS {
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
-                    this.consoleString += this.buffer;
+                    this.consoleString += ('\n' + this.buffer);
                     this.buffer = "";
-                    this.clearScreen;
                 }  
                 else if (chr === 'backspace'){
                     // Backspace function call
@@ -69,18 +68,22 @@ module TSOS {
                 do the same thing, thereby encouraging confusion and decreasing readability, I
                 decided to write one function and use the term "text" to connote string or char.
             */
-            if (text !== "") {
+            if(text == "\n"){
+                this.advanceLine();
+            }
+            else if (text !== "") {
                 // Draw the text at the current X and Y coordinates.
                 _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
                 // Move the current X position.
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
                 this.currentXPosition = this.currentXPosition + offset;
+                this.consoleString += text;
             }
          }
 
         public advanceLine(): void {
             this.currentXPosition = 0;
-            this.consoleString += '/n';
+
             /*
              * Font size measures from the baseline to the highest point in the font.
              * Font descent measures from the baseline to the lowest point in the font.
@@ -91,18 +94,22 @@ module TSOS {
                                      _FontHeightMargin;
 
             // TODO: Handle scrolling. (iProject 1)
-           if(this.currentYPosition >= _yDisplaySize){
-                // Gets the part of the string beyond the first line, so that way I can have most of the text.
-                this.putText(this.consoleString);
-                let tempString = this.consoleString.substring(this.consoleString.indexOf('\n') + 1);
-                this.clearScreen;
-                this.resetXY;
-                // Writes the text back to the canvas. Thanks for the put text function.
-                //for(let characterindex = 1; characterindex < tempString.length; characterindex++){
-                    //this.putText(tempString.charAt(characterindex));
-                //}
-                //this.consoleString = tempString;
+            this.consoleString += "\n";
+            // TODO: Handle scrolling. (iProject 1)
+            //_DrawingContext.rect(0,0,500,500);
+            //_DrawingContext.translate(10, 10);
+            // If the new line goes past the bottom of the screen
+            if (this.currentYPosition > _yDisplaySize) {
+                // Redraw the screen accept for the top line
+                let tempBuffer = this.consoleString .substring(this.consoleString .indexOf("\n") + 1);
+                this.clearScreen();
+                this.resetXY();
+                for (let i = 0; i < tempBuffer.length; i++) {
+                    this.putText(tempBuffer.charAt(i));
+                }
+                this.consoleString  = tempBuffer;
             }
+        
 
             }
         
