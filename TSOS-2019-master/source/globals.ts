@@ -71,7 +71,6 @@ var _yDisplaySize;
 
 var onDocumentLoad = function() {
 	TSOS.Control.hostInit();
-   var display = document.getElementById('display');
-   var _xDisplaySize = display.getBoundingClientRect().width;
-   var _yDisplaySize = display.getBoundingClientRect().height;
+   _xDisplaySize = 500;
+   _yDisplaySize = 300;
 };

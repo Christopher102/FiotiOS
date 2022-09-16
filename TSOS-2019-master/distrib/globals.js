@@ -48,7 +48,12 @@ var _hardwareClockID = null;
 // For testing (and enrichment)...
 var Glados = null; // This is the function Glados() in glados-ip*.js http://alanclasses.github.io/TSOS/test/ .
 var _GLaDOS = null; // If the above is linked in, this is the instantiated instance of Glados.
+// For handling display resolution
+var _xDisplaySize;
+var _yDisplaySize;
 var onDocumentLoad = function () {
     TSOS.Control.hostInit();
+    _xDisplaySize = 500;
+    _yDisplaySize = 300;
 };
 //# sourceMappingURL=globals.js.map

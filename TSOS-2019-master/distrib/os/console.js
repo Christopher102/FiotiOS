@@ -7,12 +7,15 @@
 var TSOS;
 (function (TSOS) {
     class Console {
-        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "") {
+        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "", 
+        // This holds a string of all the console entries. Was gonna do an array but holy crap arrays suck in TS, never doing a pop / push array ever again. No thank you.
+        consoleString = "") {
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
+            this.consoleString = consoleString;
         }
         init() {
             this.clearScreen();
@@ -35,9 +38,11 @@ var TSOS;
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
+                    this.consoleString += this.buffer;
                     this.buffer = "";
+                    this.clearScreen;
                 }
-                else if (chr === String.fromCharCode(8)) {
+                else if (chr === 'backspace') {
                     // Backspace function call
                     this.backspace();
                     this.buffer = this.buffer.substring(0, this.buffer.length - 1);
@@ -70,6 +75,7 @@ var TSOS;
         }
         advanceLine() {
             this.currentXPosition = 0;
+            this.consoleString += '/n';
             /*
              * Font size measures from the baseline to the highest point in the font.
              * Font descent measures from the baseline to the lowest point in the font.
@@ -79,10 +85,23 @@ var TSOS;
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
             // TODO: Handle scrolling. (iProject 1)
+            if (this.currentYPosition >= _yDisplaySize) {
+                // Gets the part of the string beyond the first line, so that way I can have most of the text.
+                this.putText(this.consoleString);
+                let tempString = this.consoleString.substring(this.consoleString.indexOf('\n') + 1);
+                this.clearScreen;
+                this.resetXY;
+                // Writes the text back to the canvas. Thanks for the put text function.
+                //for(let characterindex = 1; characterindex < tempString.length; characterindex++){
+                //this.putText(tempString.charAt(characterindex));
+                //}
+                //this.consoleString = tempString;
+            }
         }
         backspace() {
             //Remove the last character and create a substring
             var textString = this.buffer.substring(0, this.buffer.length - 1);
+            this.putText(textString);
             //Move context / cursor over by one
             let xDifference = _DrawingContext.measureText(this.currentFont, this.currentFontSize, textString);
             this.currentXPosition = this.currentXPosition - xDifference;
