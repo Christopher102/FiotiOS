@@ -25,6 +25,7 @@ module TSOS {
 
         public clearScreen(): void {
             _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
+            this.buffer = "";
         }
 
         public resetXY(): void {
@@ -40,14 +41,15 @@ module TSOS {
                 if (chr === String.fromCharCode(13)) { // the Enter key
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
+                    this.consoleString += this.buffer + "\n";
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
-                    this.consoleString += ('\n' + this.buffer);
                     this.buffer = "";
                 }  
-                else if (chr === 'backspace'){
+                else if (chr === String.fromCharCode(8)) {
                     // Backspace function call
-                    this.backspace()
+                    alert("BACKSPACING");
+                    this.backspace();
                     this.buffer = this.buffer.substring(0, this.buffer.length - 1);
                 } else {
                     // This is a "normal" character, so ...
@@ -68,6 +70,8 @@ module TSOS {
                 do the same thing, thereby encouraging confusion and decreasing readability, I
                 decided to write one function and use the term "text" to connote string or char.
             */
+           // Checks for a newline character
+           let stringtext = String(text);
             if(text == "\n"){
                 this.advanceLine();
             }
@@ -77,7 +81,9 @@ module TSOS {
                 // Move the current X position.
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
                 this.currentXPosition = this.currentXPosition + offset;
-                this.consoleString += text;
+                if(stringtext.length > 1){
+                    this.consoleString += text + "\n";
+                }
             }
          }
 
@@ -92,26 +98,25 @@ module TSOS {
             this.currentYPosition += _DefaultFontSize + 
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
+            
+           if(this.currentYPosition > _yDisplaySize){
 
-            // TODO: Handle scrolling. (iProject 1)
-            this.consoleString += "\n";
-            // TODO: Handle scrolling. (iProject 1)
-            //_DrawingContext.rect(0,0,500,500);
-            //_DrawingContext.translate(10, 10);
-            // If the new line goes past the bottom of the screen
-            if (this.currentYPosition > _yDisplaySize) {
-                // Redraw the screen accept for the top line
-                let tempBuffer = this.consoleString .substring(this.consoleString .indexOf("\n") + 1);
+                // Okay so after 10+ hours of working on this, I have this
+                let canvasContext = _Canvas.getContext("2d");
+                //Grabs the entire canvas space. Honestly, I could do the math to exactly grab the piece we need, but this is easier to read.
+                let snapshot = canvasContext.getImageData(0, 0, 1000, 500);
+                //Clears the screen
                 this.clearScreen();
-                this.resetXY();
-                for (let i = 0; i < tempBuffer.length; i++) {
-                    this.putText(tempBuffer.charAt(i));
-                }
-                this.consoleString  = tempBuffer;
+                // Places the image data back at the coords x = 0 and y = the font size times two into the negative, which would bring it higher than the canvas displays.
+                canvasContext.putImageData(snapshot, 0, -this.currentFontSize * 2);
+                // Resets the position of the cursor at the bottom. The + 1 may become an issue down the line, but for now? I call this a victory.
+                this.currentXPosition = 0;
+                this.currentYPosition = _yDisplaySize - this.currentFontSize + 1;
+                
             }
-        
 
             }
+    
         
 
         public backspace() {
