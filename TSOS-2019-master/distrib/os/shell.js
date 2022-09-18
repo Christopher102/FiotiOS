@@ -57,6 +57,12 @@ var TSOS;
             // Display Button
             sc = new TSOS.ShellCommand(this.shellSuprise, "suprise", "- Suprise!");
             this.commandList[this.commandList.length] = sc;
+            // Display Button
+            sc = new TSOS.ShellCommand(this.shellBuffer, "buffer", "- Displays the buffer in an alert message");
+            this.commandList[this.commandList.length] = sc;
+            // Throw OS error
+            sc = new TSOS.ShellCommand(this.shellThrow, "throw", " - Throws an OS error");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -238,6 +244,10 @@ var TSOS;
                         _StdOut.putText("Allows you to change the current status, used as follows: status <string>");
                     case "suprise":
                         _StdOut.putText("It's a suprise! Just type it!");
+                    case "buffer":
+                        _StdOut.putText("Displays the buffer in an alert message");
+                    case "throw":
+                        _StdOut.putText("Throws an OS error");
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -289,6 +299,7 @@ var TSOS;
             }
         }
         shellStatus(args) {
+            // Sets the status of the console.
             document.getElementById("status").innerHTML = args[0];
         }
         shellSuprise(args) {
@@ -300,6 +311,25 @@ var TSOS;
             }
             else {
                 element.setAttribute("hidden", "hidden");
+            }
+        }
+        shellBuffer(args) {
+            // This is to display the buffer for the consoleString, because I got stupid annoyed. It'll display an alert containing the string.
+            alert(_StdOut.consoleString);
+        }
+        shellThrow(args) {
+            // Throws a kernel error
+            _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
+        }
+        shellLoad(args) {
+            let textbox = document.getElementById("taProgramInput");
+            let text = textbox.textContent;
+            let textArray = text.split(" ");
+            for (let i = 0; i < textArray.length + 1; i++) {
+                if (textArray[i].length > 2) {
+                    alert("VALUE AT LOCATION " + i + "IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
+                    _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
+                }
             }
         }
     }

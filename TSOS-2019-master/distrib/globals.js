@@ -53,7 +53,7 @@ var _xDisplaySize;
 var _yDisplaySize;
 var onDocumentLoad = function () {
     TSOS.Control.hostInit();
-    _xDisplaySize = 500;
-    _yDisplaySize = 300;
+    _xDisplaySize = 1000;
+    _yDisplaySize = 500;
 };
 //# sourceMappingURL=globals.js.map
