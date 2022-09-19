@@ -406,7 +406,7 @@ module TSOS {
             let text = textbox.textContent;
             let textArray = text.split(" ");
             for(let i = 0; i < textArray.length + 1; i++){
-                if(textArray[i].length > 2){
+                if(textArray[i].length < 1){
                     alert("VALUE AT LOCATION " + i + "IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
                     _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
                 }

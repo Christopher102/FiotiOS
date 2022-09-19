@@ -80,6 +80,14 @@ module TSOS {
             // .. enable the Halt and Reset buttons ...
             (<HTMLButtonElement>document.getElementById("btnHaltOS")).disabled = false;
             (<HTMLButtonElement>document.getElementById("btnReset")).disabled = false;
+            //Display Buttons
+            (<HTMLButtonElement>document.getElementById("btnHaltOS")).hidden = false;
+            (<HTMLButtonElement>document.getElementById("btnReset")).hidden = false;
+            (document.getElementById("Topnavbar")).hidden = false;
+            (document.getElementById("status")).hidden = false;
+            (document.getElementById("mainRow")).hidden = false;
+            (document.getElementById("secondaryRow")).hidden = false;
+            document.getElementById("mainRow").classList.add('animate_animated', 'animate_backInLeft');
 
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();

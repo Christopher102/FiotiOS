@@ -11,7 +11,9 @@
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-   
+
+   <!-- Animations CSS import because I don't want to waste time manually animating things. It would drive me insane.-->
+   <link   rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
    <title>
       S.P.Y.D.R Operating System
    </title>
@@ -53,57 +55,58 @@
 </head>
 
 <body onload="onDocumentLoad()">
+<header class = "d-flex justify-content-between">
+   <h1 id = Title>S.P.Y.D.R</h1>
+   <p id = date-time></p>
+   <p id = status>Offline</p>
+</header>
 
-   <nav class="navbar" id = "Topnavbar">
-      <span id = Title class="navbar-brand mb-0 h1">S.P.D.R AI Containment System</span>
-      <span id = date-time class="navbar-brand mx-auto h2"></span>
-    </nav>
-    <div id = status>Offline</div>
-    <div id = blankline style="height: 40px; background-color: black"></div>
-   
-    <div>
-      
+    <div id = "startButton">
       <input type="button"
              id = "btnStartOS"
              name="brnStartOS"
-             class="normal_button"
+             class="normal_button animate__animated animate__fadeInLeft"
              value="Start"
              tabindex="0"
+             
              onclick="TSOS.Control.hostBtnStartOS_click(this);">
-            
+   </div>
+   <div>
 
       <input type="button"
              id = "btnHaltOS"
              name="brnHaltOS"
-             class="normal_button"
+             class="normal_button animate__animated animate__slideInDown"
              disabled="disabled"
              value="Halt"
              tabindex="1"
-             onclick="TSOS.Control.hostBtnHaltOS_click(this);">
+             onclick="TSOS.Control.hostBtnHaltOS_click(this);"
+             hidden = "hidden">
 
       <input type="button"
              id = "btnReset"
              name="brnReset"
-             class="normal_button"
+             class="normal_button animate__animated animate__slideInDown"
              disabled="disabled"
              value="Reset"
              tabindex="2"
-             onclick="TSOS.Control.hostBtnReset_click(this);">
+             onclick="TSOS.Control.hostBtnReset_click(this);"
+             hidden = "hidden">
       <!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE-->
       <a id = "suprise" class = "btn btn-success" href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" hidden = "hidden">Suprise!</a>
       <!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE--><!-- HEY NO PEAKING AT THIS LINE-->
     </div>
-<div class="row">
+<div class="row" id = "mainRow" hidden = hidden>
    <div class="col-auto">
-      <div class="card border-0" >
+      <div class="card animate__animated animate__fadeInLeft textCard">
          <div id = outputLog class="card-header">
          Output Log
          </div>
-         <div id="divLog border-0">
+         <div id="divLog">
                <textarea name="taHostLog"
                         id  ="taHostLog"
                         rows="13"
-                        cols="130"
+                        cols="65"
                         
                ></textarea>
             </label>
@@ -111,22 +114,22 @@
       </div>
    </div>
    <div class="col-auto">
-      <div class="card border-0">
+      <div class="card animate__animated animate__fadeIn animate__slower textCard">
          <div id = outputLog class="card-header">
          Input Console
          </div>
          <div id="divConsole">
             <canvas id="display"
-                  width="1000px"
+                  width="500px"
                   height="500px"
                   tabindex="3">
             </canvas>
          </div>
       </div>
    </div>
-</div>
-<div class="row">
-   <div class ="card" id = outputLog>  
+
+<div class="row" id = secondaryRow hidden = hidden>
+   <div class ="card animate__animated animate__fadeInRight textCard" id = outputLog>  
       <div class="card-header">
       AI Program Loaded
       </div>
@@ -139,6 +142,7 @@
          </label>
       </div>
    </div>
+</div>
 </div>
    </body>
    </html>

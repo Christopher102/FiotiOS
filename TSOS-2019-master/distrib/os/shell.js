@@ -320,6 +320,7 @@ var TSOS;
         shellThrow(args) {
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
+            TSOS.Control.hostBtnHaltOS_click(true);
         }
         shellLoad(args) {
             let textbox = document.getElementById("taProgramInput");

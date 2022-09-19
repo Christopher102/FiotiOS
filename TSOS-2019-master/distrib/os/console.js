@@ -7,7 +7,7 @@
 var TSOS;
 (function (TSOS) {
     class Console {
-        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "", 
+        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "", upCommandBuffer = [], downCommandBuffer = [], 
         // This holds a string of all the console entries. Was gonna do an array but holy crap arrays suck in TS, never doing a pop / push array ever again. No thank you.
         consoleString = "") {
             this.currentFont = currentFont;
@@ -15,6 +15,8 @@ var TSOS;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
+            this.upCommandBuffer = upCommandBuffer;
+            this.downCommandBuffer = downCommandBuffer;
             this.consoleString = consoleString;
         }
         init() {
@@ -117,10 +119,13 @@ var TSOS;
             }
         }
         backspace() {
+            // Gets the character width
             let charWidth = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer.charAt(this.buffer.length - 1));
-            let xDifference = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer) - charWidth;
+            // Sets the x pos back by the width
             this.currentXPosition -= charWidth;
+            // Clears out the character. The + 5 is honestly wonky, and may cause issues? But it's currently midnight. I'm listening to Rare Americans. I'm 4 redbulls deep. I'm happy it even works.
             _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize, charWidth, this.currentYPosition + 5);
+            // Drops char from buffer
             this.buffer = this.buffer.substring(0, this.buffer.length - 1);
         }
         tab() {
@@ -130,6 +135,13 @@ var TSOS;
                 if (commandList[i].command.indexOf(this.buffer) === 0) {
                     this.buffer = commandList[i];
                 }
+            }
+        }
+        up() {
+            if (this.upCommandBuffer.length > 0) {
+                this.downCommandBuffer.push(this.upCommandBuffer.pop());
+            }
+            else {
             }
         }
     }
