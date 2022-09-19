@@ -97,11 +97,6 @@ module TSOS {
                                   "- Suprise!");
             this.commandList[this.commandList.length] = sc;
 
-            // Display Button
-            sc = new ShellCommand(this.shellBuffer,
-                                  "buffer",
-                                  "- Displays the buffer in an alert message");
-            this.commandList[this.commandList.length] = sc;
 
             // Throw OS error
             sc = new ShellCommand(this.shellThrow,
@@ -389,12 +384,6 @@ module TSOS {
                 element.setAttribute("hidden", "hidden");
             }
         }
-
-        public shellBuffer(args: string[]){
-            // This is to display the buffer for the consoleString, because I got stupid annoyed. It'll display an alert containing the string.
-            alert(_StdOut.consoleString);
-        }
-
         public shellThrow(args: string[]){
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");

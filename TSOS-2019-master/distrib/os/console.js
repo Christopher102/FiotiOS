@@ -7,17 +7,16 @@
 var TSOS;
 (function (TSOS) {
     class Console {
-        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "", upCommandBuffer = [], downCommandBuffer = [], 
-        // This holds a string of all the console entries. Was gonna do an array but holy crap arrays suck in TS, never doing a pop / push array ever again. No thank you.
-        consoleString = "") {
+        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "", commandBuffer = [], commandIndex = 0, upBuffer = [], downBuffer = []) {
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
-            this.upCommandBuffer = upCommandBuffer;
-            this.downCommandBuffer = downCommandBuffer;
-            this.consoleString = consoleString;
+            this.commandBuffer = commandBuffer;
+            this.commandIndex = commandIndex;
+            this.upBuffer = upBuffer;
+            this.downBuffer = downBuffer;
         }
         init() {
             this.clearScreen();
@@ -28,6 +27,14 @@ var TSOS;
             this.buffer = "";
         }
         clearLine() {
+            // Gets the character width
+            let charWidth = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer);
+            // Sets the x pos back by the width
+            this.currentXPosition -= charWidth;
+            // Clears out the character. The + 5 is honestly wonky, and may cause issues? But it's currently midnight. I'm listening to Rare Americans. I'm 4 redbulls deep. I'm happy it even works.
+            _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize, charWidth, this.currentYPosition + 5);
+            // Drops the entire buffer
+            this.buffer = "";
         }
         resetXY() {
             this.currentXPosition = 0;
@@ -41,9 +48,9 @@ var TSOS;
                 if (chr === String.fromCharCode(13)) { // the Enter key
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
-                    this.consoleString += this.buffer + "\n";
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
+                    this.upBuffer.push(this.buffer);
                     this.buffer = "";
                 }
                 else if (chr === String.fromCharCode(8)) {
@@ -54,11 +61,11 @@ var TSOS;
                     // Tab function call
                     this.tab();
                 }
-                else if (chr === 'up') {
-                    alert("UP");
+                else if (chr === 'upArrow') {
+                    this.up();
                 }
-                else if (chr === "down") {
-                    alert("DOWN");
+                else if (chr === "downArrow") {
+                    this.down();
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -79,7 +86,6 @@ var TSOS;
                 decided to write one function and use the term "text" to connote string or char.
             */
             // Checks for a newline character
-            let stringtext = String(text);
             if (text == "\n") {
                 this.advanceLine();
             }
@@ -89,9 +95,6 @@ var TSOS;
                 // Move the current X position.
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
                 this.currentXPosition = this.currentXPosition + offset;
-                if (stringtext.length > 1) {
-                    this.consoleString += text + "\n";
-                }
             }
         }
         advanceLine() {
@@ -138,10 +141,25 @@ var TSOS;
             }
         }
         up() {
-            if (this.upCommandBuffer.length > 0) {
-                this.downCommandBuffer.push(this.upCommandBuffer.pop());
+            if (this.upBuffer.length > 0) {
+                let bufferCmd = this.upBuffer.pop();
+                this.clearLine();
+                this.buffer = bufferCmd;
+                this.putText(bufferCmd);
+            }
+        }
+        down() {
+            if (this.downBuffer.length > 0) {
+                let bufferCmd = this.downBuffer.pop();
+                this.upBuffer.push(bufferCmd);
+                this.clearLine();
+                this.buffer = bufferCmd;
+                this.putText(bufferCmd);
             }
             else {
+                this.clearLine();
+                this.buffer = "";
+                this.putText("");
             }
         }
     }

@@ -64,12 +64,12 @@ var TSOS;
             // .. enable the Halt and Reset buttons ...
             document.getElementById("btnHaltOS").disabled = false;
             document.getElementById("btnReset").disabled = false;
-            //Display Buttons
-            document.getElementById("btnHaltOS").hidden = false;
-            document.getElementById("btnReset").hidden = false;
-            (document.getElementById("mainRow")).hidden = false;
-            (document.getElementById("secondaryRow")).hidden = false;
-            document.getElementById("mainRow").classList.add('animate_animated', 'animate_backInLeft');
+            //Display Buttons and hide other buttons
+            document.getElementById("btnHaltOS").removeAttribute("hidden");
+            document.getElementById("btnReset").removeAttribute("hidden");
+            document.getElementById("startButton").hidden = true;
+            (document.getElementById("mainRow")).removeAttribute("hidden");
+            (document.getElementById("secondaryRow")).removeAttribute("hidden");
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();
             // ... Create and initialize the CPU (because it's part of the hardware)  ...

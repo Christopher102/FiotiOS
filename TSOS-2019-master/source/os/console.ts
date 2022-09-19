@@ -14,10 +14,11 @@ module TSOS {
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
                     public buffer = "",
-                    public upCommandBuffer = [],
-                    public downCommandBuffer = [],
-                    // This holds a string of all the console entries. Was gonna do an array but holy crap arrays suck in TS, never doing a pop / push array ever again. No thank you.
-                    public consoleString = "") {
+                    public commandBuffer = [],
+                    public commandIndex = 0,
+                    public upBuffer = [],
+                    public downBuffer = []
+                    ) {
         }
 
         public init(): void {
@@ -31,7 +32,14 @@ module TSOS {
         }
 
         public clearLine(): void {
-            
+            // Gets the character width
+            let charWidth = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer);
+            // Sets the x pos back by the width
+            this.currentXPosition -= charWidth;
+            // Clears out the character. The + 5 is honestly wonky, and may cause issues? But it's currently midnight. I'm listening to Rare Americans. I'm 4 redbulls deep. I'm happy it even works.
+            _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize, charWidth, this.currentYPosition + 5);
+            // Drops the entire buffer
+            this.buffer = "";
         }
 
         public resetXY(): void {
@@ -47,10 +55,10 @@ module TSOS {
                 if (chr === String.fromCharCode(13)) { // the Enter key
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
-                    this.consoleString += this.buffer + "\n";
                     
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
+                    this.upBuffer.push(this.buffer);
                     this.buffer = "";
                 }  
                 else if (chr === String.fromCharCode(8)) {
@@ -59,11 +67,11 @@ module TSOS {
                 } else if (chr === String.fromCharCode(9)){
                     // Tab function call
                     this.tab();
-                } else if (chr === 'up'){
-                    alert("UP");
+                } else if (chr === 'upArrow'){
+                    this.up();
                 }
-                else if (chr === "down"){
-                    alert("DOWN");
+                else if (chr === "downArrow"){
+                    this.down();
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -85,7 +93,6 @@ module TSOS {
                 decided to write one function and use the term "text" to connote string or char.
             */
            // Checks for a newline character
-           let stringtext = String(text);
             if(text == "\n"){
                 this.advanceLine();
             }
@@ -95,9 +102,6 @@ module TSOS {
                 // Move the current X position.
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
                 this.currentXPosition = this.currentXPosition + offset;
-                if(stringtext.length > 1){
-                    this.consoleString += text + "\n";
-                }
             }
          }
 
@@ -155,10 +159,25 @@ module TSOS {
         }
 
         public up(){
-            if(this.upCommandBuffer.length > 0){
-                this.downCommandBuffer.push(this.upCommandBuffer.pop());
-            } else {
+            if(this.upBuffer.length > 0){
+                    let bufferCmd = this.upBuffer.pop(); 
+                    this.clearLine();
+                    this.buffer = bufferCmd;
+                    this.putText(bufferCmd);
+            }
+        }
 
+        public down(){
+            if(this.downBuffer.length > 0){
+                let bufferCmd = this.downBuffer.pop();
+                this.upBuffer.push(bufferCmd);
+                this.clearLine();
+                this.buffer = bufferCmd;
+                this.putText(bufferCmd)
+            } else {
+                this.clearLine();
+                this.buffer = "";
+                this.putText("");
             }
         }
     }

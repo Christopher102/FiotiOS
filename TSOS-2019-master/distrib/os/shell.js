@@ -57,9 +57,6 @@ var TSOS;
             // Display Button
             sc = new TSOS.ShellCommand(this.shellSuprise, "suprise", "- Suprise!");
             this.commandList[this.commandList.length] = sc;
-            // Display Button
-            sc = new TSOS.ShellCommand(this.shellBuffer, "buffer", "- Displays the buffer in an alert message");
-            this.commandList[this.commandList.length] = sc;
             // Throw OS error
             sc = new TSOS.ShellCommand(this.shellThrow, "throw", " - Throws an OS error");
             this.commandList[this.commandList.length] = sc;
@@ -313,10 +310,6 @@ var TSOS;
                 element.setAttribute("hidden", "hidden");
             }
         }
-        shellBuffer(args) {
-            // This is to display the buffer for the consoleString, because I got stupid annoyed. It'll display an alert containing the string.
-            alert(_StdOut.consoleString);
-        }
         shellThrow(args) {
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
@@ -327,7 +320,7 @@ var TSOS;
             let text = textbox.textContent;
             let textArray = text.split(" ");
             for (let i = 0; i < textArray.length + 1; i++) {
-                if (textArray[i].length > 2) {
+                if (textArray[i].length < 1) {
                     alert("VALUE AT LOCATION " + i + "IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
                     _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
                 }
