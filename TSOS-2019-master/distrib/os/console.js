@@ -25,6 +25,8 @@ var TSOS;
             _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
             this.buffer = "";
         }
+        clearLine() {
+        }
         resetXY() {
             this.currentXPosition = 0;
             this.currentYPosition = this.currentFontSize;
@@ -44,9 +46,17 @@ var TSOS;
                 }
                 else if (chr === String.fromCharCode(8)) {
                     // Backspace function call
-                    alert("BACKSPACING");
                     this.backspace();
-                    this.buffer = this.buffer.substring(0, this.buffer.length - 1);
+                }
+                else if (chr === String.fromCharCode(9)) {
+                    // Tab function call
+                    this.tab();
+                }
+                else if (chr === 'up') {
+                    alert("UP");
+                }
+                else if (chr === "down") {
+                    alert("DOWN");
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -93,35 +103,33 @@ var TSOS;
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
             if (this.currentYPosition > _yDisplaySize) {
-                /*let yDisplayDifference = this.currentYPosition - _yDisplaySize;
-                let yFontDifference = Math.round(yDisplayDifference / this.currentFontSize);
-
-                this.clearScreen();
-                this.resetXY();
-                let splitString = this.consoleString.split('\n')
-                for(let i = yFontDifference; i < splitString.length + 1; i++){
-                    this.putText(splitString[i]);
-                    this.putText('\n');
-                    splitString
-                }*/
+                // Okay so after 10+ hours of working on this, I have this
                 let canvasContext = _Canvas.getContext("2d");
+                //Grabs the entire canvas space. Honestly, I could do the math to exactly grab the piece we need, but this is easier to read.
                 let snapshot = canvasContext.getImageData(0, 0, 1000, 500);
+                //Clears the screen
                 this.clearScreen();
+                // Places the image data back at the coords x = 0 and y = the font size times two into the negative, which would bring it higher than the canvas displays.
                 canvasContext.putImageData(snapshot, 0, -this.currentFontSize * 2);
+                // Resets the position of the cursor at the bottom. The + 1 may become an issue down the line, but for now? I call this a victory.
                 this.currentXPosition = 0;
                 this.currentYPosition = _yDisplaySize - this.currentFontSize + 1;
             }
         }
         backspace() {
-            //Remove the last character and create a substring
-            var textString = this.buffer.substring(0, this.buffer.length - 1);
-            this.putText(textString);
-            //Move context / cursor over by one
-            let xDifference = _DrawingContext.measureText(this.currentFont, this.currentFontSize, textString);
-            this.currentXPosition = this.currentXPosition - xDifference;
-            //Prevent from going off screen
-            if (this.currentXPosition < 0) {
-                this.currentXPosition = 0;
+            let charWidth = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer.charAt(this.buffer.length - 1));
+            let xDifference = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer) - charWidth;
+            this.currentXPosition -= charWidth;
+            _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize, charWidth, this.currentYPosition + 5);
+            this.buffer = this.buffer.substring(0, this.buffer.length - 1);
+        }
+        tab() {
+            let possibleCommands = [];
+            let commandList = _OsShell.commandList;
+            for (let i = 0; i < commandList.length + 1; i++) {
+                if (commandList[i].command.indexOf(this.buffer) === 0) {
+                    this.buffer = commandList[i];
+                }
             }
         }
     }

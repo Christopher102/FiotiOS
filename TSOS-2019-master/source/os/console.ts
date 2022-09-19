@@ -28,6 +28,10 @@ module TSOS {
             this.buffer = "";
         }
 
+        public clearLine(): void {
+            
+        }
+
         public resetXY(): void {
             this.currentXPosition = 0;
             this.currentYPosition = this.currentFontSize;
@@ -48,10 +52,17 @@ module TSOS {
                 }  
                 else if (chr === String.fromCharCode(8)) {
                     // Backspace function call
-                    alert("BACKSPACING");
                     this.backspace();
-                    this.buffer = this.buffer.substring(0, this.buffer.length - 1);
-                } else {
+                } else if (chr === String.fromCharCode(9)){
+                    // Tab function call
+                    this.tab();
+                } else if (chr === 'up'){
+                    alert("UP");
+                }
+                else if (chr === "down"){
+                    alert("DOWN");
+                }
+                else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
                     this.putText(chr);
@@ -120,15 +131,23 @@ module TSOS {
         
 
         public backspace() {
-            //Remove the last character and create a substring
-            var textString = this.buffer.substring(0, this.buffer.length - 1);
-            this.putText(textString);
-            //Move context / cursor over by one
-            let xDifference = _DrawingContext.measureText(this.currentFont, this.currentFontSize, textString);
-            this.currentXPosition = this.currentXPosition - xDifference;
-            //Prevent from going off screen
-            if (this.currentXPosition < 0){
-                this.currentXPosition = 0
+            // Gets the character width
+            let charWidth = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer.charAt(this.buffer.length - 1));
+            // Sets the x pos back by the width
+            this.currentXPosition -= charWidth;
+            // Clears out the character. The + 5 is honestly wonky, and may cause issues? But it's currently midnight. I'm listening to Rare Americans. I'm 4 redbulls deep. I'm happy it even works.
+            _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize, charWidth, this.currentYPosition + 5);
+            // Drops char from buffer
+            this.buffer = this.buffer.substring(0, this.buffer.length - 1);
+        }
+
+        public tab(){
+            let possibleCommands = [];
+            let commandList = _OsShell.commandList;
+            for(let i = 0; i < commandList.length + 1; i++){
+                if(commandList[i].command.indexOf(this.buffer) === 0){
+                    this.buffer = commandList[i];
+                }
             }
         }
     }
