@@ -398,6 +398,7 @@ module TSOS {
         public shellThrow(args: string[]){
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
+            TSOS.Control.hostBtnHaltOS_click(true);
         }
 
         public shellLoad(args: string[]){

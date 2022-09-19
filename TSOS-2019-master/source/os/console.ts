@@ -14,6 +14,8 @@ module TSOS {
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
                     public buffer = "",
+                    public upCommandBuffer = [],
+                    public downCommandBuffer = [],
                     // This holds a string of all the console entries. Was gonna do an array but holy crap arrays suck in TS, never doing a pop / push array ever again. No thank you.
                     public consoleString = "") {
         }
@@ -46,6 +48,7 @@ module TSOS {
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     this.consoleString += this.buffer + "\n";
+                    
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
@@ -148,6 +151,14 @@ module TSOS {
                 if(commandList[i].command.indexOf(this.buffer) === 0){
                     this.buffer = commandList[i];
                 }
+            }
+        }
+
+        public up(){
+            if(this.upCommandBuffer.length > 0){
+                this.downCommandBuffer.push(this.upCommandBuffer.pop());
+            } else {
+
             }
         }
     }
