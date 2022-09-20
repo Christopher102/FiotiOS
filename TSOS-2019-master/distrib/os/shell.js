@@ -78,7 +78,7 @@ var TSOS;
             //
             var userCommand = this.parseInput(buffer);
             // ... and assign the command and args to local variables.
-            var cmd = userCommand.command;
+            var cmd = userCommand.command.toLowerCase();
             var args = userCommand.args;
             //
             // Determine the command and execute it.
@@ -132,7 +132,7 @@ var TSOS;
             // 1. Remove leading and trailing spaces.
             buffer = TSOS.Utils.trim(buffer);
             // 2. Lower-case it.
-            buffer = buffer.toLowerCase();
+            //buffer = buffer.toLowerCase();
             // 3. Separate on spaces so we can determine the command and command-line args, if any.
             var tempList = buffer.split(" ");
             // 4. Take the first (zeroth) element and use that as the command.
@@ -201,7 +201,7 @@ var TSOS;
             _StdOut.putText("Current time is " + currentDate.toLocaleTimeString());
         }
         shellWhereAmI(args) {
-            _StdOut.putText("Did you hit your head? We are at war with the Banished.");
+            _StdOut.putText("New Vegas");
         }
         shellShutdown(args) {
             _StdOut.putText("Shutting down...");
@@ -302,7 +302,7 @@ var TSOS;
         }
         shellStatus(args) {
             // Sets the status of the console.
-            document.getElementById("status").innerHTML = args[0];
+            document.getElementById("status").innerHTML = args.join(" ");
         }
         shellSuprise(args) {
             // I made this purposefully difficult to read by using hidden 6 times cause I thought that was funny since this is a gag.
@@ -321,17 +321,15 @@ var TSOS;
             TSOS.Control.hostBtnHaltOS_click(true);
         }
         shellLoad(args) {
-            alert("FUCK YOU");
             let text = document.getElementById("taProgramInput").value;
             let textArray = text.split(" ");
             for (let i = 0; i < textArray.length - 1; i++) {
-                alert(textArray[i]);
                 if (textArray[i].length < 1) {
                     alert("VALUE AT LOCATION " + i + " IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
                     _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
                 }
                 else {
-                    _StdOut.putText("CODE IS VALID");
+                    //TODO: DO SOMETHING WITH VALUES
                 }
             }
         }

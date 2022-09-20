@@ -129,7 +129,7 @@ module TSOS {
             //
             var userCommand = this.parseInput(buffer);
             // ... and assign the command and args to local variables.
-            var cmd = userCommand.command;
+            var cmd = userCommand.command.toLowerCase();
             var args = userCommand.args;
             //
             // Determine the command and execute it.
@@ -183,7 +183,7 @@ module TSOS {
             buffer = Utils.trim(buffer);
 
             // 2. Lower-case it.
-            buffer = buffer.toLowerCase();
+            //buffer = buffer.toLowerCase();
 
             // 3. Separate on spaces so we can determine the command and command-line args, if any.
             var tempList = buffer.split(" ");
@@ -262,7 +262,7 @@ module TSOS {
         }
 
         public shellWhereAmI(args: string[]){
-            _StdOut.putText("Did you hit your head? We are at war with the Banished.")
+            _StdOut.putText("New Vegas")
         }
 
         public shellShutdown(args: string[]) {
@@ -380,7 +380,7 @@ module TSOS {
 
         public shellStatus(args: string[]) {
             // Sets the status of the console.
-            document.getElementById("status").innerHTML = args[0];
+            document.getElementById("status").innerHTML = args.join(" ");
         }
 
         public shellSuprise(args: string[]) {
@@ -400,18 +400,17 @@ module TSOS {
         }
 
         public shellLoad(args: string[]){
-            alert("FUCK YOU")
             let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value;
             let textArray = text.split(" ");
             for(let i = 0; i < textArray.length - 1; i++){
-                alert(textArray[i]);
                 if(textArray[i].length < 1){
                     alert("VALUE AT LOCATION " + i + " IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
                     _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
                 } else {
-                    _StdOut.putText("CODE IS VALID");
+                    //TODO: DO SOMETHING WITH VALUES
                 }
             }
+            
 
         }
 
