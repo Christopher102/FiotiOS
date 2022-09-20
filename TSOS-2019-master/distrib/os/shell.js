@@ -60,6 +60,9 @@ var TSOS;
             // Throw OS error
             sc = new TSOS.ShellCommand(this.shellThrow, "throw", " - Throws an OS error");
             this.commandList[this.commandList.length] = sc;
+            // Throw OS error
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", " - Loads memory");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -245,6 +248,8 @@ var TSOS;
                         _StdOut.putText("Displays the buffer in an alert message");
                     case "throw":
                         _StdOut.putText("Throws an OS error");
+                    case "load":
+                        _StdOut.putText("Loads from memory");
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -316,13 +321,17 @@ var TSOS;
             TSOS.Control.hostBtnHaltOS_click(true);
         }
         shellLoad(args) {
-            let textbox = document.getElementById("taProgramInput");
-            let text = textbox.textContent;
+            alert("FUCK YOU");
+            let text = document.getElementById("taProgramInput").value;
             let textArray = text.split(" ");
-            for (let i = 0; i < textArray.length + 1; i++) {
+            for (let i = 0; i < textArray.length - 1; i++) {
+                alert(textArray[i]);
                 if (textArray[i].length < 1) {
-                    alert("VALUE AT LOCATION " + i + "IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
+                    alert("VALUE AT LOCATION " + i + " IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
                     _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
+                }
+                else {
+                    _StdOut.putText("CODE IS VALID");
                 }
             }
         }
