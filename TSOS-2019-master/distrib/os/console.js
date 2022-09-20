@@ -71,6 +71,7 @@ var TSOS;
                     this.putText('\n');
                     _OsShell.putPrompt();
                     this.putText(this.buffer);
+                    // Below is an attempt to make it auto-fill and tabbale through a list. I may return in the future to finish this.
                     /*if(this.tabFlag === false){
                         this.tabBuffer = this.tab();
                         this.clearLine();

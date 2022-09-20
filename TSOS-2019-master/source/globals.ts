@@ -56,6 +56,9 @@ var _OsShell: TSOS.Shell;
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode: boolean = false;
 
+// Status global
+var _Status: String;
+
 // Global Device Driver Objects - page 12
 var _krnKeyboardDriver: TSOS.DeviceDriverKeyboard  = null;
 
