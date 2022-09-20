@@ -17,7 +17,10 @@ module TSOS {
                     public commandBuffer = [],
                     public commandIndex = 0,
                     public upBuffer = [],
-                    public downBuffer = []
+                    public downBuffer = [],
+                    public tabBuffer = [],
+                    public tabFlag = false,
+                    public tabPointer = 0
                     ) {
         }
 
@@ -60,13 +63,45 @@ module TSOS {
                     // ... and reset our buffer.
                     this.upBuffer.push(this.buffer);
                     this.buffer = "";
+                    this.tabBuffer = [];
+                    this.tabFlag = false;
+                    this.tabPointer = 0;
                 }  
                 else if (chr === String.fromCharCode(8)) {
                     // Backspace function call
                     this.backspace();
                 } else if (chr === String.fromCharCode(9)){
                     // Tab function call
-                    this.tab();
+                    this.tabBuffer = this.tab();
+                    this.putText('\n');
+                    this.putText(this.tabBuffer.join(" "));
+                    this.putText('\n');
+                    _OsShell.putPrompt();
+                    this.putText(this.buffer);
+                    // Below is an attempt to make it auto-fill and tabbale through a list. I may return in the future to finish this.
+                    /*if(this.tabFlag === false){
+                        this.tabBuffer = this.tab();
+                        this.clearLine();
+                        this.putText(this.tabBuffer[this.tabPointer]);
+                        this.buffer = this.tabBuffer[this.tabPointer];
+                        this.tabFlag = true;
+                        this.tabPointer++;
+                        if(this.tabPointer > this.tabBuffer.length - 1){
+                            this.tabPointer = 0;
+                        }
+                    } else {
+                        alert("TRIGGER");
+                        this.clearLine();
+                        this.putText(this.tabBuffer[this.tabPointer]);
+                        this.buffer = this.tabBuffer[this.tabPointer];
+                        this.tabPointer++;
+                        if(this.tabPointer > this.tabBuffer.length - 1){
+                            this.tabPointer = 0;
+                        }
+
+
+                    }*/
+
                 } else if (chr === 'upArrow'){
                     this.up();
                 }
@@ -150,11 +185,14 @@ module TSOS {
 
         public tab(){
             let possibleCommands = [];
-            let commandList = _OsShell.commandList;
-            for(let i = 0; i < commandList.length + 1; i++){
-                if(commandList[i].command.indexOf(this.buffer) === 0){
-                    this.buffer = commandList[i];
+            let tempBuffer = this.buffer
+            if(this.buffer.length > 0){
+                for( let i = 0; i < _OsShell.commandList.length; i++){
+                    if(_OsShell.commandList[i].command.indexOf(tempBuffer) === 0){
+                        possibleCommands.push(_OsShell.commandList[i].command);
+                    }
                 }
+                return possibleCommands;
             }
         }
 
