@@ -97,22 +97,6 @@
     </div>
 <div class="row" id = "mainRow" hidden = hidden>
    <div class="col-auto">
-      <div class="card animate__animated animate__fadeInLeft">
-         <div id = outputLog class="card-header">
-         Output Log
-         </div>
-         <div id="divLog">
-               <textarea name="taHostLog"
-                        id  ="taHostLog"
-                        rows="13"
-                        cols="65"
-                        
-               ></textarea>
-            </label>
-         </div>
-      </div>
-   </div>
-   <div class="col-auto">
       <div class="card animate__animated animate__fadeIn animate__slower textCard">
          <div id = outputLog class="card-header">
          Input Console
@@ -126,6 +110,48 @@
          </div>
       </div>
    </div>
+   <div class="col-auto">
+      <div class="card animate__animated animate__fadeInLeft">
+         <div id = outputLog class="card-header">
+         Output Log
+         </div>
+         <div id="divLog">
+               <textarea name="taHostLog"
+                        id  ="taHostLog"
+                        rows="10"
+                        cols="65"
+                        
+               ></textarea>
+            </label>
+         </div>
+      </div>
+      <br>
+      <div class="card animate__animated animate__fadeInRight">
+         <div id = "cpuLog" class="card-header" style="background: black">
+            CPU Info
+         </div>
+         <div id="cpuDiv">
+            <table name="cpuTable" class="col-8">
+               <tr>
+                  <th>PC</th>
+                  <th>IR</th>
+                  <th>Acc</th>
+                  <th>X</th>
+                  <th>Y</th>
+                  <th>Z</th>
+              </tr>
+              <tr>
+                  <td id='cpuPC'>--</td>
+                  <td id='cpuIR'>--</td>
+                  <td id='cpuAcc'>--</td>
+                  <td id='cpuX'>--</td>
+                  <td id='cpuY'>--</td>
+                  <td id='cpuZ'>-</td>
+              </tr>
+            </table>
+         </div>
+      </div>
+   </div>
 
 <div class="row" id = secondaryRow hidden = hidden>
    <div class ="card animate__animated animate__fadeInRight textCard" id = outputLog>  
@@ -135,10 +161,23 @@
       <div id="divUserProgramInput" style="margin-left:15px;">
             <textarea name="taProgramInput"
                       id  ="taProgramInput"
-                      rows="8"
+                      rows="4"
                       cols="48"
             ></textarea>
          </label>
+      </div>
+   </div>
+   <div class = "card animate__animated animate__fadeInRight textCard" id="memoryCard">
+      <div class ="card-header" style="background: black">
+         Memory
+      </div>
+      <div id="memoryDiv">
+         <textarea name = "memory"
+                   id = "memoryDisplay"
+                   rows = "12"
+                   cols = "48">
+         </textarea>
+
       </div>
    </div>
 </div>
