@@ -8,5 +8,5 @@ var TSOS;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
         }
-}
-})
+} TSOS.PCB = PCB;
+})(TSOS || (TSOS = {}));
