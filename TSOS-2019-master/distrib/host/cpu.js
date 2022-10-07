@@ -13,8 +13,9 @@
 var TSOS;
 (function (TSOS) {
     class Cpu {
-        constructor(PC = 0, Acc = 0, Xreg = 0, Yreg = 0, Zflag = 0, isExecuting = false) {
+        constructor(PC = 0, Acc = 0, IR = 0, Xreg = 0, Yreg = 0, Zflag = 0, isExecuting = false) {
             this.PC = PC;
+            this.IR = IR;
             this.Acc = Acc;
             this.Xreg = Xreg;
             this.Yreg = Yreg;
@@ -24,6 +25,7 @@ var TSOS;
         init() {
             this.PC = 0;
             this.Acc = 0;
+            this.IR = 0;
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
@@ -34,102 +36,59 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
         }
-        
-        decode(){
+
+        fetchdecodeexecute(){
+
+            this.IR = _MemoryAccessor.getAtAddress(_CPU.PC).toUpperCase();
+
             switch (this.IR) {
-                case 0xA9: //Load from constant
-                    this.Acc = this._MMU.readMemory(this.PC);
-                    this.PC ++;
-                    this.Step = 0;
+                case "A9":
+                    this.loadConstant();
                     break;
-    
-                case 0xAD: // Load from Memory
-                    this.setlowhigh();
+                case "AD":
+                    this.loadMemory();
                     break;
-    
-                case 0x8D: // Store in Memory
-                    this.setlowhigh();
+                case "8D":
+                    this.storeMemory();
                     break;
-                
-                case 0x8A: //Load from X register
-                    ///This does not need a decode
+                case "6D":
+                    this.addwithCarry();
                     break;
-                
-                case 0x98: //Load from Y
-                    //No Decode
+                case "A2":
+                    this.loadXConstant();
                     break;
-                
-                case 0x6D: //Add wtih carry
-                    this.setlowhigh();
+                case "AE":
+                    this.loadXMemory();
                     break;
-                
-                case 0xA2: //Load X with constant
-                    this.x = this._MMU.readMemory(this.PC);
-                    this.PC ++;
-                    this.Step = 0;
+                case "A0":
+                    this.loadYConstant();
                     break;
-                
-                case 0xAE: //Load X from memory
-                    this.setlowhigh();
+                case "AC":
+                    this.loadYMemory();
                     break;
-                
-                case 0xAA: // Load X from Acc
-                    this.x = this.Acc;
-                    this.Step = 6;
+                case "EA":
+                    _CPU.incrementPC();
                     break;
-                
-                case 0xA0: //Load Y with Constant
-                    this.y = this._MMU.readMemory(this.PC);
-                    this.PC ++;
-                    this.Step = 0;
+                case "00":
+                    this.break();
+                    this.isExecuting = false;
                     break;
-                
-                case 0xAC: //Load Y with memory
-                    this.setlowhigh();
+                case "EC":
+                    this.compareX();
                     break;
-                
-                case 0xA8: //Load Y from Acc
-                    this.y = this.Acc;
-                    this.Step = 6;
+                case "D0":
+                    this.branchNBytes();
                     break;
-                
-                case 0xEA: // No-OP
-                    //No Decode
+                case "EE":
+                    this.incrementPC();
                     break;
-                
-                case 0x00: // End Program
-                    process.exit();
+                case "FF":
+                    this.systemCall();
                     break;
-                
-                case 0xEC: //Compare Byte to X, set Z
-                    this.setlowhigh();
+                default:
+                    _Kernel.krnTrapError(`ERROR: NOT A COMMAND`);
+                    this.isExecuting = false;
                     break;
-                
-                case 0xD0: //LOOP BACK BABBYYYYY
-                    this.n = this._MMU.readMemory(this.PC);
-                    this.Step = 3;
-                    break;
-                
-                case 0xEE: // Increment Value of Byte
-                    break;
-    
-    
-                case 0xFF: //Print Babyyyyyyy
-                    switch (this.x) {
-                        case 1:
-                            this.Step = 3;
-                            break;
-                        case 2:
-                            this.Step = 3;
-                        case 3:
-                            this.setlowhigh();
-                        default:
-                            break;
-                    }
-                    break;
-            
-                default: 
-                    this.log(this.id, this.cname, this.debug, "Error: Not a listed command!");
             }
     
         } // Decode
