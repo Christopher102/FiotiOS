@@ -28,12 +28,7 @@ var _DrawingContext; // = _Canvas.getContext("2d");  // Assigned here for type s
 var _DefaultFontFamily = "sans"; // Ignored, I think. The was just a place-holder in 2008, but the HTML canvas may have use for it.
 var _DefaultFontSize = 13;
 var _FontHeightMargin = 4; // Additional space added to font size when advancing a line.
-var _Trace = true; // Default the OS trace to be on.\
-
-//Memory
-var _Memory;
-var _defaultMemorySize = 0xFF;
-
+var _Trace = true; // Default the OS trace to be on.
 // The OS Kernel and its queues.
 var _Kernel;
 var _KernelInterruptQueue = null;
@@ -55,7 +50,6 @@ var _hardwareClockID = null;
 // For testing (and enrichment)...
 var Glados = null; // This is the function Glados() in glados-ip*.js http://alanclasses.github.io/TSOS/test/ .
 var _GLaDOS = null; // If the above is linked in, this is the instantiated instance of Glados.
-
 // For handling display resolution
 var _xDisplaySize;
 var _yDisplaySize;
