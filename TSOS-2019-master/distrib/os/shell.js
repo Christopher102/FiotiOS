@@ -326,9 +326,11 @@ var TSOS;
             TSOS.Control.hostBtnHaltOS_click(true);
         }
         shellLoad(args) {
+            //Grabs text from Input
             let text = document.getElementById("taProgramInput").value;
+            // Splits into multiple values
             let textArray = text.split(" ");
-            alert(textArray);
+            //alert(textArray);
             let MemoryAddr = 0;
             for (let i = 0; i < textArray.length - 1; i++) {
                 if (textArray[i].length < 1) {
@@ -336,7 +338,8 @@ var TSOS;
                     _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
                 }
                 else {
-                    _MemoryAccessor.setValueAtAddr(MemoryAddr, textArray[i]);
+                    // Calls Manager to set byte
+                    _MemoryManager.setByte(MemoryAddr, textArray[i]);
                     MemoryAddr += 1;
                     _ProcessManager.createPCB();
                     globalPIDcount += 1;
