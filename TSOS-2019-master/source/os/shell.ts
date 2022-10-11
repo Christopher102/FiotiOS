@@ -110,6 +110,13 @@ module TSOS {
                             " - Loads memory");
             this.commandList[this.commandList.length] = sc;
 
+            // Run program via PID
+            sc = new ShellCommand(this.shellRun,
+                            "run",
+                            "<integer> - Runs a process using a PID");
+            this.commandList[this.commandList.length] = sc;
+
+
 
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -328,6 +335,9 @@ module TSOS {
                     
                     case "load":
                         _StdOut.putText("Loads from memory");
+                    
+                    case "run":
+                        _StdOut.putText("Runs using a pid. Usage: run <pid>");
                             
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -417,6 +427,14 @@ module TSOS {
             }
             
 
+        }
+
+        public shellRun(args: string[]){
+            if(args.length > 0){
+                _CPU.runPid(parseInt(args[0]));
+            } else {
+                _StdOut.putText("Usage: prompt <pid>  Please supply a PID.");
+            }
         }
 
     }

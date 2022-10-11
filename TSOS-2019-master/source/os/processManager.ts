@@ -1,12 +1,27 @@
 module TSOS {
     export class processManager{
-        pidQueue: any[];
+        pcbList: TSOS.PCB[];
 
         constructor(){
         }
 
         public init(): void{
-            this.pidQueue = [];
+            this.pcbList = [];
+        }
+
+        // Gets the PCB from the list of PCBs
+        public getPCB(PID: number): TSOS.PCB{
+            for(let i = 1; i < this.pcbList.length; i++){
+                if(this.pcbList[i].pid = PID){
+                    return this.pcbList[i];
+                }
+            }
+        }
+
+        public createPCB(){
+            var newPCB = new TSOS.PCB(0, globalPIDcount);
+            globalPIDcount += 1;
+            this.pcbList.push(newPCB);
         }
     }
 }

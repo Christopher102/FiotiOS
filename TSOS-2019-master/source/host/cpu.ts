@@ -152,9 +152,8 @@ module TSOS {
                             addr++;
                             var code = _MemoryAccessor.getValueAtAddr(this.PC);
                         }
-                        var params = { output: output };
                     }
-                    _KernelInterruptQueue.enqueue(new Interrupt(SYSCALL_IRQ, params), 1);
+                    _KernelInterruptQueue.enqueue(new Interrupt(SYSCALL_IRQ, []));
                     this.PC++;
                     break;
                 case 'EA': // Skip
