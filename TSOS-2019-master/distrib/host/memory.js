@@ -1,16 +1,17 @@
-
 var TSOS;
 (function (TSOS) {
     class Memory {
         constructor() {
-            this.memory = [];
+            this.memorySet = new Array(_DefaultMemorySize);
         }
         init() {
-            this.memory = new Array(_defaultMemorySize); 
-            for (let i = 0; i < _defaultMemorySize; i++) {
-                this.memory[i] = 0;
+            for (let i = 0; i < this.memorySet.length; i++) {
+                this.memorySet[i] == 0x00;
             }
+            alert(this.memorySet);
+            TSOS.Control.updateMemory();
         }
     }
     TSOS.Memory = Memory;
 })(TSOS || (TSOS = {}));
+//# sourceMappingURL=memory.js.map

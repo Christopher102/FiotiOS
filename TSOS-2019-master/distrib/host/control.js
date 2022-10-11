@@ -75,6 +75,9 @@ var TSOS;
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new TSOS.Cpu(); // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
+            _Memory = new TSOS.Memory();
+            _Memory.init();
+            _MemoryAccessor = new TSOS.memoryAccessor;
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -96,6 +99,23 @@ var TSOS;
             // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
+        }
+        static updateMemory() {
+            let memoryDisplay = document.getElementById('memoryTable');
+            let body = "<tbody>";
+            for (let i = 0; i < _Memory.memorySet.length; i += 0x08) {
+                let hexString = i.toString(16);
+                let longHex = "000" + hexString; //0 would be 000, so assume worst case, best case is FFF and then the 000 would be removed anyways
+                let normalizedHex = longHex.substring(longHex.length - 3); //take last 3 elements
+                let row = "0x" + normalizedHex;
+                body += `<tr><td>${row}</td>`;
+                for (let j = i; j < i + 8; j += 0x1) {
+                    body += "<td " + `id=mem${j}>` + _Memory.memorySet[j] + "</td>";
+                }
+                body += "</tr>";
+            }
+            body += "</tbody>";
+            memoryDisplay.innerHTML = body;
         }
     }
     TSOS.Control = Control;

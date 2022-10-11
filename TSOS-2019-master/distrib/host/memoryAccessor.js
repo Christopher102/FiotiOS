@@ -1,14 +1,13 @@
 var TSOS;
 (function (TSOS) {
-    class MemoryAccessor {
-        getAtAddress(address){
-            return this.memoryArray[address]
+    class memoryAccessor {
+        getValueAtAddr(addr) {
+            return _Memory.memorySet[addr];
         }
-        
-        setAtAddress(address,value){
-            this.memoryArray[address] = value;
-            return this.memoryArray[address];
+        setValueAtAddr(addr, value) {
+            _Memory.memorySet[addr] = value;
         }
     }
-    TSOS.MemoryAccessor = MemoryAccessor
+    TSOS.memoryAccessor = memoryAccessor;
 })(TSOS || (TSOS = {}));
+//# sourceMappingURL=memoryAccessor.js.map
