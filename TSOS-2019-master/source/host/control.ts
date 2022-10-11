@@ -123,6 +123,7 @@ module TSOS {
         }
 
         public static updateMemory(){
+            alert(_Memory.memorySet);
             var memoryDisplay: HTMLTableElement = <HTMLTableElement> document.getElementById('memoryTable');
             var memoryIndex = 0;
             for(let i = 0; i < 32; i++){

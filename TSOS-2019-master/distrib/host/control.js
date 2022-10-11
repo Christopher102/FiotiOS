@@ -101,6 +101,7 @@ var TSOS;
             // page from its cache, which is not what we want.
         }
         static updateMemory() {
+            alert(_Memory.memorySet);
             var memoryDisplay = document.getElementById('memoryTable');
             var memoryIndex = 0;
             for (let i = 0; i < 32; i++) {

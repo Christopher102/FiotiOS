@@ -415,19 +415,17 @@ module TSOS {
             // Splits into multiple values
             let textArray = text.split(" ");
             //alert(textArray);
-            let MemoryAddr = 0;
             for(let i = 0; i < textArray.length - 1; i++){
                 if(textArray[i].length < 1){
                     alert("VALUE AT LOCATION " + i + " IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
                     _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
-                } else {
+                } 
                     // Calls Manager to set byte
-                    _MemoryManager.setByte(MemoryAddr, textArray[i]);
-                    MemoryAddr += 1;
-                    _ProcessManager.createPCB();
-                    globalPIDcount += 1;
-                }
+            _MemoryManager.loadIntoMemory(0, textArray)
             TSOS.Control.updateMemory();
+            alert("CREATING PCB");
+            _ProcessManager.createPCB();
+            globalPIDcount += 1;
             }
             
 
