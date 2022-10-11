@@ -94,6 +94,9 @@ module TSOS {
             _CPU = new Cpu();  // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init();       //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
 
+            _Memory = new TSOS.Memory();
+            _MemoryAccessor = new memoryAccessor;
+            _Memory.init();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -117,6 +120,28 @@ module TSOS {
             // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
+        }
+
+        public static updateMemory(){
+            alert(_Memory.memorySet);
+            var memoryDisplay: HTMLTableElement = <HTMLTableElement> document.getElementById('memoryTable');
+            var memoryIndex = 0;
+            for(let i = 0; i < 32; i++){
+                for(let j = 1; j < 9; j++){
+                    memoryDisplay.rows[i].cells[j].innerHTML = _MemoryAccessor.getValueAtAddr(memoryIndex);
+                    memoryIndex += 1;
+                }
+            }
+        }
+
+        public static updateCPUDisplay(){
+            var cpuDisplay : HTMLTableElement = <HTMLTableElement> document.getElementById('cpuTable');
+            cpuDisplay.rows[1].cells[0].innerHTML = _CPU.PC.toString();
+            cpuDisplay.rows[1].cells[1].innerHTML = _CPU.currentInstruction;
+            cpuDisplay.rows[1].cells[2].innerHTML = _CPU.Acc.toString();
+            cpuDisplay.rows[1].cells[3].innerHTML = _CPU.Xreg.toString();
+            cpuDisplay.rows[1].cells[4].innerHTML = _CPU.Yreg.toString();
+            cpuDisplay.rows[1].cells[5].innerHTML = _CPU.Zflag.toString();
         }
     }
 }

@@ -26,6 +26,9 @@
    <script type="text/javascript" src="distrib/host/control.js"></script>
    <script type="text/javascript" src="distrib/host/devices.js"></script>
    <script type="text/javascript" src="distrib/host/cpu.js"></script>
+   <script type="text/javascript" src="distrib/host/memory.js"></script>
+   <script type="text/javascript" src="distrib/host/memoryAccessor.js"></script>
+   
 
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="distrib/os/interrupt.js"></script>
@@ -38,11 +41,13 @@
    <script type="text/javascript" src="distrib/os/shellCommand.js"></script>
    <script type="text/javascript" src="distrib/os/userCommand.js"></script>
    <script type="text/javascript" src="distrib/os/kernel.js"></script>
+   <script type="text/javascript" src="distrib/os/memoryManager.js"></script>
+   <script type="text/javascript" src="distrib/os/processManager.js"></script>
 
    <!-- Other Routines -->
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment the line below to enable GLaDOS testing. -->
-   <script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip1.js"></script>
+   <!--<script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip1.js"></script>-->
 
    <!-- DateTime -->
    <script>
@@ -97,22 +102,6 @@
     </div>
 <div class="row" id = "mainRow" hidden = hidden>
    <div class="col-auto">
-      <div class="card animate__animated animate__fadeInLeft">
-         <div id = outputLog class="card-header">
-         Output Log
-         </div>
-         <div id="divLog">
-               <textarea name="taHostLog"
-                        id  ="taHostLog"
-                        rows="13"
-                        cols="65"
-                        
-               ></textarea>
-            </label>
-         </div>
-      </div>
-   </div>
-   <div class="col-auto">
       <div class="card animate__animated animate__fadeIn animate__slower textCard">
          <div id = outputLog class="card-header">
          Input Console
@@ -126,6 +115,48 @@
          </div>
       </div>
    </div>
+   <div class="col-auto">
+      <div class="card animate__animated animate__fadeInLeft">
+         <div id = outputLog class="card-header">
+         Output Log
+         </div>
+         <div id="divLog">
+               <textarea name="taHostLog"
+                        id  ="taHostLog"
+                        rows="10"
+                        cols="65"
+                        
+               ></textarea>
+            </label>
+         </div>
+      </div>
+      <br>
+      <div class="card animate__animated animate__fadeInRight">
+         <div id = "cpuLog" class="card-header" style="background: black">
+            CPU Info
+         </div>
+         <div id="cpuDiv">
+            <table name="cpuTable" class="col-8">
+               <tr>
+                  <th>PC</th>
+                  <th>IR</th>
+                  <th>Acc</th>
+                  <th>X</th>
+                  <th>Y</th>
+                  <th>Z</th>
+              </tr>
+              <tr>
+                  <td id='cpuPC'>--</td>
+                  <td id='cpuIR'>--</td>
+                  <td id='cpuAcc'>--</td>
+                  <td id='cpuX'>--</td>
+                  <td id='cpuY'>--</td>
+                  <td id='cpuZ'>-</td>
+              </tr>
+            </table>
+         </div>
+      </div>
+   </div>
 
 <div class="row" id = secondaryRow hidden = hidden>
    <div class ="card animate__animated animate__fadeInRight textCard" id = outputLog>  
@@ -135,10 +166,371 @@
       <div id="divUserProgramInput" style="margin-left:15px;">
             <textarea name="taProgramInput"
                       id  ="taProgramInput"
-                      rows="8"
+                      rows="4"
                       cols="48"
-            ></textarea>
+            >A9 03 8D 41 00 A9 01 8D 40 00 AC 40 00 A2 01 FF EE 40 00 AE 40 00 EC 41 00 D0 EF A9 44 8D 42 00 A9 4F 8D 43 00 A9 4E 8D 44 00 A9 45 8D 45 00 A9 00 8D 46 00 A2 02 A0 42 FF 00</textarea>
          </label>
+      </div>
+   </div>
+   <div class = "card animate__animated animate__fadeInRight textCard" id="memoryCard" style="height: 400px; overflow-y: scroll;">
+      <div class ="card-header" style="background: black">
+         Memory
+      </div>
+      <div id="memoryDiv" style="height: 400px;">
+         <table id="memoryTable" class="table">
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x08</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x10</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x18</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x20</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x28</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x30</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x38</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x40</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x48</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x50</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x58</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x60</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x68</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x70</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x78</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x80</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x88</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x90</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x98</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xA0</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xA8</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xB0</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xB8</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xC0</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xC8</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xD0</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xE0</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xE8</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xF0</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0xF8</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+            <tr>
+               <td style="font-weight:bold" class="memoryHead">0x100</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+               <td>00</td>
+            </tr>
+         </table>
       </div>
    </div>
 </div>

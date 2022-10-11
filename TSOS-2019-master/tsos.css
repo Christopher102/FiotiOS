@@ -126,6 +126,12 @@ h3 {
   left: 45%;
 }
 
+#memTable{
+  height: 400px;
+  width:447px;
+  overflow-y: scroll;
+}
+
 @keyframes slideIn {
   from{left: -1000px;}
   to{left: 10px}
