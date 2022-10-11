@@ -38,6 +38,7 @@ var _Kernel;
 var _KernelInterruptQueue = null;
 var _KernelInputQueue = null;
 var _KernelBuffers = null;
+var _ProcessManager;
 // Standard input and output
 var _StdIn = null;
 var _StdOut = null;
@@ -54,6 +55,8 @@ var _hardwareClockID = null;
 // For testing (and enrichment)...
 var Glados = null; // This is the function Glados() in glados-ip*.js http://alanclasses.github.io/TSOS/test/ .
 var _GLaDOS = null; // If the above is linked in, this is the instantiated instance of Glados.
+// Possible global PID number count
+var globalPIDcount = 0;
 // For handling display resolution
 var _xDisplaySize;
 var _yDisplaySize;

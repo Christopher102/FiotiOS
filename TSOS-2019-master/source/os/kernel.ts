@@ -25,12 +25,14 @@ module TSOS {
             _Console = new Console();             // The command line interface / console I/O device.
             _Console.init();
 
-
-            _MemoryManager = new memoryManager();
             // Initialize standard input and output to the _Console.
             _StdIn  = _Console;
             _StdOut = _Console;
 
+
+            //Managers
+            _ProcessManager = new processManager();
+            _ProcessManager.init();
             // Load the Keyboard Device Driver
             this.krnTrace("Loading the keyboard device driver.");
             _krnKeyboardDriver = new DeviceDriverKeyboard();     // Construct it.

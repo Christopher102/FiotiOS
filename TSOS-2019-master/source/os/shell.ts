@@ -402,13 +402,18 @@ module TSOS {
         public shellLoad(args: string[]){
             let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value;
             let textArray = text.split(" ");
+            let MemoryAddr = 0;
             for(let i = 0; i < textArray.length - 1; i++){
                 if(textArray[i].length < 1){
                     alert("VALUE AT LOCATION " + i + " IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
                     _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
                 } else {
-                    //TODO: DO SOMETHING WITH VALUES
+                    _MemoryAccessor.setValueAtAddr(MemoryAddr, textArray[i]);
+                    MemoryAddr += 1;
+                    var newpcb = new TSOS.PCB(0, globalPIDcount);
+                    globalPIDcount += 1;
                 }
+                TSOS.Control.updateMemory();
             }
             
 

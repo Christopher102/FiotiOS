@@ -47,7 +47,7 @@ var _Kernel: TSOS.Kernel;
 var _KernelInterruptQueue: TSOS.Queue = null;
 var _KernelInputQueue: TSOS.Queue = null; 
 var _KernelBuffers = null; 
-
+var _ProcessManager: TSOS.processManager;
 // Standard input and output
 var _StdIn:  TSOS.Console = null; 
 var _StdOut: TSOS.Console = null;
@@ -71,6 +71,8 @@ var _hardwareClockID: number = null;
 var Glados: any = null;  // This is the function Glados() in glados-ip*.js http://alanclasses.github.io/TSOS/test/ .
 var _GLaDOS: any = null; // If the above is linked in, this is the instantiated instance of Glados.
 
+// Possible global PID number count
+var globalPIDcount: number = 0;
 // For handling display resolution
 var _xDisplaySize;
 var _yDisplaySize;
