@@ -27,6 +27,7 @@ var TSOS;
             //Managers
             _ProcessManager = new TSOS.processManager();
             _ProcessManager.init();
+            _MemoryManager = new TSOS.memoryManager();
             // Load the Keyboard Device Driver
             this.krnTrace("Loading the keyboard device driver.");
             _krnKeyboardDriver = new TSOS.DeviceDriverKeyboard(); // Construct it.

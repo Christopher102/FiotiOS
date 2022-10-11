@@ -10,6 +10,7 @@ var TSOS;
             this.zflag = 0;
             this.pc = 0;
             this.state = "New";
+            this.startAddr = 0;
         }
     }
     TSOS.PCB = PCB;

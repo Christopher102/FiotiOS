@@ -2,7 +2,7 @@ var TSOS;
 (function (TSOS) {
     class memoryManager {
         getByte(addr) {
-            _MemoryAccessor.getValueAtAddr(addr);
+            return _MemoryAccessor.getValueAtAddr(addr);
         }
         setByte(addr, value) {
             _MemoryAccessor.setValueAtAddr(addr, value);

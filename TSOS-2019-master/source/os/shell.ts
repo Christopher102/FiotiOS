@@ -412,6 +412,7 @@ module TSOS {
         public shellLoad(args: string[]){
             let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value;
             let textArray = text.split(" ");
+            alert(textArray);
             let MemoryAddr = 0;
             for(let i = 0; i < textArray.length - 1; i++){
                 if(textArray[i].length < 1){
@@ -420,10 +421,10 @@ module TSOS {
                 } else {
                     _MemoryAccessor.setValueAtAddr(MemoryAddr, textArray[i]);
                     MemoryAddr += 1;
-                    var newpcb = new TSOS.PCB(0, globalPIDcount);
+                    _ProcessManager.createPCB();
                     globalPIDcount += 1;
                 }
-                TSOS.Control.updateMemory();
+            TSOS.Control.updateMemory();
             }
             
 

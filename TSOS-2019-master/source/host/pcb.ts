@@ -9,6 +9,7 @@ module TSOS{
         public zflag:          number;           // 0 or 1
         public pc: number;           // Location of current program execution
         public state;
+        public startAddr;
 
         constructor(priority: number, processid: number){
             this.prio = priority;
@@ -19,6 +20,7 @@ module TSOS{
             this.zflag = 0;
             this.pc = 0;
             this.state = "New";
+            this.startAddr = 0;
         }
     }
 }
