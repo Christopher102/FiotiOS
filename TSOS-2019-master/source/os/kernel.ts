@@ -31,8 +31,9 @@ module TSOS {
 
 
             //Managers
-            _ProcessManager = new processManager();
+            _ProcessManager = new TSOS.processManager();
             _ProcessManager.init();
+            _MemoryManager = new TSOS.memoryManager();
             // Load the Keyboard Device Driver
             this.krnTrace("Loading the keyboard device driver.");
             _krnKeyboardDriver = new DeviceDriverKeyboard();     // Construct it.

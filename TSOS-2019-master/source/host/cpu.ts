@@ -58,71 +58,73 @@ module TSOS {
             if(this.isExecuting = true){
                 this.fetchdecodeexecute()
             }
+            TSOS.Control.updateCPUDisplay();
+            
         }
 
         public fetchdecodeexecute(){
             switch(this.currentInstruction){
                 case 'A9': // Load acc with constant 
                     this.PC ++;
-                    this.Acc = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16)
+                    this.Acc = parseInt(_MemoryManager.getByte(this.PC), 16)
                     this.PC ++;
                     break;
                 case 'AD': // Load acc from memory 
                     this.PC++;
-                    var addr = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
-                    this.Acc = parseInt(_MemoryAccessor.getValueAtAddr(addr), 16);
+                    this.Acc = parseInt(_MemoryManager.getByte(addr), 16);
                     this.PC++;
                     break;
                 case '8D': // Store acc in memory
                     this.PC++;
-                    var addr = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
-                    _MemoryAccessor.setValueAtAddr(addr, this.Acc.toString(16));
+                    _MemoryManager.setByte(addr, this.Acc.toString(16));
                     this.PC++;
                     break;
                 case '6D': // Add with carry
                     this.PC++;
-                    var addr = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
-                    this.Acc += parseInt(_MemoryAccessor.getValueAtAddr(addr), 16);
+                    this.Acc += parseInt(_MemoryManager.getByte(addr), 16);
                     this.PC++;
                     break;
                 case 'A2': // Load X Register with constant 
                     this.PC++;
-                    this.Xreg = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    this.Xreg = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
                     break;
                 case 'AE': // Load X Register from memory 
                     this.PC++;
-                    var addr = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
-                    this.Xreg = parseInt(_MemoryAccessor.getValueAtAddr(addr), 16);
+                    this.Xreg = parseInt(_MemoryManager.getByte(addr), 16);
                     this.PC++;
                     break;
                 case 'A0': // Load Y Register with constant 
                     this.PC++;
-                    this.Yreg = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    this.Yreg = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
                     break;
                 case 'AC': // Load Y Register from memory 
                     this.PC++;
-                    var addr = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
-                    this.Yreg = parseInt(_MemoryAccessor.getValueAtAddr(addr), 16);
+                    this.Yreg = parseInt(_MemoryManager.getByte(addr), 16);
                     this.PC++;
                     break;
                 case 'EC': // Compare byte at addr to xreg, if equal set Z true
                     this.PC++;
-                    var addr = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
-                    this.Zflag = (this.Xreg === parseInt(_MemoryAccessor.getValueAtAddr(addr), 16)) ? 1 : 0;
+                    this.Zflag = (this.Xreg === parseInt(_MemoryManager.getByte(addr), 16)) ? 1 : 0;
                     this.PC++;
                     break;
                 case 'D0': // Branch N if Z true
                     this.PC++;
                     if(this.Zflag === 0){
-                        var hex = _MemoryAccessor.getValueAtAddr(this.PC);
+                        var hex = _MemoryManager.getByte(this.PC);
                         this.PC++;
                         var jump = parseInt(hex, 16);
                         this.PC += jump;
@@ -132,11 +134,11 @@ module TSOS {
                     break;
                 case 'EE': // Increment byte
                     this.PC++;
-                    var addr = parseInt(_MemoryAccessor.getValueAtAddr(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.getByte(this.PC), 16);
                     this.PC++;
-                    var value = parseInt(_MemoryAccessor.getValueAtAddr(addr), 16);
+                    var value = parseInt(_MemoryManager.getByte(addr), 16);
                     value++;
-                    _MemoryAccessor.setValueAtAddr(addr, value.toString(16));
+                    _MemoryManager.setByte(addr, value.toString(16));
                     this.PC++;
                     break;
                 case 'FF': // System call
@@ -145,12 +147,12 @@ module TSOS {
                     } else {
                         var output = '';
                         var addr = this.Yreg;
-                        var code = _MemoryAccessor.getValueAtAddr(addr);
+                        var code = _MemoryManager.getByte(addr);
                         while(code !== '00'){
                             var letter = String.fromCharCode(parseInt(code,16));
                             output += letter;
                             addr++;
-                            var code = _MemoryAccessor.getValueAtAddr(this.PC);
+                            var code = _MemoryManager.getByte(this.PC);
                         }
                     }
                     _KernelInterruptQueue.enqueue(new Interrupt(SYSCALL_IRQ, []));

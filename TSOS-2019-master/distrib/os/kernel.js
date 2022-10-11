@@ -25,7 +25,7 @@ var TSOS;
             _StdIn = _Console;
             _StdOut = _Console;
             //Managers
-            _ProcessManager = new TSOS.ProcessManager(1);
+            _ProcessManager = new TSOS.processManager();
             _ProcessManager.init();
             // Load the Keyboard Device Driver
             this.krnTrace("Loading the keyboard device driver.");

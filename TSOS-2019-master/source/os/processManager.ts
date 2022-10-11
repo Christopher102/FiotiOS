@@ -20,8 +20,9 @@ module TSOS {
 
         public createPCB(){
             var newPCB = new TSOS.PCB(0, globalPIDcount);
-            globalPIDcount += 1;
             this.pcbList.push(newPCB);
+            _StdOut.putText("PROCESS PID: " + globalPIDcount);
+            globalPIDcount += 1;
         }
     }
 }

@@ -110,6 +110,15 @@ var TSOS;
                 }
             }
         }
+        static updateCPUDisplay() {
+            var cpuDisplay = document.getElementById('cpuTable');
+            cpuDisplay.rows[1].cells[0].innerHTML = _CPU.PC.toString();
+            cpuDisplay.rows[1].cells[1].innerHTML = _CPU.currentInstruction;
+            cpuDisplay.rows[1].cells[2].innerHTML = _CPU.Acc.toString();
+            cpuDisplay.rows[1].cells[3].innerHTML = _CPU.Xreg.toString();
+            cpuDisplay.rows[1].cells[4].innerHTML = _CPU.Yreg.toString();
+            cpuDisplay.rows[1].cells[5].innerHTML = _CPU.Zflag.toString();
+        }
     }
     TSOS.Control = Control;
 })(TSOS || (TSOS = {}));

@@ -63,6 +63,9 @@ var TSOS;
             // Throw OS error
             sc = new TSOS.ShellCommand(this.shellLoad, "load", " - Loads memory");
             this.commandList[this.commandList.length] = sc;
+            // Run program via PID
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "<integer> - Runs a process using a PID");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -250,6 +253,8 @@ var TSOS;
                         _StdOut.putText("Throws an OS error");
                     case "load":
                         _StdOut.putText("Loads from memory");
+                    case "run":
+                        _StdOut.putText("Runs using a pid. Usage: run <pid>");
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -332,8 +337,18 @@ var TSOS;
                 else {
                     _MemoryAccessor.setValueAtAddr(MemoryAddr, textArray[i]);
                     MemoryAddr += 1;
+                    var newpcb = new TSOS.PCB(0, globalPIDcount);
+                    globalPIDcount += 1;
                 }
                 TSOS.Control.updateMemory();
+            }
+        }
+        shellRun(args) {
+            if (args.length > 0) {
+                _CPU.runPid(parseInt(args[0]));
+            }
+            else {
+                _StdOut.putText("Usage: prompt <pid>  Please supply a PID.");
             }
         }
     }
