@@ -18,12 +18,10 @@ module TSOS {
             }
         }
 
+        // creates a PCB and pushes it to the list.
         public createPCB(){
-            alert("PCB BEGIN");
             var newPCB = new PCB(0, globalPIDcount);
-            alert("PUSHING TO STACK");
             this.pcbList.push(newPCB);
-            alert("RETURNING PID");
             _StdOut.putText("PROCESS PID: " + globalPIDcount);
             globalPIDcount += 1;
         }

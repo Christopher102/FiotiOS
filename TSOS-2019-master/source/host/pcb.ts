@@ -1,13 +1,14 @@
 module TSOS{
     export class PCB{
         
-        public prio:       number;           // Importance
-        public pid:      number;           // Int
-        public acc:            number;           // Number from 0-255
-        public xreg:      number;           // Number from 0-255
-        public yreg:      number;           // Number from 0-255
-        public zflag:          number;           // 0 or 1
-        public pc: number;           // Location of current program execution
+        // All the basic parts of the PCB block
+        public prio: number;          
+        public pid: number;           
+        public acc: number;           
+        public xreg: number;           
+        public yreg: number;           
+        public zflag: number;           
+        public pc: number;           
         public state;
         public startAddr;
 
