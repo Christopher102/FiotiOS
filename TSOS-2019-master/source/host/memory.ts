@@ -1,18 +1,16 @@
 
 module TSOS {
     export class Memory {
-        public memorySet;
+        public memorySet: Array<string>;
         constructor(){
             this.memorySet = new Array(_DefaultMemorySize);
-
         }
 
         init(){
-            for(let i = 0; i < this.memorySet.length; i++){
-                this.memorySet[i] == 0x00;
+            for(let i = 0; i < _DefaultMemorySize; i++){
+                this.memorySet[i] = '00';
+                TSOS.Control.updateMemory();
             }
-            alert(this.memorySet);
-            TSOS.Control.updateMemory();
         }
     }
 }

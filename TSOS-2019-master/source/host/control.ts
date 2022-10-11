@@ -95,8 +95,8 @@ module TSOS {
             _CPU.init();       //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
 
             _Memory = new TSOS.Memory();
-            _Memory.init();
             _MemoryAccessor = new memoryAccessor;
+            _Memory.init();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -126,13 +126,11 @@ module TSOS {
             var memoryDisplay: HTMLTableElement = <HTMLTableElement> document.getElementById('memoryTable');
             var memoryIndex = 0;
             for(let i = 0; i < 32; i++){
-                for(let j = 1; j < 9; i ++){
-                    memoryDisplay.rows[i].cells[j].innerHTML = _Memory.memorySet[memoryIndex]
-                    memoryIndex ++;
+                for(let j = 1; j < 9; j++){
+                    memoryDisplay.rows[i].cells[j].innerHTML = _MemoryAccessor.getValueAtAddr(memoryIndex);
+                    memoryIndex += 1;
                 }
             }
-        
-             
         }
     }
 }

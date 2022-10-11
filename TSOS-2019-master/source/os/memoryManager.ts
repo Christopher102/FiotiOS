@@ -1,11 +1,11 @@
 module TSOS{
-    export class memoryManager{
+    export class memoryManager {
         public getByte(addr){
             _MemoryAccessor.getValueAtAddr(addr);
         }
 
         public setByte(addr, value){
-            _MemoryAccessor.setValueAtAddr(addr, value)
+            _MemoryAccessor.setValueAtAddr(addr, value);
         }
 
         public loadIntoMemory(startaddr, valuelist){
