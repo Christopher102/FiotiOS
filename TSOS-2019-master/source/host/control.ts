@@ -123,21 +123,14 @@ module TSOS {
         }
 
         public static updateMemory(){
-             let memoryDisplay = document.getElementById('memoryTable');
-             let body = "<tbody>";
-             for(let i = 0; i < _Memory.memorySet.length; i += 0x08){
-                let hexString = i.toString(16);
-                let longHex = "000" + hexString; //0 would be 000, so assume worst case, best case is FFF and then the 000 would be removed anyways
-                let normalizedHex = longHex.substring(longHex.length - 3); //take last 3 elements
-                let row = "0x" + normalizedHex;
-                body += `<tr><td>${row}</td>`;
-                for (let j = i; j < i + 8; j += 0x1) {
-                    body += "<td " + `id=mem${j}>` + _Memory.memorySet[j] + "</td>";
+            var memoryDisplay: HTMLTableElement = <HTMLTableElement> document.getElementById('memoryTable');
+            var memoryIndex = 0;
+            for(let i = 0; i < 32; i++){
+                for(let j = 1; j < 9; i ++){
+                    memoryDisplay.rows[i].cells[j].innerHTML = _Memory.memorySet[memoryIndex]
+                    memoryIndex ++;
                 }
-                body += "</tr>";
             }
-            body += "</tbody>";
-            memoryDisplay.innerHTML = body;
         
              
         }
