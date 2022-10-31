@@ -8,18 +8,16 @@ var TSOS;
         }
         // Gets the PCB from the list of PCBs
         getPCB(PID) {
-            for (let i = 1; i < this.pcbList.length; i++) {
+            for (let i = 0; i < this.pcbList.length; i++) {
                 if (this.pcbList[i].pid = PID) {
                     return this.pcbList[i];
                 }
             }
         }
+        // creates a PCB and pushes it to the list.
         createPCB() {
-            alert("PCB BEGIN");
             var newPCB = new TSOS.PCB(0, globalPIDcount);
-            alert("PUSHING TO STACK");
             this.pcbList.push(newPCB);
-            alert("RETURNING PID");
             _StdOut.putText("PROCESS PID: " + globalPIDcount);
             globalPIDcount += 1;
         }

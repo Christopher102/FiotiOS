@@ -339,13 +339,13 @@ var TSOS;
                 // Calls Manager to set byte
                 _MemoryManager.loadIntoMemory(0, textArray);
                 TSOS.Control.updateMemory();
-                alert("CREATING PCB");
                 _ProcessManager.createPCB();
                 globalPIDcount += 1;
             }
         }
         shellRun(args) {
             if (args.length > 0) {
+                alert("PID BABEEEE " + args[0]);
                 _CPU.runPid(parseInt(args[0]));
             }
             else {

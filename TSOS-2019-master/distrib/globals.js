@@ -22,6 +22,7 @@ const SYSCALL_IRQ = 2;
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
 //
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
+// Memory Instances
 var _Memory;
 var _MemoryAccessor;
 var _MemoryManager;

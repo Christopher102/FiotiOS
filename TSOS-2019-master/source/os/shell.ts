@@ -423,7 +423,6 @@ module TSOS {
                     // Calls Manager to set byte
             _MemoryManager.loadIntoMemory(0, textArray)
             TSOS.Control.updateMemory();
-            alert("CREATING PCB");
             _ProcessManager.createPCB();
             globalPIDcount += 1;
             }
@@ -433,6 +432,7 @@ module TSOS {
 
         public shellRun(args: string[]){
             if(args.length > 0){
+                alert("PID BABEEEE " + args[0]);
                 _CPU.runPid(parseInt(args[0]));
             } else {
                 _StdOut.putText("Usage: prompt <pid>  Please supply a PID.");

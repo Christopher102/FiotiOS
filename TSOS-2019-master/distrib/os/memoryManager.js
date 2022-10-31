@@ -1,6 +1,7 @@
 var TSOS;
 (function (TSOS) {
     class memoryManager {
+        // getter sand setters, plus an overall load into memory function
         getByte(addr) {
             return _MemoryAccessor.getValueAtAddr(addr);
         }
@@ -9,6 +10,7 @@ var TSOS;
         }
         loadIntoMemory(startaddr, valuelist) {
             let currentVal = 0;
+            // Justs loops through the value list, putting each into memory
             for (let i = startaddr; i < startaddr + valuelist.length; i++) {
                 _Memory.memorySet[i] = valuelist[currentVal];
                 currentVal += 1;

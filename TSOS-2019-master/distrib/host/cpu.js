@@ -32,6 +32,7 @@ var TSOS;
             this.isExecuting = false;
         }
         updateCPU() {
+            alert("UPDATING CPU!");
             this.PC = this.workingPCB.pc;
             this.Acc = this.workingPCB.acc;
             this.Xreg = this.workingPCB.xreg;
@@ -39,6 +40,7 @@ var TSOS;
             this.Zflag = this.workingPCB.zflag;
         }
         runPid(pid) {
+            alert("RUNNING PID");
             this.workingPCB = _ProcessManager.getPCB(pid);
             this.workingPCB.state = "RUNNING";
             this.isExecuting = true;
