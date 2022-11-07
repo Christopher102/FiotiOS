@@ -411,28 +411,47 @@ module TSOS {
 
         public shellLoad(args: string[]){
             //Grabs text from Input
+            let isValid = true;
             let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value;
+            let validChars = ['a', 'b', 'c', 'd', 'e', 'f', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ' '];
+            for(let i = 0; i < text.length; i ++){
+                let char = text.charAt(i)
+                if(validChars.indexOf(char)){
+                    isValid = false;
+                    break;
+                }
+            }
             // Splits into multiple values
             let textArray = text.split(" ");
-            //alert(textArray);
-            for(let i = 0; i < textArray.length - 1; i++){
-                if(textArray[i].length < 1){
-                    alert("VALUE AT LOCATION " + i + " IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
-                    _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
-                } 
-                    // Calls Manager to set byte
-            _MemoryManager.loadIntoMemory(0, textArray)
-            TSOS.Control.updateMemory();
-            _ProcessManager.createPCB();
-            globalPIDcount += 1;
+            for(let i = 0; i < textArray.length; i ++){
+                if(textArray[i].length == 2){
+                    isValid = false;
+                    break;
+                }
+            }
+            if(!isValid){
+                alert("ERROR: INVALID INPUT.")
+            }
+            if(isValid){
+                let pid = _MemoryManager.loadIntoMemory(0, textArray)
+                TSOS.Control.updateMemory();
+                _StdOut.putText("Process " + pid + " Loaded");
+
             }
             
+        }
+
+        public runAll(){
+            for(let i = _ResidentQueue.length; i < 0; i--){
+                _ReadyQueue.enqueue(_ResidentQueue[i]);
+            }
+            _CPU.isExecuting = true;
 
         }
 
         public shellRun(args: string[]){
             if(args.length > 0){
-                alert("PID BABEEEE " + args[0]);
+                _CPU.isExecuting = true;
                 _CPU.runPid(parseInt(args[0]));
             } else {
                 _StdOut.putText("Usage: prompt <pid>  Please supply a PID.");

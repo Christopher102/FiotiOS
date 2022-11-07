@@ -345,7 +345,7 @@ var TSOS;
         }
         shellRun(args) {
             if (args.length > 0) {
-                alert("PID BABEEEE " + args[0]);
+                _CPU.isExecuting = true;
                 _CPU.runPid(parseInt(args[0]));
             }
             else {

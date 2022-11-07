@@ -51,6 +51,10 @@ var _KernelInterruptQueue: TSOS.Queue = null;
 var _KernelInputQueue: TSOS.Queue = null; 
 var _KernelBuffers = null; 
 var _ProcessManager: TSOS.processManager;
+
+// Cpu Scheduler and Dispatcher
+var _CpuScheduler: TSOS.CpuScheduler;
+var _CpuDispatcher: TSOS.CpuDispatcher;
 // Standard input and output
 var _StdIn:  TSOS.Console = null; 
 var _StdOut: TSOS.Console = null;
@@ -80,6 +84,12 @@ var globalPIDcount: number = 0;
 var _xDisplaySize;
 var _yDisplaySize;
 
+//Queues
+var _ReadyQueue: TSOS.Queue = null;
+var _ResidentQueue = new Array;
+
+//Scheduling Type
+var _ScheduleType = "RR";
 var onDocumentLoad = function() {
 	TSOS.Control.hostInit();
    _xDisplaySize = 1000;

@@ -15,6 +15,7 @@ module TSOS {
 
     export class Cpu {
 
+
         constructor(public PC: number = 0,
                     public Acc: number = 0,
                     public Xreg: number = 0,
@@ -23,7 +24,6 @@ module TSOS {
                     public isExecuting: boolean = false,
                     public workingPCB: TSOS.PCB = null,
                     public currentInstruction: string = '') {
-
         }
 
         public init(): void {
@@ -36,7 +36,6 @@ module TSOS {
         }
 
         private updateCPU(): void {
-            alert("UPDATING CPU!");
             this.PC    = this.workingPCB.pc;
             this.Acc   = this.workingPCB.acc;
             this.Xreg  = this.workingPCB.xreg;
@@ -45,12 +44,18 @@ module TSOS {
         }
 
         public runPid(pid : number): void{
-            alert("RUNNING PID");
+            this.updateCPU();
             this.workingPCB = _ProcessManager.getPCB(pid);
             this.workingPCB.state = "RUNNING";
             this.isExecuting = true;
-            this.updateCPU();
 
+        }
+
+        public loadProcess(executingPCB){
+            this.workingPCB = executingPCB;
+            this.updateCPU;
+            this.isExecuting = true;
+            TSOS.Control.updateCPUDisplay;
         }
 
         public cycle(): void {
@@ -172,6 +177,7 @@ module TSOS {
                     this.PC = 0;
                 default:
                     alert('Incorrect instruction');
+                    alert(this.currentInstruction);
                     this.isExecuting = false;
                     break;
             }

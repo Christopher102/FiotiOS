@@ -32,7 +32,6 @@ var TSOS;
             this.isExecuting = false;
         }
         updateCPU() {
-            alert("UPDATING CPU!");
             this.PC = this.workingPCB.pc;
             this.Acc = this.workingPCB.acc;
             this.Xreg = this.workingPCB.xreg;
@@ -40,11 +39,10 @@ var TSOS;
             this.Zflag = this.workingPCB.zflag;
         }
         runPid(pid) {
-            alert("RUNNING PID");
+            this.updateCPU();
             this.workingPCB = _ProcessManager.getPCB(pid);
             this.workingPCB.state = "RUNNING";
             this.isExecuting = true;
-            this.updateCPU();
         }
         cycle() {
             _Kernel.krnTrace('CPU cycle');
@@ -165,6 +163,7 @@ var TSOS;
                     this.PC = 0;
                 default:
                     alert('Incorrect instruction');
+                    alert(this.currentInstruction);
                     this.isExecuting = false;
                     break;
             }
