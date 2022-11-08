@@ -20,13 +20,19 @@ module TSOS{
         }
 
         roundRobin(){
+            alert("RR");
+            alert(_ReadyQueue.length);
             if(this.executingPCB == null && _ReadyQueue.length > 0){
+                alert("NO SWITCH");
                 this.executingPCB = _ReadyQueue.reverse().pop();
                 _CPU.loadProcess(this.executingPCB);
             }
             else if (_ReadyQueue.length > 0){
+                alert("CONTEXT SWITCH");
                 if(this.counter > this.quantum){
                     _CpuDispatcher.contextSwitch();
+                } else {
+                    this.counter ++;
                 }
             }
         }

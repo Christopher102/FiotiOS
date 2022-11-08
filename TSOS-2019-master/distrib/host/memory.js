@@ -12,6 +12,13 @@ var TSOS;
                 TSOS.Control.updateMemory();
             }
         }
+        correctUndefineds() {
+            this.memorySet.forEach(element => {
+                if (element == undefined) {
+                    element = '00';
+                }
+            });
+        }
     }
     TSOS.Memory = Memory;
 })(TSOS || (TSOS = {}));

@@ -14,5 +14,13 @@ module TSOS {
                 TSOS.Control.updateMemory();
             }
         }
+
+        correctUndefineds(){
+            this.memorySet.forEach(element => {
+                if(element == undefined){
+                    element = '00';
+                }
+            });
+        }
     }
 }

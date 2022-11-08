@@ -48,15 +48,25 @@ var TSOS;
             this.workingPCB = executingPCB;
             this.updateCPU();
             this.isExecuting = true;
-            TSOS.Control.updateCPUDisplay;
+            TSOS.Control.updateCpuDisplay();
+        }
+        updatePCB() {
+            this.workingPCB.acc = this.Acc;
+            this.workingPCB.pc = this.PC;
+            this.workingPCB.xreg = this.Xreg;
+            this.workingPCB.yreg = this.Yreg;
+            this.workingPCB.zflag = this.Zflag;
         }
         cycle() {
             _Kernel.krnTrace('CPU cycle');
             this.fetchdecodeexecute();
-            TSOS.Control.updateCPUDisplay();
+            if (this.workingPCB != null) {
+                this.updatePCB();
+            }
         }
         fetchdecodeexecute() {
             this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
+            _Kernel.krnTrace(this.currentInstruction);
             switch (this.currentInstruction) {
                 case 'A9': // Load acc with constant 
                     this.PC++;
@@ -116,15 +126,12 @@ var TSOS;
                     this.PC++;
                     break;
                 case 'D0': // Branch N if Z true
-                    this.PC++;
                     if (this.Zflag === 0) {
-                        var hex = _MemoryManager.getByte(this.PC);
-                        this.PC++;
-                        var jump = parseInt(hex, 16);
-                        this.PC += jump;
+                        let n = parseInt(_MemoryManager.read(this.workingPCB, this.PC + 1), 16);
+                        this.PC = (this.PC + n + 2) % 256;
                     }
                     else {
-                        this.PC++;
+                        this.PC += 2;
                     }
                     break;
                 case 'EE': // Increment byte
@@ -151,21 +158,23 @@ var TSOS;
                             var code = _MemoryManager.getByte(this.PC);
                         }
                     }
-                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSCALL_IRQ, []));
+                    _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSCALL_IRQ, [output]));
                     this.PC++;
                     break;
                 case 'EA': // Skip
                     this.PC++;
                     break;
                 case '00': // Break Out
-                    this.isExecuting = false;
                     this.workingPCB.state = "Terminated";
-                    this.workingPCB = null;
                     this.Acc = 0;
                     this.Xreg = 0;
                     this.Yreg = 0;
                     this.Zflag = 0;
                     this.PC = 0;
+                    this.updatePCB();
+                    _CpuScheduler.executingPCB = this.workingPCB;
+                    this.workingPCB = null;
+                    this.isExecuting = false;
                 default:
                     alert('Incorrect instruction');
                     alert(this.currentInstruction);

@@ -12,7 +12,7 @@ module TSOS{
             _MemoryAccessor.setValueAtAddr(addr, value);
         }
 
-        public loadIntoMemory(priority, valuelist){
+        public loadIntoMemory(priority, valuelist : Array<string>){
             let startAddr = 0;
             let endAddr = 0;
             let currentVal = 0;
@@ -32,10 +32,16 @@ module TSOS{
             var pcb = new PCB(priority, globalPIDcount, startAddr, endAddr);
             _ResidentQueue.push(pcb);
             // Justs loops through the value list, putting each into memory
-            for(let i = startAddr; i <= endAddr; i++){
+            for(let i = startAddr; i < valuelist.length; i++){
                 _Memory.memorySet[i] = valuelist[currentVal];
                 currentVal += 1;
             }
+            //Corrects undefineds
+            for(let i = valuelist.length; i <= endAddr; i++){
+                _Memory.memorySet[i] = '00';
+            }
+            //Don't question this please.
+            _Memory.correctUndefineds();
             return pcb.pid;
         }
 

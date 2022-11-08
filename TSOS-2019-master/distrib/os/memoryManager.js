@@ -32,10 +32,16 @@ var TSOS;
             var pcb = new TSOS.PCB(priority, globalPIDcount, startAddr, endAddr);
             _ResidentQueue.push(pcb);
             // Justs loops through the value list, putting each into memory
-            for (let i = startAddr; i <= endAddr; i++) {
+            for (let i = startAddr; i < valuelist.length; i++) {
                 _Memory.memorySet[i] = valuelist[currentVal];
                 currentVal += 1;
             }
+            //Corrects undefineds
+            for (let i = valuelist.length; i <= endAddr; i++) {
+                _Memory.memorySet[i] = '00';
+            }
+            //Don't question this please.
+            _Memory.correctUndefineds();
             return pcb.pid;
         }
         read(pcb, pc) {
