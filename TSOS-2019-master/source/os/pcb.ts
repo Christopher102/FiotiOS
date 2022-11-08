@@ -9,9 +9,9 @@ module TSOS{
         public yreg: number;           
         public zflag: number;           
         public pc: number;           
-        public state;
-        public baseAddr;
-        public limitAddr;
+        public state: string;
+        public baseAddr: number;
+        public limitAddr: number;
 
         constructor(priority: number, processid: number, baseAddr: number, limitAddr: number){
             this.prio = priority;

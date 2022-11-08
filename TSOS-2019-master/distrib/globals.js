@@ -41,6 +41,9 @@ var _KernelInterruptQueue = null;
 var _KernelInputQueue = null;
 var _KernelBuffers = null;
 var _ProcessManager;
+// Cpu Scheduler and Dispatcher
+var _CpuScheduler;
+var _CpuDispatcher;
 // Standard input and output
 var _StdIn = null;
 var _StdOut = null;
@@ -62,6 +65,11 @@ var globalPIDcount = 0;
 // For handling display resolution
 var _xDisplaySize;
 var _yDisplaySize;
+//Queues
+var _ReadyQueue = null;
+var _ResidentQueue = new Array;
+//Scheduling Type
+var _ScheduleType = "RR";
 var onDocumentLoad = function () {
     TSOS.Control.hostInit();
     _xDisplaySize = 1000;

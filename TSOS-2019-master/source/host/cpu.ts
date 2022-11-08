@@ -60,9 +60,7 @@ module TSOS {
 
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle');
-            if(this.isExecuting = true){
-                this.fetchdecodeexecute()
-            }
+            this.fetchdecodeexecute()
             TSOS.Control.updateCPUDisplay();
             
         }

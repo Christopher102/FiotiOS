@@ -16,7 +16,7 @@ var TSOS;
         }
         // creates a PCB and pushes it to the list.
         createPCB() {
-            var newPCB = new TSOS.PCB(0, globalPIDcount);
+            var newPCB = new TSOS.PCB(0, globalPIDcount, 0, 0);
             this.pcbList.push(newPCB);
             _StdOut.putText("PROCESS PID: " + globalPIDcount);
             globalPIDcount += 1;

@@ -44,14 +44,19 @@ var TSOS;
             this.workingPCB.state = "RUNNING";
             this.isExecuting = true;
         }
+        loadProcess(executingPCB) {
+            this.workingPCB = executingPCB;
+            this.updateCPU;
+            this.isExecuting = true;
+            TSOS.Control.updateCPUDisplay;
+        }
         cycle() {
             _Kernel.krnTrace('CPU cycle');
-            if (this.isExecuting = true) {
-                this.fetchdecodeexecute();
-            }
+            this.fetchdecodeexecute();
             TSOS.Control.updateCPUDisplay();
         }
         fetchdecodeexecute() {
+            alert(this.currentInstruction);
             switch (this.currentInstruction) {
                 case 'A9': // Load acc with constant 
                     this.PC++;

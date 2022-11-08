@@ -20,7 +20,7 @@ module TSOS {
 
         // creates a PCB and pushes it to the list.
         public createPCB(){
-            var newPCB = new PCB(0, globalPIDcount);
+            var newPCB = new PCB(0, globalPIDcount, 0, 0);
             this.pcbList.push(newPCB);
             _StdOut.putText("PROCESS PID: " + globalPIDcount);
             globalPIDcount += 1;

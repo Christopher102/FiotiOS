@@ -116,7 +116,11 @@ module TSOS {
                             "<integer> - Runs a process using a PID");
             this.commandList[this.commandList.length] = sc;
 
-
+            // Run all programs
+            sc = new ShellCommand(this.runAll,
+                            "runall",
+                            " - Runs All Programs");
+            this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -338,6 +342,9 @@ module TSOS {
                     
                     case "run":
                         _StdOut.putText("Runs using a pid. Usage: run <pid>");
+                    
+                    case "runall":
+                        _StdOut.putText("Runs all programs in resident queue");
                             
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -413,10 +420,11 @@ module TSOS {
             //Grabs text from Input
             let isValid = true;
             let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value;
-            let validChars = ['a', 'b', 'c', 'd', 'e', 'f', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ' '];
+            let validChars = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '];
             for(let i = 0; i < text.length; i ++){
-                let char = text.charAt(i)
-                if(validChars.indexOf(char)){
+                let char = text[i];
+                if(validChars.indexOf(char) == -1){
+                    alert(char);
                     isValid = false;
                     break;
                 }
@@ -424,7 +432,7 @@ module TSOS {
             // Splits into multiple values
             let textArray = text.split(" ");
             for(let i = 0; i < textArray.length; i ++){
-                if(textArray[i].length == 2){
+                if(textArray[i].length > 2){
                     isValid = false;
                     break;
                 }
@@ -433,6 +441,7 @@ module TSOS {
                 alert("ERROR: INVALID INPUT.")
             }
             if(isValid){
+                alert("LOADING INTO MEMORY");
                 let pid = _MemoryManager.loadIntoMemory(0, textArray)
                 TSOS.Control.updateMemory();
                 _StdOut.putText("Process " + pid + " Loaded");
@@ -444,6 +453,7 @@ module TSOS {
         public runAll(){
             for(let i = _ResidentQueue.length; i < 0; i--){
                 _ReadyQueue.enqueue(_ResidentQueue[i]);
+                alert(_ReadyQueue);
             }
             _CPU.isExecuting = true;
 

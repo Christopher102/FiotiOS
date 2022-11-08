@@ -19,6 +19,7 @@ module TSOS{
             for(let i = 0; i < this.segments.length; i++){
                 if(this.segments[i] == -1){
                     this.segments[i] = globalPIDcount;
+                    break;
                 }
             }
             if(globalPIDcount > 3){
@@ -28,8 +29,7 @@ module TSOS{
                 startAddr = (globalPIDcount) * 256
                 endAddr = ((globalPIDcount) * 256) + 255
             }
-
-            let pcb = new TSOS.PCB(priority, globalPIDcount, startAddr, endAddr);
+            var pcb = new PCB(priority, globalPIDcount, startAddr, endAddr);
             _ResidentQueue.push(pcb);
             // Justs loops through the value list, putting each into memory
             for(let i = startAddr; i <= endAddr; i++){
