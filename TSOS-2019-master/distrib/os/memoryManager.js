@@ -29,16 +29,17 @@ var TSOS;
                 startAddr = (globalPIDcount) * 256;
                 endAddr = ((globalPIDcount) * 256) + 255;
             }
-            alert("CREATING NEW PCB");
             var pcb = new TSOS.PCB(priority, globalPIDcount, startAddr, endAddr);
             _ResidentQueue.push(pcb);
-            alert(_ResidentQueue.length);
             // Justs loops through the value list, putting each into memory
             for (let i = startAddr; i <= endAddr; i++) {
                 _Memory.memorySet[i] = valuelist[currentVal];
                 currentVal += 1;
             }
             return pcb.pid;
+        }
+        read(pcb, pc) {
+            return this.getByte(pcb.baseAddr + pc);
         }
     }
     TSOS.memoryManager = memoryManager;

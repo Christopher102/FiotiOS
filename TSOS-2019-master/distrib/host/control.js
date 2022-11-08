@@ -110,6 +110,9 @@ var TSOS;
             for (let i = 0; i < 32; i++) {
                 for (let j = 1; j < 9; j++) {
                     memoryDisplay.rows[i].cells[j].innerHTML = _MemoryAccessor.getValueAtAddr(memoryIndex);
+                    if (_MemoryAccessor.getValueAtAddr(memoryIndex) == undefined) {
+                        memoryDisplay.rows[i].cells[j].innerHTML = '00';
+                    }
                     memoryIndex += 1;
                 }
             }

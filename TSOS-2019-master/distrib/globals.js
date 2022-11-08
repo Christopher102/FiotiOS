@@ -66,8 +66,8 @@ var globalPIDcount = 0;
 var _xDisplaySize;
 var _yDisplaySize;
 //Queues
-var _ReadyQueue = null;
-var _ResidentQueue = new Array;
+var _ReadyQueue = [];
+var _ResidentQueue = [];
 //Scheduling Type
 var _ScheduleType = "RR";
 var onDocumentLoad = function () {

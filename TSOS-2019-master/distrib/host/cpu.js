@@ -46,7 +46,7 @@ var TSOS;
         }
         loadProcess(executingPCB) {
             this.workingPCB = executingPCB;
-            this.updateCPU;
+            this.updateCPU();
             this.isExecuting = true;
             TSOS.Control.updateCPUDisplay;
         }
@@ -56,7 +56,7 @@ var TSOS;
             TSOS.Control.updateCPUDisplay();
         }
         fetchdecodeexecute() {
-            alert(this.currentInstruction);
+            this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
             switch (this.currentInstruction) {
                 case 'A9': // Load acc with constant 
                     this.PC++;

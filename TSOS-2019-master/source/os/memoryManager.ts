@@ -38,5 +38,9 @@ module TSOS{
             }
             return pcb.pid;
         }
+
+        public read(pcb: TSOS.PCB, pc: number){
+            return this.getByte(pcb.baseAddr + pc);
+        }
     }
 }

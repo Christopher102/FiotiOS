@@ -32,7 +32,7 @@ var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure th
 var _Memory: TSOS.Memory;
 var _MemoryAccessor: TSOS.memoryAccessor;
 var _MemoryManager: TSOS.memoryManager;
-var _DefaultMemorySize: 256;
+var _DefaultMemorySize: 768;
 var _OSclock: number = 0;  // Page 23.
 
 var _Mode: number = 0;     // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
@@ -85,8 +85,8 @@ var _xDisplaySize;
 var _yDisplaySize;
 
 //Queues
-var _ReadyQueue: TSOS.Queue = null;
-var _ResidentQueue = new Array;
+var _ReadyQueue: {prio: number, pid: number, acc: number, xreg: number, yreg: number, zflag: number, pc: number, state: string, baseAddr: number, limitAddr: number}[] = [];
+var _ResidentQueue: {prio: number, pid: number, acc: number, xreg: number, yreg: number, zflag: number, pc: number, state: string, baseAddr: number, limitAddr: number}[] = [];
 
 //Scheduling Type
 var _ScheduleType = "RR";

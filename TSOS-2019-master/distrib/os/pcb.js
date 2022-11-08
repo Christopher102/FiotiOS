@@ -2,7 +2,6 @@ var TSOS;
 (function (TSOS) {
     class PCB {
         constructor(priority, processid, baseAddr, limitAddr) {
-            alert("PCB CONS");
             this.prio = priority;
             this.pid = processid;
             this.acc = 0;

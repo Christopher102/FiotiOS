@@ -13,16 +13,11 @@ var TSOS;
             }
         }
         roundRobin() {
-            alert("MADE IT TO ROUND ROBIN");
-            alert(this.executingPCB);
-            alert(_ReadyQueue.getSize());
-            if (this.executingPCB == null && _ReadyQueue.getSize() > 0) {
-                this.executingPCB = _ReadyQueue.dequeue();
-                alert("Loading PCB");
+            if (this.executingPCB == null && _ReadyQueue.length > 0) {
+                this.executingPCB = _ReadyQueue.reverse().pop();
                 _CPU.loadProcess(this.executingPCB);
             }
-            else if (_ReadyQueue.getSize() > 0) {
-                alert("MADE IT TO QUANTUM CHECK");
+            else if (_ReadyQueue.length > 0) {
                 if (this.counter > this.quantum) {
                     _CpuDispatcher.contextSwitch();
                 }

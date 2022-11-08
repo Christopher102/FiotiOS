@@ -419,12 +419,11 @@ module TSOS {
         public shellLoad(args: string[]){
             //Grabs text from Input
             let isValid = true;
-            let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value;
+            let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value.trim();
             let validChars = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '];
             for(let i = 0; i < text.length; i ++){
                 let char = text[i];
                 if(validChars.indexOf(char) == -1){
-                    alert(char);
                     isValid = false;
                     break;
                 }
@@ -437,11 +436,11 @@ module TSOS {
                     break;
                 }
             }
+            alert(textArray.length);
             if(!isValid){
                 alert("ERROR: INVALID INPUT.")
             }
             if(isValid){
-                alert("LOADING INTO MEMORY");
                 let pid = _MemoryManager.loadIntoMemory(0, textArray)
                 TSOS.Control.updateMemory();
                 _StdOut.putText("Process " + pid + " Loaded");
@@ -451,10 +450,7 @@ module TSOS {
         }
 
         public runAll(){
-            for(let i = _ResidentQueue.length; i < 0; i--){
-                _ReadyQueue.enqueue(_ResidentQueue[i]);
-                alert(_ReadyQueue);
-            }
+            _ReadyQueue.push(_ResidentQueue[0]);
             _CPU.isExecuting = true;
 
         }

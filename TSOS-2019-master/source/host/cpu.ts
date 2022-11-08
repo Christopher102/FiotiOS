@@ -51,9 +51,9 @@ module TSOS {
 
         }
 
-        public loadProcess(executingPCB){
+        public loadProcess(executingPCB: TSOS.PCB){
             this.workingPCB = executingPCB;
-            this.updateCPU;
+            this.updateCPU();
             this.isExecuting = true;
             TSOS.Control.updateCPUDisplay;
         }
@@ -66,6 +66,7 @@ module TSOS {
         }
 
         public fetchdecodeexecute(){
+            this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
             switch(this.currentInstruction){
                 case 'A9': // Load acc with constant 
                     this.PC ++;
@@ -167,7 +168,6 @@ module TSOS {
                 case '00': // Break Out
                     this.isExecuting = false;
                     this.workingPCB.state = "Terminated";
-                    this.workingPCB = null;
                     this.Acc = 0;
                     this.Xreg = 0;
                     this.Yreg = 0;
