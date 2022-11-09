@@ -1,6 +1,7 @@
 var TSOS;
 (function (TSOS) {
     class memoryAccessor {
+        //setters and getters for now. Will need more complexity later
         getValueAtAddr(addr) {
             return _Memory.memorySet[addr];
         }

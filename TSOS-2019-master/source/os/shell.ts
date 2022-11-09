@@ -116,7 +116,11 @@ module TSOS {
                             "<integer> - Runs a process using a PID");
             this.commandList[this.commandList.length] = sc;
 
-
+            // Run all programs
+            sc = new ShellCommand(this.runAll,
+                            "runall",
+                            " - Runs All Programs");
+            this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -338,6 +342,9 @@ module TSOS {
                     
                     case "run":
                         _StdOut.putText("Runs using a pid. Usage: run <pid>");
+                    
+                    case "runall":
+                        _StdOut.putText("Runs all programs in resident queue");
                             
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -411,28 +418,48 @@ module TSOS {
 
         public shellLoad(args: string[]){
             //Grabs text from Input
-            let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value;
+            let isValid = true;
+            let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value.trim();
+            alert(text);
+            let validChars = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '];
+            for(let i = 0; i < text.length; i ++){
+                let char = text[i];
+                if(validChars.indexOf(char) == -1){
+                    isValid = false;
+                    break;
+                }
+            }
             // Splits into multiple values
             let textArray = text.split(" ");
-            //alert(textArray);
-            for(let i = 0; i < textArray.length - 1; i++){
-                if(textArray[i].length < 1){
-                    alert("VALUE AT LOCATION " + i + " IS INVALID IN LENGTH. PLEASE RE-EVALUATE ENTRIES");
-                    _StdOut.putText("Value at location " + i + " is invalid in length. Please change or fix the entries.");
-                } 
-                    // Calls Manager to set byte
-            _MemoryManager.loadIntoMemory(0, textArray)
-            TSOS.Control.updateMemory();
-            alert("CREATING PCB");
-            _ProcessManager.createPCB();
-            globalPIDcount += 1;
+            for(let i = 0; i < textArray.length; i ++){
+                if(textArray[i].length > 2){
+                    isValid = false;
+                    break;
+                }
+            }
+            if(!isValid){
+                alert("ERROR: INVALID INPUT.")
+            }
+            if(isValid){
+                alert(textArray);
+                let pid = _MemoryManager.loadIntoMemory(globalPIDcount, textArray);
+                globalPIDcount ++;
+                TSOS.Control.updateMemory();
+                _StdOut.putText("Process " + pid + " Loaded");
+
             }
             
+        }
+
+        public runAll(){
+            _ReadyQueue.push(_ResidentQueue[0]);
+            _CPU.isExecuting = true;
 
         }
 
         public shellRun(args: string[]){
             if(args.length > 0){
+                _CPU.isExecuting = true;
                 _CPU.runPid(parseInt(args[0]));
             } else {
                 _StdOut.putText("Usage: prompt <pid>  Please supply a PID.");

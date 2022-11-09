@@ -82,12 +82,6 @@ module TSOS {
                 // TODO: Check for caps-lock and handle as shifted if so.
                 _KernelInputQueue.enqueue(chr);
             
-            // Handles shifted special characters
-            }else if(keyCode in shiftedSpecial){
-                if(isShifted === true){
-                    _KernelInputQueue.enqueue(shiftedSpecial[keyCode]);
-                }
-            
             // Handles regular special characters
             } else if (keyCode in specialChars){
                 _KernelInputQueue.enqueue(specialChars[keyCode]);
@@ -98,9 +92,14 @@ module TSOS {
                         (keyCode == 13)                     ||   // enter
                         (keyCode == 8 )                     ||   //Backspace
                         (keyCode == 9)                           //Tab
-                        ){                      
-                chr = String.fromCharCode(keyCode);
-                _KernelInputQueue.enqueue(chr);
+                        ){               
+                if(isShifted === true){
+                    _KernelInputQueue.enqueue(shiftedSpecial[keyCode]);
+                } else {
+                    chr = String.fromCharCode(keyCode);
+                    _KernelInputQueue.enqueue(chr);
+                }
+
             } else if(keyCode == 38 && !isShifted) {
                 chr = "upArrow";
                 _KernelInputQueue.enqueue(chr);

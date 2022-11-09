@@ -98,6 +98,8 @@ module TSOS {
             _Memory = new TSOS.Memory();
             _MemoryAccessor = new memoryAccessor;
             _Memory.init();
+            // Dispatcher and Scheduler
+            _CpuScheduler = new TSOS.CpuScheduler(6);
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -130,19 +132,53 @@ module TSOS {
             for(let i = 0; i < 32; i++){
                 for(let j = 1; j < 9; j++){
                     memoryDisplay.rows[i].cells[j].innerHTML = _MemoryAccessor.getValueAtAddr(memoryIndex);
+                    // if(_MemoryAccessor.getValueAtAddr(memoryIndex) == undefined){
+                    //     memoryDisplay.rows[i].cells[j].innerHTML = '00';
+                    // }
                     memoryIndex += 1;
                 }
             }
         }
 
-        public static updateCPUDisplay(){
-            var cpuDisplay : HTMLTableElement = <HTMLTableElement> document.getElementById('cpuTable');
-            cpuDisplay.rows[1].cells[0].innerHTML = _CPU.PC.toString();
-            cpuDisplay.rows[1].cells[1].innerHTML = _CPU.currentInstruction;
-            cpuDisplay.rows[1].cells[2].innerHTML = _CPU.Acc.toString();
-            cpuDisplay.rows[1].cells[3].innerHTML = _CPU.Xreg.toString();
-            cpuDisplay.rows[1].cells[4].innerHTML = _CPU.Yreg.toString();
-            cpuDisplay.rows[1].cells[5].innerHTML = _CPU.Zflag.toString();
+        static updateCpuDisplay() {
+            let table = <HTMLTableElement>document.getElementById('cpuTable');
+            alert(table);
+            let newTbody = <HTMLTableSectionElement>document.createElement('tbody');
+            let row;
+            row = <HTMLTableRowElement>newTbody.insertRow(-1);
+            row.insertCell(-1).innerHTML = _CPU.PC.toString();
+            row.insertCell(-1).innerHTML = _CPU.currentInstruction.toString();
+            row.insertCell(-1).innerHTML = _CPU.Acc.toString(16).toLocaleUpperCase();
+            row.insertCell(-1).innerHTML = _CPU.Xreg.toString(16).toLocaleUpperCase();
+            row.insertCell(-1).innerHTML = _CPU.Yreg.toString(16).toLocaleUpperCase();
+            row.insertCell(-1).innerHTML = _CPU.Zflag.toString(16);
+            table.replaceChild(newTbody, table.firstChild);
+
+
+        }
+
+        static updatePcbDisplay() {
+            let table = <HTMLTableElement>document.getElementById("tablePcb");
+            let newTbody = <HTMLTableSectionElement>document.createElement('tbody');
+            table.style.display = 'block';
+            table.style.height = '208px';
+            // Add rows for each process to tbody
+            let row;
+            for (let i = 0; i < _ResidentQueue.length; i++) {
+                row = <HTMLTableRowElement>newTbody.insertRow(-1);
+                // PCB info
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].pid;
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].state.toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].state == 'terminated' ? '--' : _ResidentQueue[i].baseAddr;
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].prio;
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].pc;
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].acc.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].xreg.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].yreg.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = _ResidentQueue[i].zflag.toString(16);
+            }
+            table.replaceChild(newTbody, table.firstChild);
+
         }
     }
 }

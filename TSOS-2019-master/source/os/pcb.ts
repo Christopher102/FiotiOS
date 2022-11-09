@@ -9,10 +9,11 @@ module TSOS{
         public yreg: number;           
         public zflag: number;           
         public pc: number;           
-        public state;
-        public startAddr;
+        public state: string;
+        public baseAddr: number;
+        public limitAddr: number;
 
-        constructor(priority: number, processid: number){
+        constructor(priority: number, processid: number, baseAddr: number, limitAddr: number){
             this.prio = priority;
             this.pid = processid;
             this.acc = 0;
@@ -21,7 +22,8 @@ module TSOS{
             this.zflag = 0;
             this.pc = 0;
             this.state = "New";
-            this.startAddr = 0;
+            this.baseAddr = baseAddr;
+            this.limitAddr = limitAddr;
         }
     }
 }

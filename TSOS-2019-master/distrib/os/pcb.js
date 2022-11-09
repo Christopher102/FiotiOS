@@ -1,7 +1,7 @@
 var TSOS;
 (function (TSOS) {
     class PCB {
-        constructor(priority, processid) {
+        constructor(priority, processid, baseAddr, limitAddr) {
             this.prio = priority;
             this.pid = processid;
             this.acc = 0;
@@ -10,7 +10,8 @@ var TSOS;
             this.zflag = 0;
             this.pc = 0;
             this.state = "New";
-            this.startAddr = 0;
+            this.baseAddr = baseAddr;
+            this.limitAddr = limitAddr;
         }
     }
     TSOS.PCB = PCB;

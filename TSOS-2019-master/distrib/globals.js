@@ -22,6 +22,7 @@ const SYSCALL_IRQ = 2;
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
 //
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
+// Memory Instances
 var _Memory;
 var _MemoryAccessor;
 var _MemoryManager;
@@ -40,6 +41,9 @@ var _KernelInterruptQueue = null;
 var _KernelInputQueue = null;
 var _KernelBuffers = null;
 var _ProcessManager;
+// Cpu Scheduler and Dispatcher
+var _CpuScheduler;
+var _CpuDispatcher;
 // Standard input and output
 var _StdIn = null;
 var _StdOut = null;
@@ -61,6 +65,11 @@ var globalPIDcount = 0;
 // For handling display resolution
 var _xDisplaySize;
 var _yDisplaySize;
+//Queues
+var _ReadyQueue = [];
+var _ResidentQueue = [];
+//Scheduling Type
+var _ScheduleType = "RR";
 var onDocumentLoad = function () {
     TSOS.Control.hostInit();
     _xDisplaySize = 1000;

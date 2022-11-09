@@ -15,6 +15,7 @@ module TSOS {
 
     export class Cpu {
 
+
         constructor(public PC: number = 0,
                     public Acc: number = 0,
                     public Xreg: number = 0,
@@ -23,7 +24,6 @@ module TSOS {
                     public isExecuting: boolean = false,
                     public workingPCB: TSOS.PCB = null,
                     public currentInstruction: string = '') {
-
         }
 
         public init(): void {
@@ -44,23 +44,42 @@ module TSOS {
         }
 
         public runPid(pid : number): void{
+            this.updateCPU();
             this.workingPCB = _ProcessManager.getPCB(pid);
             this.workingPCB.state = "RUNNING";
             this.isExecuting = true;
-            this.updateCPU();
 
+        }
+
+        public loadProcess(executingPCB: TSOS.PCB){
+            this.workingPCB = executingPCB;
+            this.updateCPU();
+            this.isExecuting = true;
+            TSOS.Control.updateCpuDisplay();
+        }
+
+        public updatePCB(){
+            this.workingPCB.acc = this.Acc;
+            this.workingPCB.pc = this.PC;
+            this.workingPCB.xreg = this.Xreg;
+            this.workingPCB.yreg = this.Yreg;
+            this.workingPCB.zflag = this.Zflag;
         }
 
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle');
-            if(this.isExecuting = true){
-                this.fetchdecodeexecute()
+            this.fetchdecodeexecute()
+            if(this.workingPCB != null){
+                this.updatePCB()
             }
-            TSOS.Control.updateCPUDisplay();
             
         }
 
+
+
         public fetchdecodeexecute(){
+            this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
+            _Kernel.krnTrace(this.currentInstruction);
             switch(this.currentInstruction){
                 case 'A9': // Load acc with constant 
                     this.PC ++;
@@ -120,14 +139,11 @@ module TSOS {
                     this.PC++;
                     break;
                 case 'D0': // Branch N if Z true
-                    this.PC++;
                     if(this.Zflag === 0){
-                        var hex = _MemoryManager.getByte(this.PC);
-                        this.PC++;
-                        var jump = parseInt(hex, 16);
-                        this.PC += jump;
+                        let n = parseInt(_MemoryManager.read(this.workingPCB, this.PC + 1), 16);
+                        this.PC = (this.PC + n + 2) % 256;
                     } else {
-                        this.PC++;
+                        this.PC += 2;
                     }
                     break;
                 case 'EE': // Increment byte
@@ -153,23 +169,28 @@ module TSOS {
                             var code = _MemoryManager.getByte(this.PC);
                         }
                     }
-                    _KernelInterruptQueue.enqueue(new Interrupt(SYSCALL_IRQ, []));
+                    _KernelInterruptQueue.enqueue(new Interrupt(SYSCALL_IRQ, [output]));
                     this.PC++;
                     break;
                 case 'EA': // Skip
                     this.PC++;
                     break;
+
                 case '00': // Break Out
-                    this.isExecuting = false;
                     this.workingPCB.state = "Terminated";
-                    this.workingPCB = null;
                     this.Acc = 0;
                     this.Xreg = 0;
                     this.Yreg = 0;
                     this.Zflag = 0;
                     this.PC = 0;
+                    this.updatePCB();
+                    _CpuScheduler.executingPCB = this.workingPCB;
+                    this.workingPCB = null;
+                    this.isExecuting = false;
+
                 default:
                     alert('Incorrect instruction');
+                    alert(this.currentInstruction);
                     this.isExecuting = false;
                     break;
             }

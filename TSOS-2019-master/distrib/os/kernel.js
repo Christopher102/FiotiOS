@@ -66,6 +66,7 @@ var TSOS;
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
                that it has to look for interrupts and process them if it finds any.
             */
+            TSOS.Control.updatePcbDisplay();
             // Check for an interrupt, if there are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
@@ -73,7 +74,8 @@ var TSOS;
                 var interrupt = _KernelInterruptQueue.dequeue();
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             }
-            else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
+            else if (_CPU.isExecuting) {
+                _CpuScheduler.schedule(); // If there are no interrupts then run one CPU cycle if there is anything being processed.
                 _CPU.cycle();
             }
             else { // If there are no interrupts and there is nothing being executed then just be idle.
@@ -109,6 +111,10 @@ var TSOS;
                     _krnKeyboardDriver.isr(params); // Kernel mode device driver
                     _StdIn.handleInput();
                     break;
+                case SYSCALL_IRQ:
+                    _StdOut.putText(params);
+                    _StdOut.advanceLine();
+                    _OsShell.putPrompt();
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
