@@ -55,7 +55,7 @@ module TSOS {
             this.workingPCB = executingPCB;
             this.updateCPU();
             this.isExecuting = true;
-            TSOS.Control.updateCpuDisplay();
+            //TSOS.Control.updateCpuDisplay();
         }
 
         public updatePCB(){
@@ -67,7 +67,11 @@ module TSOS {
         }
 
         public cycle(): void {
-            _Kernel.krnTrace('CPU cycle');
+            if(this.isExecuting){
+                _Kernel.krnTrace(this.currentInstruction);
+            } else {
+                _Kernel.krnTrace('CPU cycle');
+            }
             this.fetchdecodeexecute()
             if(this.workingPCB != null){
                 this.updatePCB()
@@ -79,8 +83,7 @@ module TSOS {
 
         public fetchdecodeexecute(){
             this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
-            _Kernel.krnTrace(this.currentInstruction);
-            switch(this.currentInstruction){
+            switch(this.currentInstruction.toString()){
                 case 'A9': // Load acc with constant 
                     this.PC ++;
                     this.Acc = parseInt(_MemoryManager.getByte(this.PC), 16)
@@ -157,8 +160,10 @@ module TSOS {
                     break;
                 case 'FF': // System call
                     if (this.Xreg === 1){
-                        var params = { output: this.Yreg.toString() };
+                        var params = { output: this.Yreg.toString()};
+                        _StdOut.putText(params.output);
                     } else {
+                        
                         var output = '';
                         var addr = this.Yreg;
                         var code = _MemoryManager.getByte(addr);
@@ -166,8 +171,10 @@ module TSOS {
                             var letter = String.fromCharCode(parseInt(code,16));
                             output += letter;
                             addr++;
-                            var code = _MemoryManager.getByte(this.PC);
+                            var code = _MemoryManager.getByte(addr);
                         }
+                        _StdOut.putText(output);
+                        
                     }
                     _KernelInterruptQueue.enqueue(new Interrupt(SYSCALL_IRQ, [output]));
                     this.PC++;
@@ -177,6 +184,7 @@ module TSOS {
                     break;
 
                 case '00': // Break Out
+                    _StdOut.advanceLine();
                     this.workingPCB.state = "Terminated";
                     this.Acc = 0;
                     this.Xreg = 0;

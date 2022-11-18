@@ -48,7 +48,7 @@ var TSOS;
             this.workingPCB = executingPCB;
             this.updateCPU();
             this.isExecuting = true;
-            TSOS.Control.updateCpuDisplay();
+            //TSOS.Control.updateCpuDisplay();
         }
         updatePCB() {
             this.workingPCB.acc = this.Acc;
@@ -58,7 +58,12 @@ var TSOS;
             this.workingPCB.zflag = this.Zflag;
         }
         cycle() {
-            _Kernel.krnTrace('CPU cycle');
+            if (this.isExecuting) {
+                _Kernel.krnTrace(this.currentInstruction);
+            }
+            else {
+                _Kernel.krnTrace('CPU cycle');
+            }
             this.fetchdecodeexecute();
             if (this.workingPCB != null) {
                 this.updatePCB();
@@ -66,8 +71,7 @@ var TSOS;
         }
         fetchdecodeexecute() {
             this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
-            _Kernel.krnTrace(this.currentInstruction);
-            switch (this.currentInstruction) {
+            switch (this.currentInstruction.toString()) {
                 case 'A9': // Load acc with constant 
                     this.PC++;
                     this.Acc = parseInt(_MemoryManager.getByte(this.PC), 16);
@@ -146,6 +150,7 @@ var TSOS;
                 case 'FF': // System call
                     if (this.Xreg === 1) {
                         var params = { output: this.Yreg.toString() };
+                        _StdOut.putText(params.output);
                     }
                     else {
                         var output = '';
@@ -155,8 +160,9 @@ var TSOS;
                             var letter = String.fromCharCode(parseInt(code, 16));
                             output += letter;
                             addr++;
-                            var code = _MemoryManager.getByte(this.PC);
+                            var code = _MemoryManager.getByte(addr);
                         }
+                        _StdOut.putText(output);
                     }
                     _KernelInterruptQueue.enqueue(new TSOS.Interrupt(SYSCALL_IRQ, [output]));
                     this.PC++;
@@ -165,6 +171,7 @@ var TSOS;
                     this.PC++;
                     break;
                 case '00': // Break Out
+                    _StdOut.advanceLine();
                     this.workingPCB.state = "Terminated";
                     this.Acc = 0;
                     this.Xreg = 0;

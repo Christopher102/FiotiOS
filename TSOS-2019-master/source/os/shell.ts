@@ -122,6 +122,12 @@ module TSOS {
                             " - Runs All Programs");
             this.commandList[this.commandList.length] = sc;
 
+            // Run all programs
+            sc = new ShellCommand(this.quantum,
+                            "quantum",
+                            " - Sets scheduler quantum");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -420,7 +426,6 @@ module TSOS {
             //Grabs text from Input
             let isValid = true;
             let text = (<HTMLTextAreaElement>document.getElementById("taProgramInput")).value.trim();
-            alert(text);
             let validChars = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '];
             for(let i = 0; i < text.length; i ++){
                 let char = text[i];
@@ -441,7 +446,6 @@ module TSOS {
                 alert("ERROR: INVALID INPUT.")
             }
             if(isValid){
-                alert(textArray);
                 let pid = _MemoryManager.loadIntoMemory(globalPIDcount, textArray);
                 globalPIDcount ++;
                 TSOS.Control.updateMemory();
@@ -452,9 +456,17 @@ module TSOS {
         }
 
         public runAll(){
-            _ReadyQueue.push(_ResidentQueue[0]);
+            for(let i = 0; i < _ResidentQueue.length; i++){
+                _ReadyQueue.push(_ResidentQueue[i]);
+            }
             _CPU.isExecuting = true;
 
+        }
+
+        public quantum(args: string[]){
+            let stringarg = args.join(" ");
+            let intarg = parseInt(stringarg);
+            _CpuScheduler.quantum = intarg;
         }
 
         public shellRun(args: string[]){

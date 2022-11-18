@@ -115,6 +115,10 @@ var TSOS;
                     _StdOut.putText(params);
                     _StdOut.advanceLine();
                     _OsShell.putPrompt();
+                    break;
+                case CONTEXT_SWITCH:
+                    _CpuScheduler.contextSwitch();
+                    break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
