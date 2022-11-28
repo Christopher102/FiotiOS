@@ -54,6 +54,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellLoad, "load", "- load whats in the Input textbox");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - sets the status of the system.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -267,6 +269,10 @@ var TSOS;
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
             TSOS.Control.hostBtnHaltOS_click(true);
+        }
+        shellStatus(args) {
+            let statusHtml = document.getElementById("status");
+            statusHtml.innerHTML = args.join(" ");
         }
         shellLoad() {
             //Grabs text from Input

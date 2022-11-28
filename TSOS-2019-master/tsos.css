@@ -46,3 +46,10 @@ h3 {
   font-size: 8pt;
   text-align: center;
 }
+
+.topNav {
+  overflow: hidden;
+  text-align: center;
+  align-items: center;
+}
+

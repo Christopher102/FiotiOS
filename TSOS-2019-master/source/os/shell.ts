@@ -93,6 +93,11 @@ module TSOS {
                 "load",
                 "- load whats in the Input textbox");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellStatus,
+                "status",
+                "<string> - sets the status of the system.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -321,6 +326,11 @@ module TSOS {
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
             TSOS.Control.hostBtnHaltOS_click(true);
+        }
+
+        public shellStatus(args: string[]){
+            let statusHtml = document.getElementById("status");
+            statusHtml.innerHTML = args.join(" ");
         }
 
         public shellLoad(){
