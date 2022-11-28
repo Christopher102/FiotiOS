@@ -52,6 +52,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellThrow, "throw", "- Throws a very nice error BSOD");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- load whats in the Input textbox");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -265,6 +267,34 @@ var TSOS;
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
             TSOS.Control.hostBtnHaltOS_click(true);
+        }
+        shellLoad() {
+            //Grabs text from Input
+            let isValid = true;
+            let text = document.getElementById("taProgramInput").value.trim();
+            let validChars = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '];
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (validChars.indexOf(char) == -1) {
+                    isValid = false;
+                    break;
+                }
+            }
+            // Splits into multiple values
+            let textArray = text.split(" ");
+            for (let i = 0; i < textArray.length; i++) {
+                if (textArray[i].length > 2) {
+                    isValid = false;
+                    break;
+                }
+            }
+            if (!isValid) {
+                alert("ERROR: INVALID INPUT.");
+            }
+            if (isValid) {
+                alert(textArray);
+                //load to memory
+            }
         }
     }
     TSOS.Shell = Shell;

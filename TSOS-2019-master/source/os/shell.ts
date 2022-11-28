@@ -88,6 +88,11 @@ module TSOS {
                 "throw",
                 "- Throws a very nice error BSOD");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellLoad,
+                "load",
+                "- load whats in the Input textbox");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -342,6 +347,7 @@ module TSOS {
                 alert("ERROR: INVALID INPUT.")
             }
             if(isValid){
+                alert(textArray);
                 //load to memory
             }
         }
