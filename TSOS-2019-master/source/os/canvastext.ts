@@ -157,7 +157,7 @@ module TSOS {
             ctx.save();
             ctx.lineCap = "round";
             ctx.lineWidth = 2.0 * mag;
-            ctx.strokeStyle = "#33FF33";
+            ctx.strokeStyle = "black";
 
             for (var i = 0; i < len; i++) {
                 var c = CanvasTextFunctions.letter(str.charAt(i));
@@ -188,7 +188,6 @@ module TSOS {
         }
 
         public static enable(ctx) {
-            
             ctx.drawText = function(font,size,x,y,text) { return CanvasTextFunctions.draw( ctx, font,size,x,y,text); };
             ctx.measureText = function(font,size,text) { return CanvasTextFunctions.measure( font,size,text); };
             ctx.fontAscent = function(font,size) { return CanvasTextFunctions.ascent(font,size); };
@@ -201,7 +200,6 @@ module TSOS {
                 var w = CanvasTextFunctions.measure(font,size,text);
                 return CanvasTextFunctions.draw( ctx, font,size,x-w/2,y,text);
             };
-            
         }
     }
 }

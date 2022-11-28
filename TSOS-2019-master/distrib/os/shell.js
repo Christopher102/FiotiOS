@@ -45,32 +45,12 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
-            // date
-            sc = new TSOS.ShellCommand(this.shellDate, "date", "- Displays the date and time");
+            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "Mapping function to find out where you are!");
             this.commandList[this.commandList.length] = sc;
-            // WhereAmI
-            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "- Tells you where you are");
+            // whereami
+            sc = new TSOS.ShellCommand(this.shellSuprise, "suprise", "A special suprise!");
             this.commandList[this.commandList.length] = sc;
-            // Status
-            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Changes current status");
-            this.commandList[this.commandList.length] = sc;
-            // Display Button
-            sc = new TSOS.ShellCommand(this.shellSuprise, "suprise", "- Suprise!");
-            this.commandList[this.commandList.length] = sc;
-            // Throw OS error
-            sc = new TSOS.ShellCommand(this.shellThrow, "throw", " - Throws an OS error");
-            this.commandList[this.commandList.length] = sc;
-            // Throw OS error
-            sc = new TSOS.ShellCommand(this.shellLoad, "load", " - Loads memory");
-            this.commandList[this.commandList.length] = sc;
-            // Run program via PID
-            sc = new TSOS.ShellCommand(this.shellRun, "run", "<integer> - Runs a process using a PID");
-            this.commandList[this.commandList.length] = sc;
-            // Run all programs
-            sc = new TSOS.ShellCommand(this.runAll, "runall", " - Runs All Programs");
-            this.commandList[this.commandList.length] = sc;
-            // Run all programs
-            sc = new TSOS.ShellCommand(this.quantum, "quantum", " - Sets scheduler quantum");
+            sc = new TSOS.ShellCommand(this.shellThrow, "throw", "- Throws a very nice error BSOD");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -87,7 +67,7 @@ var TSOS;
             //
             var userCommand = this.parseInput(buffer);
             // ... and assign the command and args to local variables.
-            var cmd = userCommand.command.toLowerCase();
+            var cmd = userCommand.command;
             var args = userCommand.args;
             //
             // Determine the command and execute it.
@@ -141,7 +121,7 @@ var TSOS;
             // 1. Remove leading and trailing spaces.
             buffer = TSOS.Utils.trim(buffer);
             // 2. Lower-case it.
-            //buffer = buffer.toLowerCase();
+            buffer = buffer.toLowerCase();
             // 3. Separate on spaces so we can determine the command and command-line args, if any.
             var tempList = buffer.split(" ");
             // 4. Take the first (zeroth) element and use that as the command.
@@ -203,15 +183,6 @@ var TSOS;
                 _StdOut.putText("  " + _OsShell.commandList[i].command + " " + _OsShell.commandList[i].description);
             }
         }
-        shellDate(args) {
-            // Uses Date function builtin to Typescript. I'm deciding whether to use this for updating the home bar as well
-            var currentDate = new Date();
-            _StdOut.putText("Currently the date is " + currentDate.toLocaleDateString());
-            _StdOut.putText("Current time is " + currentDate.toLocaleTimeString());
-        }
-        shellWhereAmI(args) {
-            _StdOut.putText("New Vegas");
-        }
         shellShutdown(args) {
             _StdOut.putText("Shutting down...");
             // Call Kernel shutdown routine.
@@ -229,40 +200,7 @@ var TSOS;
                     case "help":
                         _StdOut.putText("Help displays a list of (hopefully) valid commands.");
                         break;
-                    case "ver":
-                        _StdOut.putText("Displays the current version of the OS");
-                    case "shutdown":
-                        _StdOut.putText("Shuts down the OS without closing the underlying hardware");
-                    case "cls":
-                        _StdOut.putText("Clears the screen and resets your current cursor position");
-                    case "man":
-                        _StdOut.putText("Displays the manual for a command when combined with the other command, i.e. man ver");
-                        _StdOut.advanceLine();
-                        _StdOut.putText("Although, if you didn't know this I'd imagine you wouldn't be able to even find this message anyway");
-                    case "trace":
-                        _StdOut.putText("Turns on or off OS trace, which will display actions as the OS takes them");
-                    case "rot13":
-                        _StdOut.putText("Does rot13 obfuscation on a string, used as follows: rot13 <string>");
-                    case "prompt":
-                        _StdOut.putText("Allows you to modify the initial propmt for the OS, used as follows: prompt <string>");
-                    case "date":
-                        _StdOut.putText("Displays the current date and time");
-                    case "whereami":
-                        _StdOut.putText("Tells you where you are");
-                    case "status":
-                        _StdOut.putText("Allows you to change the current status, used as follows: status <string>");
-                    case "suprise":
-                        _StdOut.putText("It's a suprise! Just type it!");
-                    case "buffer":
-                        _StdOut.putText("Displays the buffer in an alert message");
-                    case "throw":
-                        _StdOut.putText("Throws an OS error");
-                    case "load":
-                        _StdOut.putText("Loads from memory");
-                    case "run":
-                        _StdOut.putText("Runs using a pid. Usage: run <pid>");
-                    case "runall":
-                        _StdOut.putText("Runs all programs in resident queue");
+                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -313,75 +251,20 @@ var TSOS;
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
         }
-        shellStatus(args) {
-            // Sets the status of the console.
-            document.getElementById("status").innerHTML = args.join(" ");
+        shellDate() {
+            let now = new Date();
+            _StdOut.putText("Currently it is " + now.getDate + " at " + now.getTime);
         }
-        shellSuprise(args) {
-            // I made this purposefully difficult to read by using hidden 6 times cause I thought that was funny since this is a gag.
-            let element = document.getElementById("suprise");
-            let hidden = element.getAttribute("hidden");
-            if (hidden) {
-                element.removeAttribute("hidden");
-            }
-            else {
-                element.setAttribute("hidden", "hidden");
-            }
+        shellWhereAmI() {
+            _StdOut.putText("Dude. Do I look like a map? Figure it out.");
+        }
+        shellSuprise() {
+            /// Make it so button appears, leading to rick roll
         }
         shellThrow(args) {
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
             TSOS.Control.hostBtnHaltOS_click(true);
-        }
-        shellLoad(args) {
-            //Grabs text from Input
-            let isValid = true;
-            let text = document.getElementById("taProgramInput").value.trim();
-            let validChars = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '];
-            for (let i = 0; i < text.length; i++) {
-                let char = text[i];
-                if (validChars.indexOf(char) == -1) {
-                    isValid = false;
-                    break;
-                }
-            }
-            // Splits into multiple values
-            let textArray = text.split(" ");
-            for (let i = 0; i < textArray.length; i++) {
-                if (textArray[i].length > 2) {
-                    isValid = false;
-                    break;
-                }
-            }
-            if (!isValid) {
-                alert("ERROR: INVALID INPUT.");
-            }
-            if (isValid) {
-                let pid = _MemoryManager.loadIntoMemory(globalPIDcount, textArray);
-                globalPIDcount++;
-                TSOS.Control.updateMemory();
-                _StdOut.putText("Process " + pid + " Loaded");
-            }
-        }
-        runAll() {
-            for (let i = 0; i < _ResidentQueue.length; i++) {
-                _ReadyQueue.push(_ResidentQueue[i]);
-            }
-            _CPU.isExecuting = true;
-        }
-        quantum(args) {
-            let stringarg = args.join(" ");
-            let intarg = parseInt(stringarg);
-            _CpuScheduler.quantum = intarg;
-        }
-        shellRun(args) {
-            if (args.length > 0) {
-                _CPU.isExecuting = true;
-                _CPU.runPid(parseInt(args[0]));
-            }
-            else {
-                _StdOut.putText("Usage: prompt <pid>  Please supply a PID.");
-            }
         }
     }
     TSOS.Shell = Shell;

@@ -7,19 +7,15 @@
 var TSOS;
 (function (TSOS) {
     class Console {
-        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "", commandBuffer = [], commandIndex = 0, upBuffer = [], downBuffer = [], tabBuffer = [], tabFlag = false, tabPointer = 0) {
+        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, buffer = "", downBuffer = [""], upBuffer = [], tabBuffer = []) {
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
-            this.commandBuffer = commandBuffer;
-            this.commandIndex = commandIndex;
-            this.upBuffer = upBuffer;
             this.downBuffer = downBuffer;
+            this.upBuffer = upBuffer;
             this.tabBuffer = tabBuffer;
-            this.tabFlag = tabFlag;
-            this.tabPointer = tabPointer;
         }
         init() {
             this.clearScreen();
@@ -27,7 +23,6 @@ var TSOS;
         }
         clearScreen() {
             _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-            this.buffer = "";
         }
         clearLine() {
             // Gets the character width
@@ -55,9 +50,6 @@ var TSOS;
                     // ... and reset our buffer.
                     this.upBuffer.push(this.buffer);
                     this.buffer = "";
-                    this.tabBuffer = [];
-                    this.tabFlag = false;
-                    this.tabPointer = 0;
                 }
                 else if (chr === String.fromCharCode(8)) {
                     // Backspace function call
@@ -71,29 +63,6 @@ var TSOS;
                     this.putText('\n');
                     _OsShell.putPrompt();
                     this.putText(this.buffer);
-                    // Below is an attempt to make it auto-fill and tabbale through a list. I may return in the future to finish this.
-                    /*if(this.tabFlag === false){
-                        this.tabBuffer = this.tab();
-                        this.clearLine();
-                        this.putText(this.tabBuffer[this.tabPointer]);
-                        this.buffer = this.tabBuffer[this.tabPointer];
-                        this.tabFlag = true;
-                        this.tabPointer++;
-                        if(this.tabPointer > this.tabBuffer.length - 1){
-                            this.tabPointer = 0;
-                        }
-                    } else {
-                        alert("TRIGGER");
-                        this.clearLine();
-                        this.putText(this.tabBuffer[this.tabPointer]);
-                        this.buffer = this.tabBuffer[this.tabPointer];
-                        this.tabPointer++;
-                        if(this.tabPointer > this.tabBuffer.length - 1){
-                            this.tabPointer = 0;
-                        }
-
-
-                    }*/
                 }
                 else if (chr === 'upArrow') {
                     this.up();
@@ -119,16 +88,25 @@ var TSOS;
                 do the same thing, thereby encouraging confusion and decreasing readability, I
                 decided to write one function and use the term "text" to connote string or char.
             */
-            // Checks for a newline character
-            if (text == "\n") {
-                this.advanceLine();
-            }
-            else if (text !== "") {
+            if (text !== "") {
                 // Draw the text at the current X and Y coordinates.
                 _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
                 // Move the current X position.
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
-                this.currentXPosition = this.currentXPosition + offset;
+                if (this.currentXPosition + offset > _XDisplaySize) {
+                    let neededspace = (this.currentXPosition + offset) - _XDisplaySize;
+                    let numberofcharacters = Math.floor(neededspace / _DefaultFontSize);
+                    let tempbuffer = [];
+                    for (let i = 0; i < numberofcharacters; i++) {
+                        tempbuffer.push(this.buffer.charAt(this.buffer.length - 1));
+                    }
+                    this.advanceLine();
+                    let tempstring = tempbuffer.join("");
+                    this.putText(tempstring);
+                }
+                else {
+                    this.currentXPosition = this.currentXPosition + offset;
+                }
             }
         }
         advanceLine() {
@@ -141,7 +119,7 @@ var TSOS;
             this.currentYPosition += _DefaultFontSize +
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
-            if (this.currentYPosition > _yDisplaySize) {
+            if (this.currentYPosition > _YDisplaySize) {
                 // Okay so after 10+ hours of working on this, I have this
                 let canvasContext = _Canvas.getContext("2d");
                 //Grabs the entire canvas space. Honestly, I could do the math to exactly grab the piece we need, but this is easier to read.
@@ -152,7 +130,7 @@ var TSOS;
                 canvasContext.putImageData(snapshot, 0, -this.currentFontSize * 2);
                 // Resets the position of the cursor at the bottom. The + 1 may become an issue down the line, but for now? I call this a victory.
                 this.currentXPosition = 0;
-                this.currentYPosition = _yDisplaySize - this.currentFontSize + 1;
+                this.currentYPosition = _YDisplaySize - this.currentFontSize;
             }
         }
         backspace() {
@@ -165,24 +143,20 @@ var TSOS;
             // Drops char from buffer
             this.buffer = this.buffer.substring(0, this.buffer.length - 1);
         }
-        tab() {
-            let possibleCommands = [];
-            let tempBuffer = this.buffer;
-            if (this.buffer.length > 0) {
-                for (let i = 0; i < _OsShell.commandList.length; i++) {
-                    if (_OsShell.commandList[i].command.indexOf(tempBuffer) === 0) {
-                        possibleCommands.push(_OsShell.commandList[i].command);
-                    }
-                }
-                return possibleCommands;
-            }
-        }
         up() {
             if (this.upBuffer.length > 0) {
-                let bufferCmd = this.upBuffer.pop();
+                let cmd = this.upBuffer.pop();
+                if (this.buffer != "" && this.downBuffer.length > 0) {
+                    this.downBuffer.push(this.buffer);
+                }
                 this.clearLine();
-                this.buffer = bufferCmd;
-                this.putText(bufferCmd);
+                this.buffer = cmd;
+                this.putText(cmd);
+            }
+            else {
+                this.clearLine();
+                this.buffer = "";
+                this.putText("");
             }
         }
         down() {
@@ -197,6 +171,18 @@ var TSOS;
                 this.clearLine();
                 this.buffer = "";
                 this.putText("");
+            }
+        }
+        tab() {
+            let possibleCommands = [];
+            let tempBuffer = this.buffer;
+            if (this.buffer.length > 0) {
+                for (let i = 0; i < _OsShell.commandList.length; i++) {
+                    if (_OsShell.commandList[i].command.indexOf(tempBuffer) === 0) {
+                        possibleCommands.push(_OsShell.commandList[i].command);
+                    }
+                }
+                return possibleCommands;
             }
         }
     }

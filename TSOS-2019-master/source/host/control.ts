@@ -80,12 +80,6 @@ module TSOS {
             // .. enable the Halt and Reset buttons ...
             (<HTMLButtonElement>document.getElementById("btnHaltOS")).disabled = false;
             (<HTMLButtonElement>document.getElementById("btnReset")).disabled = false;
-            //Display Buttons and hide other buttons
-            (<HTMLButtonElement>document.getElementById("btnHaltOS")).removeAttribute("hidden");
-            (<HTMLButtonElement>document.getElementById("btnReset")).removeAttribute("hidden");
-            (<HTMLButtonElement>document.getElementById("startButton")).hidden = true;
-            (document.getElementById("mainRow")).removeAttribute("hidden");
-            (document.getElementById("secondaryRow")).removeAttribute("hidden");
 
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();
@@ -94,12 +88,6 @@ module TSOS {
             _CPU = new Cpu();  // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init();       //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
 
-            // memory Initalizing
-            _Memory = new TSOS.Memory();
-            _MemoryAccessor = new memoryAccessor;
-            _Memory.init();
-            // Dispatcher and Scheduler
-            _CpuScheduler = new TSOS.CpuScheduler(6);
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -123,57 +111,6 @@ module TSOS {
             // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
-        }
-
-        public static updateMemory(){
-            var memoryDisplay: HTMLTableElement = <HTMLTableElement> document.getElementById('memoryTable');
-            var memoryIndex = 0;
-            for(let i = 0; i < 32; i++){
-                for(let j = 1; j < 9; j++){
-                    memoryDisplay.rows[i].cells[j].innerHTML = _MemoryAccessor.getValueAtAddr(memoryIndex);
-                    memoryIndex += 1;
-                }
-            }
-        }
-
-        static updateCpuDisplay() {
-            let table = <HTMLTableElement>document.getElementById('cpuTable');
-            let newTbody = <HTMLTableSectionElement>document.createElement('tbody');
-            let row;
-            row = <HTMLTableRowElement>newTbody.insertRow(-1);
-            row.insertCell(-1).innerHTML = _CPU.PC.toString();
-            row.insertCell(-1).innerHTML = _CPU.currentInstruction.toString();
-            row.insertCell(-1).innerHTML = _CPU.Acc.toString(16).toLocaleUpperCase();
-            row.insertCell(-1).innerHTML = _CPU.Xreg.toString(16).toLocaleUpperCase();
-            row.insertCell(-1).innerHTML = _CPU.Yreg.toString(16).toLocaleUpperCase();
-            row.insertCell(-1).innerHTML = _CPU.Zflag.toString(16);
-            table.replaceChild(newTbody, table.firstChild);
-
-
-        }
-
-        static updatePcbDisplay() {
-            let table = <HTMLTableElement>document.getElementById("tablePcb");
-            let newTbody = <HTMLTableSectionElement>document.createElement('tbody');
-            table.style.display = 'block';
-            table.style.height = '208px';
-            // Add rows for each process to tbody
-            let row;
-            for (let i = 0; i < _ResidentQueue.length; i++) {
-                row = <HTMLTableRowElement>newTbody.insertRow(-1);
-                // PCB info
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].pid;
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].state.toLocaleUpperCase();
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].state == 'terminated' ? '--' : _ResidentQueue[i].baseAddr;
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].prio;
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].pc;
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].acc.toString(16).toLocaleUpperCase();
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].xreg.toString(16).toLocaleUpperCase();
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].yreg.toString(16).toLocaleUpperCase();
-                row.insertCell(-1).innerHTML = _ResidentQueue[i].zflag.toString(16);
-            }
-            table.replaceChild(newTbody, table.firstChild);
-
         }
     }
 }

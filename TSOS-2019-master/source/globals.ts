@@ -11,16 +11,15 @@
 //
 // Global CONSTANTS (TypeScript 1.5 introduced const. Very cool.)
 //
-const APP_NAME: string    = "S.P.Y.D.R";   // No, I'm not smart enough to actually fill out this acronym
-const APP_VERSION: string = '0.1 "Reach"';   // What did you expect?
+const APP_NAME: string    = "TSOS";   // 'cause Bob and I were at a loss for a better name.
+const APP_VERSION: string = "0.07";   // What did you expect?
 
 const CPU_CLOCK_INTERVAL: number = 100;   // This is in ms (milliseconds) so 1000 = 1 second.
 
 const TIMER_IRQ: number = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt priority).
                               // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 const KEYBOARD_IRQ: number = 1;
-const SYSCALL_IRQ: number = 2;
-const CONTEXT_SWITCH: number = 3;
+
 
 //
 // Global Variables
@@ -28,11 +27,6 @@ const CONTEXT_SWITCH: number = 3;
 //
 var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 
-// Memory Instances
-var _Memory: TSOS.Memory;
-var _MemoryAccessor: TSOS.memoryAccessor;
-var _MemoryManager: TSOS.memoryManager;
-var _DefaultMemorySize: 768;
 var _OSclock: number = 0;  // Page 23.
 
 var _Mode: number = 0;     // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
@@ -50,11 +44,7 @@ var _Kernel: TSOS.Kernel;
 var _KernelInterruptQueue: TSOS.Queue = null;
 var _KernelInputQueue: TSOS.Queue = null; 
 var _KernelBuffers = null; 
-var _ProcessManager: TSOS.processManager;
 
-// Cpu Scheduler and Dispatcher
-var _CpuScheduler: TSOS.CpuScheduler;
-var _CpuDispatcher: TSOS.CpuDispatcher;
 // Standard input and output
 var _StdIn:  TSOS.Console = null; 
 var _StdOut: TSOS.Console = null;
@@ -66,9 +56,6 @@ var _OsShell: TSOS.Shell;
 // At least this OS is not trying to kill you. (Yet.)
 var _SarcasticMode: boolean = false;
 
-// Status global
-var _Status: String;
-
 // Global Device Driver Objects - page 12
 var _krnKeyboardDriver: TSOS.DeviceDriverKeyboard  = null;
 
@@ -78,20 +65,14 @@ var _hardwareClockID: number = null;
 var Glados: any = null;  // This is the function Glados() in glados-ip*.js http://alanclasses.github.io/TSOS/test/ .
 var _GLaDOS: any = null; // If the above is linked in, this is the instantiated instance of Glados.
 
-// Possible global PID number count
-var globalPIDcount: number = 0;
-// For handling display resolution
-var _xDisplaySize;
-var _yDisplaySize;
 
-//Queues
-var _ReadyQueue: {prio: number, pid: number, acc: number, xreg: number, yreg: number, zflag: number, pc: number, state: string, baseAddr: number, limitAddr: number}[] = [];
-var _ResidentQueue: {prio: number, pid: number, acc: number, xreg: number, yreg: number, zflag: number, pc: number, state: string, baseAddr: number, limitAddr: number}[] = [];
+// Screen Size Variables
+var canvas = document.getElementById("display");
+var _YDisplaySize: number = 500;
+var _XDisplaySize: number = 500;
 
-//Scheduling Type
-var _ScheduleType = "RR";
+//Status
+var _Status = "";
 var onDocumentLoad = function() {
 	TSOS.Control.hostInit();
-   _xDisplaySize = 1000;
-   _yDisplaySize = 500;
 };

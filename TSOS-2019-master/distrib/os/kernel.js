@@ -24,10 +24,6 @@ var TSOS;
             // Initialize standard input and output to the _Console.
             _StdIn = _Console;
             _StdOut = _Console;
-            //Managers
-            _ProcessManager = new TSOS.processManager();
-            _ProcessManager.init();
-            _MemoryManager = new TSOS.memoryManager();
             // Load the Keyboard Device Driver
             this.krnTrace("Loading the keyboard device driver.");
             _krnKeyboardDriver = new TSOS.DeviceDriverKeyboard(); // Construct it.
@@ -66,7 +62,6 @@ var TSOS;
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
                that it has to look for interrupts and process them if it finds any.
             */
-            TSOS.Control.updatePcbDisplay();
             // Check for an interrupt, if there are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
@@ -74,8 +69,7 @@ var TSOS;
                 var interrupt = _KernelInterruptQueue.dequeue();
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             }
-            else if (_CPU.isExecuting) {
-                _CpuScheduler.schedule(); // If there are no interrupts then run one CPU cycle if there is anything being processed.
+            else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
                 _CPU.cycle();
             }
             else { // If there are no interrupts and there is nothing being executed then just be idle.
@@ -110,14 +104,6 @@ var TSOS;
                 case KEYBOARD_IRQ:
                     _krnKeyboardDriver.isr(params); // Kernel mode device driver
                     _StdIn.handleInput();
-                    break;
-                case SYSCALL_IRQ:
-                    _StdOut.putText(params);
-                    _StdOut.advanceLine();
-                    _OsShell.putPrompt();
-                    break;
-                case CONTEXT_SWITCH:
-                    _CpuScheduler.contextSwitch();
                     break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
@@ -166,11 +152,15 @@ var TSOS;
             // TODO: Display error on console, perhaps in some sort of colored screen. (Maybe blue?)
             _Console.clearScreen();
             _DrawingContext.fillStyle = "blue";
-            _DrawingContext.fillRect(0, 0, _xDisplaySize, _yDisplaySize);
+            _DrawingContext.fillRect(0, 0, _XDisplaySize, _YDisplaySize);
             _Console.putText("OPERATING SYSTEM ERROR DETECTED");
             _Console.advanceLine();
             _Console.putText("SHUTTING DOWN......");
-            _Status = "ERROR";
+            _Console.advanceLine();
+            _Console.putText("REASON FOR SHUTDOWN: ");
+            _Console.advanceLine();
+            _Console.putText(msg);
+            _Status = "ERROR: " + msg;
             this.krnShutdown();
         }
     }

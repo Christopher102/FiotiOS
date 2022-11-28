@@ -1,8 +1,7 @@
 /* TSOS.css */
-* {background-color: black; color: #33FF33;}
 
 body {
-  /* background: #909193 url(distrib/images/linen.png) repeat; */
+  background: #909193 url(distrib/images/linen.png) repeat;
   font-family: Helvetica, Verdana, Arial, sans-serif;
   font-size: 12pt;
   font-weight: normal;
@@ -10,7 +9,7 @@ body {
 }
 
 h1 {
-  color: #33FF33;
+  color: black;
   font-size: 24pt;
   font-weight: normal;
   font-style: normal;
@@ -18,12 +17,10 @@ h1 {
 }
 
 h2 {
-  color: #33FF33;
+  color: black;
   font-size: 20pt;
   font-weight: normal;
   font-style: normal;
-  text-align: center;
-
 }
 
 h3 {
@@ -34,10 +31,9 @@ h3 {
 }
 
 #display {
-  background-color: black;
+  background-color:#DFDBC3;
+  border: 2px solid red;
   cursor: default;
-  color: #33FF33;
-  border: 5px #33FF33;
 }
 
 .normal_button {
@@ -49,91 +45,4 @@ h3 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 8pt;
   text-align: center;
-}
-
-#Title {
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  text-align: center;
-  font-size: 30px;
-}
-
-
-#outputLog {
-  height: 35px;
-  background-color: black;
-  color: #33FF33;
-  border: 5px #33FF33;
-
-}
-
-.textCard {
-  height: 35px;
-  background-color: black;
-  color: #33FF33;
-  border: 5px #33FF33;
-}
-
-#inputTitle {
-  height: 35px;
-  background-color: black;
-
-}
-
-.card {
-  background-color: black;
-  color: #33FF33;
-}
-
-#taHostLog {
-  border: 5px #33FF33;
-  color: #33FF33;
-
-}
-
-#taProgramInput {
-  border: 5px #33FF33;
-  color: #33FF33;
-}
-
-#Topnavbar {
-  background-color: black;
-  color: #33FF33;
-}
-
-
-
-#blankline {
-  background-color: black;
-  color: black;
-}
-
-
-#status {
-  align-self: center;
-  font-size: 25px;
-  padding-left: 120px;
-  background-color: black;
-}
-
-#btnStartOS{
-  background-color: black;
-  border: 5px;
-}
-
-#startButton{
-  position: absolute;
-  top: 50%;
-  left: 45%;
-}
-
-#memTable{
-  height: 400px;
-  width:447px;
-  overflow-y: scroll;
-}
-
-@keyframes slideIn {
-  from{left: -1000px;}
-  to{left: 10px}
-  
 }
