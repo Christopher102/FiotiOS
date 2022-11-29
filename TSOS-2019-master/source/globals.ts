@@ -71,6 +71,11 @@ var canvas = document.getElementById("display");
 var _YDisplaySize: number = 500;
 var _XDisplaySize: number = 500;
 
+//Memory
+var _DefaultMemorySize: number = 256;
+
+var _Memory: TSOS.Memory;
+
 //Status
 var _Status = "";
 var onDocumentLoad = function() {

@@ -52,6 +52,9 @@ var _GLaDOS = null; // If the above is linked in, this is the instantiated insta
 var canvas = document.getElementById("display");
 var _YDisplaySize = 500;
 var _XDisplaySize = 500;
+//Memory
+var _DefaultMemorySize = 256;
+var _Memory;
 //Status
 var _Status = "";
 var onDocumentLoad = function () {
