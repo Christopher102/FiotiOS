@@ -73,6 +73,8 @@ var TSOS;
             _Memory = new TSOS.Memory();
             _MemoryAccessor = new TSOS.MemoryAccessor();
             _MemoryManager = new TSOS.MemoryManager();
+            //Initialize PCB Controller
+            _PCBController = new TSOS.ProcessController();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -107,6 +109,29 @@ var TSOS;
                     memoryIndex += 1;
                 }
             }
+        }
+        static updatePcbDisplay() {
+            let table = document.getElementById("tablePcb");
+            let newTbody = document.createElement('tbody');
+            table.style.display = 'block';
+            table.style.height = '208px';
+            // Add rows for each process to tbody
+            let row;
+            for (let i = 0; i < _PCBController.ResidentQueue.getSize(); i++) {
+                let tempPCB = _PCBController.ResidentQueue.dequeue();
+                row = newTbody.insertRow(-1);
+                // PCB info
+                row.insertCell(-1).innerHTML = tempPCB.pid.toString();
+                row.insertCell(-1).innerHTML = tempPCB.state.toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = tempPCB.startMem.toString(16);
+                row.insertCell(-1).innerHTML = tempPCB.priority.toString(16);
+                row.insertCell(-1).innerHTML = tempPCB.pc.toString(16);
+                row.insertCell(-1).innerHTML = tempPCB.acc.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = tempPCB.xreg.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = tempPCB.yreg.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = tempPCB.zflag.toString(16);
+            }
+            table.replaceChild(newTbody, table.firstChild);
         }
     }
     TSOS.Control = Control;

@@ -357,8 +357,15 @@ module TSOS {
                 alert("ERROR: INVALID INPUT.")
             }
             if(isValid){
+                // Loads into memory
                 _MemoryManager.loadSegment(textArray);
+                // Creates PCB
+                _PCBController.newPCB(globalPIDCount);
+                //Display PCB
+                TSOS.Control.updatePcbDisplay();
+                // Increases pid counter
                 globalPIDCount += 1;
+                //Updates visual memory
                 TSOS.Control.updateMemory();
             }
         }

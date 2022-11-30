@@ -92,6 +92,10 @@ module TSOS {
             _Memory = new Memory();
             _MemoryAccessor = new MemoryAccessor();
             _MemoryManager = new MemoryManager();
+
+            //Initialize PCB Controller
+
+            _PCBController = new ProcessController();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -129,6 +133,31 @@ module TSOS {
                     memoryIndex += 1;
                 }
             }
+        }
+
+        static updatePcbDisplay() {
+            let table = <HTMLTableElement>document.getElementById("tablePcb");
+            let newTbody = <HTMLTableSectionElement>document.createElement('tbody');
+            table.style.display = 'block';
+            table.style.height = '208px';
+            // Add rows for each process to tbody
+            let row: HTMLTableRowElement;
+            for (let i = 0; i < _PCBController.ResidentQueue.getSize(); i++) {
+                let tempPCB: TSOS.PCB = _PCBController.ResidentQueue.dequeue();
+                row = <HTMLTableRowElement>newTbody.insertRow(-1);
+                // PCB info
+                row.insertCell(-1).innerHTML = tempPCB.pid.toString();
+                row.insertCell(-1).innerHTML = tempPCB.state.toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = tempPCB.startMem.toString(16);
+                row.insertCell(-1).innerHTML = tempPCB.priority.toString(16);
+                row.insertCell(-1).innerHTML = tempPCB.pc.toString(16);
+                row.insertCell(-1).innerHTML = tempPCB.acc.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = tempPCB.xreg.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = tempPCB.yreg.toString(16).toLocaleUpperCase();
+                row.insertCell(-1).innerHTML = tempPCB.zflag.toString(16)
+            }
+            table.replaceChild(newTbody, table.firstChild);
+
         }
     }
 }

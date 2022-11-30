@@ -79,6 +79,10 @@ var _Memory: TSOS.Memory;
 
 //PID
 var globalPIDCount = 0;
+
+//PCB
+var _PCBController: TSOS.ProcessController;
+
 //Status
 var _Status = "";
 var onDocumentLoad = function() {

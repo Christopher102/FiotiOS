@@ -59,6 +59,8 @@ var _MemoryManager;
 var _Memory;
 //PID
 var globalPIDCount = 0;
+//PCB
+var _PCBController;
 //Status
 var _Status = "";
 var onDocumentLoad = function () {

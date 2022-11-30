@@ -3,6 +3,8 @@ var TSOS;
     class PCB {
         constructor(pid, startMem, endMem) {
             this.pid = pid;
+            this.priority = 0;
+            this.state = "resident";
             this.startMem = startMem;
             this.endMem = endMem;
             this.xreg = 0;
@@ -10,7 +12,7 @@ var TSOS;
             this.pc = startMem;
             this.ir = "";
             this.acc = 0;
-            this.zflag = false;
+            this.zflag = 0;
         }
     }
     TSOS.PCB = PCB;
