@@ -54,7 +54,11 @@ var _YDisplaySize = 500;
 var _XDisplaySize = 500;
 //Memory
 var _DefaultMemorySize = 256;
+var _MemoryAccessor;
+var _MemoryManager;
 var _Memory;
+//PID
+var globalPIDCount = 0;
 //Status
 var _Status = "";
 var onDocumentLoad = function () {

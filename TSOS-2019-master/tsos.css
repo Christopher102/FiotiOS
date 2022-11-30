@@ -1,7 +1,7 @@
 /* TSOS.css */
 
 body {
-  background: #909193 url(distrib/images/linen.png) repeat;
+  background: black;
   font-family: Helvetica, Verdana, Arial, sans-serif;
   font-size: 12pt;
   font-weight: normal;
@@ -53,3 +53,30 @@ h3 {
   align-items: center;
 }
 
+#wrapper {
+  width: 1450px;
+  height: 1450px;
+  margin: 0px auto;
+  color:white;
+  background-color: black;
+}
+
+#date-time {
+  color:white
+}
+
+#status {
+  color: white
+}
+
+#navrow {
+  align-items: center;
+  background-color: black;
+  color:white;
+}
+
+
+.card {
+  color:white;
+  background-color: black;
+}

@@ -90,7 +90,8 @@ module TSOS {
 
             //Initialize Memory
             _Memory = new Memory();
-
+            _MemoryAccessor = new MemoryAccessor();
+            _MemoryManager = new MemoryManager();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -114,6 +115,20 @@ module TSOS {
             // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
+        }
+
+        public static updateMemory(){
+            var memoryDisplay: HTMLTableElement = <HTMLTableElement> document.getElementById('memoryTable');
+            var memoryIndex = 0;
+            for(let i = 0; i < 32; i++){
+                for(let j = 1; j < 9; j++){
+                    memoryDisplay.rows[i].cells[j].innerHTML = _MemoryAccessor.getMemory(memoryIndex);
+                    // if(_MemoryAccessor.getValueAtAddr(memoryIndex) == undefined){
+                    //     memoryDisplay.rows[i].cells[j].innerHTML = '00';
+                    // }
+                    memoryIndex += 1;
+                }
+            }
         }
     }
 }

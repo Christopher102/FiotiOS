@@ -73,9 +73,12 @@ var _XDisplaySize: number = 500;
 
 //Memory
 var _DefaultMemorySize: number = 256;
-
+var _MemoryAccessor: TSOS.MemoryAccessor;
+var _MemoryManager: TSOS.MemoryManager;
 var _Memory: TSOS.Memory;
 
+//PID
+var globalPIDCount = 0;
 //Status
 var _Status = "";
 var onDocumentLoad = function() {

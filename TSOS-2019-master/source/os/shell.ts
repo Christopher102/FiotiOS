@@ -357,8 +357,9 @@ module TSOS {
                 alert("ERROR: INVALID INPUT.")
             }
             if(isValid){
-                alert(textArray);
-                //load to memory
+                _MemoryManager.loadSegment(textArray);
+                globalPIDCount += 1;
+                TSOS.Control.updateMemory();
             }
         }
 
