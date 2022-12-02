@@ -61,6 +61,8 @@ var TSOS;
                     break;
             }
         }
+        readByte(location) {
+        }
     }
     TSOS.MemoryManager = MemoryManager;
 })(TSOS || (TSOS = {}));

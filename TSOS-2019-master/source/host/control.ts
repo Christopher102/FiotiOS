@@ -96,6 +96,7 @@ module TSOS {
             //Initialize PCB Controller
 
             _PCBController = new ProcessController();
+            _PCBController.init();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -135,6 +136,16 @@ module TSOS {
             }
         }
 
+        public static updateCPUDisplay(){
+            var table = <HTMLTableElement>document.getElementById('cpuTable');
+            table.rows[1].cells[0].innerHTML = _CPU.PC.toString();
+            table.rows[1].cells[1].innerHTML = _CPU.currentInstruction.toString();
+            table.rows[1].cells[2].innerHTML = _CPU.Acc.toString();
+            table.rows[1].cells[3].innerHTML = _CPU.Xreg.toString();
+            table.rows[1].cells[4].innerHTML = _CPU.Yreg.toString();
+            table.rows[1].cells[5].innerHTML = _CPU.Zflag.toString();
+        }
+
         static updatePcbDisplay() {
             let table = <HTMLTableElement>document.getElementById("tablePcb");
             let newTbody = <HTMLTableSectionElement>document.createElement('tbody');
@@ -155,6 +166,8 @@ module TSOS {
                 row.insertCell(-1).innerHTML = tempPCB.xreg.toString(16).toLocaleUpperCase();
                 row.insertCell(-1).innerHTML = tempPCB.yreg.toString(16).toLocaleUpperCase();
                 row.insertCell(-1).innerHTML = tempPCB.zflag.toString(16)
+                _PCBController.ResidentQueue.enqueue(tempPCB);
+                alert(_PCBController.ResidentQueue.isEmpty());
             }
             table.replaceChild(newTbody, table.firstChild);
 

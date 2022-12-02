@@ -98,6 +98,11 @@ module TSOS {
                 "status",
                 "<string> - sets the status of the system.");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellRun,
+                "run",
+                "<string> - runs PCB by PID");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -363,11 +368,25 @@ module TSOS {
                 _PCBController.newPCB(globalPIDCount);
                 //Display PCB
                 TSOS.Control.updatePcbDisplay();
+                _Console.putText("PCB Generated Successfully! PID: " + globalPIDCount);
                 // Increases pid counter
                 globalPIDCount += 1;
                 //Updates visual memory
                 TSOS.Control.updateMemory();
             }
+        }
+
+        public shellRun(args: string[]){
+            try {
+                // I really need to be more creative in my nomenclature, but this works. It's just sending in the grabbed PCB from the ProcessController using it's PID.
+                let runPCB: TSOS.PCB = _PCBController.grabResidentByPID(args[0]);
+                alert(runPCB + " RUN CMD");
+                _CPU.runPCB(runPCB);
+            } catch (e) {
+                alert("WARNING: NO PCB BY THAT PID. PLEASE RETRY");
+            }
+
+
         }
 
     }

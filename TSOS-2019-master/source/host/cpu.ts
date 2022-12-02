@@ -20,7 +20,9 @@ module TSOS {
                     public Xreg: number = 0,
                     public Yreg: number = 0,
                     public Zflag: number = 0,
-                    public isExecuting: boolean = false) {
+                    public isExecuting: boolean = false,
+                    public workingPCB: TSOS.PCB = null,
+                    public currentInstruction: string = '') {
 
         }
 
@@ -33,10 +35,50 @@ module TSOS {
             this.isExecuting = false;
         }
 
+        public runPCB(newPCB: TSOS.PCB){
+            if(this.workingPCB != null){
+                let oldPCB: TSOS.PCB = this.workingPCB;
+                this.workingPCB = newPCB;
+                //this.isExecuting = true;
+                this.refreshCPU();
+                return oldPCB;
+            } else {
+                this.workingPCB = newPCB;
+                //this.isExecuting = true;
+                this.refreshCPU();
+            }
+        }
+
+        public refreshCPU(){
+            this.PC = this.workingPCB.pc;
+            this.Acc = this.workingPCB.acc;
+            this.Xreg = this.workingPCB.xreg;
+            this.Yreg = this.workingPCB.yreg;
+            this.Zflag = this.workingPCB.zflag;
+            this.currentInstruction = this.workingPCB.ir;
+            TSOS.Control.updateCPUDisplay();
+        }
+
+        public refreshWorkingPCB(){
+            this.workingPCB.pc = this.PC
+            this.workingPCB.acc = this.Acc
+            this.workingPCB.xreg = this.Xreg
+            this.workingPCB.yreg = this.Yreg
+            this.workingPCB.zflag = this.Zflag
+            this.workingPCB.ir = this.currentInstruction;
+        }
+
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+            if(this.isExecuting){
+                this.fetchdecodeexecute();
+            }
+        }
+
+        public fetchdecodeexecute(){
+            this.currentInstruction = 
         }
     }
 }

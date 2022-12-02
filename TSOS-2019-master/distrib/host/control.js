@@ -75,6 +75,7 @@ var TSOS;
             _MemoryManager = new TSOS.MemoryManager();
             //Initialize PCB Controller
             _PCBController = new TSOS.ProcessController();
+            _PCBController.init();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -110,6 +111,15 @@ var TSOS;
                 }
             }
         }
+        static updateCPUDisplay() {
+            var table = document.getElementById('cpuTable');
+            table.rows[1].cells[0].innerHTML = _CPU.PC.toString();
+            table.rows[1].cells[1].innerHTML = _CPU.currentInstruction.toString();
+            table.rows[1].cells[2].innerHTML = _CPU.Acc.toString();
+            table.rows[1].cells[3].innerHTML = _CPU.Xreg.toString();
+            table.rows[1].cells[4].innerHTML = _CPU.Yreg.toString();
+            table.rows[1].cells[5].innerHTML = _CPU.Zflag.toString();
+        }
         static updatePcbDisplay() {
             let table = document.getElementById("tablePcb");
             let newTbody = document.createElement('tbody');
@@ -130,6 +140,8 @@ var TSOS;
                 row.insertCell(-1).innerHTML = tempPCB.xreg.toString(16).toLocaleUpperCase();
                 row.insertCell(-1).innerHTML = tempPCB.yreg.toString(16).toLocaleUpperCase();
                 row.insertCell(-1).innerHTML = tempPCB.zflag.toString(16);
+                _PCBController.ResidentQueue.enqueue(tempPCB);
+                alert(_PCBController.ResidentQueue.isEmpty());
             }
             table.replaceChild(newTbody, table.firstChild);
         }

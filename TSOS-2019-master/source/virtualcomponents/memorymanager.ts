@@ -73,5 +73,9 @@ module TSOS{
                     break;
             }
         }
+
+        public readByte(location){
+            return _MemoryAccessor.getMemory(location);
+        }
     }
 }

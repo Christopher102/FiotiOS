@@ -9,6 +9,10 @@ module TSOS{
             this.ReadyQueue = new TSOS.Queue();
         }
 
+        init(){
+
+        }
+
         public newPCB(PID){
             let startMem = 0;
             let endMem =  0;
@@ -43,6 +47,16 @@ module TSOS{
             let movingPCB: TSOS.PCB = this.ResidentQueue.dequeue();
             movingPCB.state = "READY";
             this.ReadyQueue.enqueue(movingPCB);
+        }
+
+        public grabResidentByPID(PID: string){
+            let numPID = parseInt(PID);
+            return this.ResidentQueue.dequeue();
+        }
+
+        public grabReadyByPID(PID: string){
+            let numPID = parseInt(PID);
+            return this.ReadyQueue[numPID];
         }
     }
 }

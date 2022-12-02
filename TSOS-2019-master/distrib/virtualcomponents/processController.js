@@ -5,6 +5,8 @@ var TSOS;
             this.ResidentQueue = new TSOS.Queue();
             this.ReadyQueue = new TSOS.Queue();
         }
+        init() {
+        }
         newPCB(PID) {
             let startMem = 0;
             let endMem = 0;
@@ -34,6 +36,14 @@ var TSOS;
             let movingPCB = this.ResidentQueue.dequeue();
             movingPCB.state = "READY";
             this.ReadyQueue.enqueue(movingPCB);
+        }
+        grabResidentByPID(PID) {
+            let numPID = parseInt(PID);
+            return this.ResidentQueue.dequeue();
+        }
+        grabReadyByPID(PID) {
+            let numPID = parseInt(PID);
+            return this.ReadyQueue[numPID];
         }
     }
     TSOS.ProcessController = ProcessController;
