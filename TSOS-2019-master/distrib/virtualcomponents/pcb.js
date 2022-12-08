@@ -10,7 +10,7 @@ var TSOS;
             this.xreg = 0;
             this.yreg = 0;
             this.pc = startMem;
-            this.ir = "";
+            this.ir = _MemoryAccessor.getMemory(startMem).toString();
             this.acc = 0;
             this.zflag = 0;
         }

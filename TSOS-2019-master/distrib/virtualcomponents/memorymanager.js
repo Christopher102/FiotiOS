@@ -62,6 +62,13 @@ var TSOS;
             }
         }
         readByte(location) {
+            return _MemoryAccessor.getMemory(location);
+        }
+        writeByte(location, value) {
+            return _MemoryAccessor.setMemory(value, location);
+        }
+        read(pcb, addr) {
+            return _MemoryAccessor.getMemory(pcb.startMem + addr);
         }
     }
     TSOS.MemoryManager = MemoryManager;

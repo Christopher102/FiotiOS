@@ -141,7 +141,6 @@ var TSOS;
                 row.insertCell(-1).innerHTML = tempPCB.yreg.toString(16).toLocaleUpperCase();
                 row.insertCell(-1).innerHTML = tempPCB.zflag.toString(16);
                 _PCBController.ResidentQueue.enqueue(tempPCB);
-                alert(_PCBController.ResidentQueue.isEmpty());
             }
             table.replaceChild(newTbody, table.firstChild);
         }

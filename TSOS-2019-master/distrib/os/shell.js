@@ -317,7 +317,6 @@ var TSOS;
             try {
                 // I really need to be more creative in my nomenclature, but this works. It's just sending in the grabbed PCB from the ProcessController using it's PID.
                 let runPCB = _PCBController.grabResidentByPID(args[0]);
-                alert(runPCB + " RUN CMD");
                 _CPU.runPCB(runPCB);
             }
             catch (e) {

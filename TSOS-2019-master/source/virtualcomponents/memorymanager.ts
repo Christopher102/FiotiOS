@@ -77,5 +77,13 @@ module TSOS{
         public readByte(location){
             return _MemoryAccessor.getMemory(location);
         }
+
+        public writeByte(location, value){
+            return _MemoryAccessor.setMemory(value, location)
+        }
+
+        public read(pcb : TSOS.PCB, addr){
+            return _MemoryAccessor.getMemory(pcb.startMem + addr);
+        }
     }
 }

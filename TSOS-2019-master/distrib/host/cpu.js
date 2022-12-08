@@ -35,33 +35,24 @@ var TSOS;
             if (this.workingPCB != null) {
                 let oldPCB = this.workingPCB;
                 this.workingPCB = newPCB;
-                //this.isExecuting = true;
+                this.isExecuting = true;
                 this.refreshCPU();
                 return oldPCB;
             }
             else {
                 this.workingPCB = newPCB;
-                alert(this.workingPCB);
-                //this.isExecuting = true;
+                this.isExecuting = true;
                 this.refreshCPU();
             }
         }
         refreshCPU() {
-            alert(6);
             this.PC = this.workingPCB.pc;
-            alert(7);
             this.Acc = this.workingPCB.acc;
-            alert(8);
             this.Xreg = this.workingPCB.xreg;
-            alert(9);
             this.Yreg = this.workingPCB.yreg;
-            alert(10);
             this.Zflag = this.workingPCB.zflag;
-            alert(11);
             this.currentInstruction = this.workingPCB.ir;
-            alert(12);
             TSOS.Control.updateCPUDisplay();
-            alert(13);
         }
         refreshWorkingPCB() {
             this.workingPCB.pc = this.PC;
@@ -72,11 +63,130 @@ var TSOS;
             this.workingPCB.ir = this.currentInstruction;
         }
         cycle() {
-            _Kernel.krnTrace('CPU cycle');
+            _Kernel.krnTrace('CPU cycle: Instruction: ' + this.currentInstruction);
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+            if (this.isExecuting) {
+                this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
+                this.fetchdecodeexecute();
+                this.refreshWorkingPCB();
+                TSOS.Control.updateCPUDisplay();
+            }
         }
         fetchdecodeexecute() {
+            switch (this.currentInstruction) {
+                case 'A9': // Load acc with constant 
+                    this.PC++;
+                    this.Acc = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    break;
+                case 'AD': // Load acc from memory 
+                    this.PC++;
+                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    this.Acc = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    break;
+                case '8D': // Store acc in memory
+                    this.PC++;
+                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    _MemoryManager.writeByte(addr, this.Acc.toString(16));
+                    this.PC++;
+                    break;
+                case '6D': // Add with carry
+                    this.PC++;
+                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    this.Acc += parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    break;
+                case 'A2': // Load X Register with constant 
+                    this.PC++;
+                    this.Xreg = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    break;
+                case 'AE': // Load X Register from memory 
+                    this.PC++;
+                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    this.Xreg = parseInt(_MemoryManager.readByte(addr), 16);
+                    this.PC++;
+                    break;
+                case 'A0': // Load Y Register with constant 
+                    this.PC++;
+                    this.Yreg = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    break;
+                case 'AC': // Load Y Register from memory 
+                    this.PC++;
+                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    this.Yreg = parseInt(_MemoryManager.readByte(addr), 16);
+                    this.PC++;
+                    break;
+                case 'EC': // Compare byte at addr to xreg, if equal set Z true
+                    this.PC++;
+                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    this.Zflag = (this.Xreg === parseInt(_MemoryManager.readByte(addr), 16)) ? 1 : 0;
+                    this.PC++;
+                    break;
+                case 'D0': // Branch N if Z true
+                    if (this.Zflag === 0) {
+                        let n = parseInt(_MemoryManager.read(this.workingPCB, this.PC + 1), 16);
+                        this.PC = (this.PC + n + 2) % 256;
+                    }
+                    else {
+                        this.PC += 2;
+                    }
+                    break;
+                case 'EE': // Increment byte
+                    this.PC++;
+                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.PC++;
+                    var value = parseInt(_MemoryManager.readByte(addr), 16);
+                    value++;
+                    _MemoryManager.writeByte(addr, value.toString(16));
+                    this.PC++;
+                    break;
+                case 'FF': // System call
+                    if (this.Xreg === 1) {
+                        var output = this.Yreg.toString();
+                        _Kernel.krnInterruptHandler(SYSCALL_IRQ, output);
+                    }
+                    else if (this.Xreg === 2) {
+                        var output = "";
+                        var code = parseInt(_MemoryManager.readByte(this.Yreg + this.workingPCB.startMem), 16);
+                        var addr = this.Yreg + this.workingPCB.startMem;
+                        while (code != 0x00) {
+                            output = String.fromCharCode(code);
+                            _Kernel.krnInterruptHandler(SYSCALL_IRQ, output);
+                            addr = addr + 1;
+                            var code = parseInt(_MemoryManager.readByte(addr), 16);
+                        }
+                    }
+                    this.PC++;
+                    break;
+                case 'EA': // Skip
+                    this.PC++;
+                    break;
+                case '00': // Break Out
+                    this.workingPCB.state = "Terminated";
+                    this.Acc = 0;
+                    this.Xreg = 0;
+                    this.Yreg = 0;
+                    this.Zflag = 0;
+                    this.PC = 0;
+                    this.workingPCB = null;
+                    this.isExecuting = false;
+                    break;
+                default:
+                    alert('Incorrect instruction');
+                    alert(this.currentInstruction);
+                    this.isExecuting = false;
+                    break;
+            }
         }
     }
     TSOS.Cpu = Cpu;
