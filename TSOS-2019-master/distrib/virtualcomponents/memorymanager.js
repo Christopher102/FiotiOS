@@ -62,13 +62,28 @@ var TSOS;
             }
         }
         readByte(location) {
-            return _MemoryAccessor.getMemory(location);
+            if (location > _CPU.workingPCB.endMem || location < _CPU.workingPCB.startMem) {
+                _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
+            }
+            else {
+                return _MemoryAccessor.getMemory(location);
+            }
         }
         writeByte(location, value) {
-            return _MemoryAccessor.setMemory(value, location);
+            if (location > _CPU.workingPCB.endMem || location < _CPU.workingPCB.startMem) {
+                _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
+            }
+            else {
+                return _MemoryAccessor.setMemory(value, location);
+            }
         }
         read(pcb, addr) {
-            return _MemoryAccessor.getMemory(pcb.startMem + addr);
+            if (pcb.startMem + addr > _CPU.workingPCB.endMem || pcb.endMem + addr < _CPU.workingPCB.startMem) {
+                _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
+            }
+            else {
+                return _MemoryAccessor.getMemory(pcb.startMem + addr);
+            }
         }
     }
     TSOS.MemoryManager = MemoryManager;
