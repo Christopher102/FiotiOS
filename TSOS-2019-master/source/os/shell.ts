@@ -369,10 +369,10 @@ module TSOS {
                 //Display PCB
                 TSOS.Control.updatePcbDisplay();
                 _Console.putText("PCB Generated Successfully! PID: " + globalPIDCount);
+                TSOS.Control.updateMemory(globalPIDCount % 3);
                 // Increases pid counter
                 globalPIDCount += 1;
                 //Updates visual memory
-                TSOS.Control.updateMemory();
             }
         }
 

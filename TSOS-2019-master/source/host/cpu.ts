@@ -41,11 +41,13 @@ module TSOS {
                 this.workingPCB = newPCB;
                 this.isExecuting = true;
                 this.refreshCPU();
+                TSOS.Control.updatePcbDisplay();
                 return oldPCB;
             } else {
                 this.workingPCB = newPCB;
                 this.isExecuting = true;
                 this.refreshCPU();
+                TSOS.Control.updatePcbDisplay();
             }
         }
 
@@ -70,12 +72,14 @@ module TSOS {
 
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle: Instruction: ' + this.currentInstruction);
+            TSOS.Control.updateMemory(this.workingPCB.pid);
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             if(this.isExecuting){
                 this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
                 this.fetchdecodeexecute();
                 this.refreshWorkingPCB();
+                TSOS.Control.updatePcbDisplay();
                 TSOS.Control.updateCPUDisplay();
             }
         }
@@ -84,76 +88,84 @@ module TSOS {
             switch (this.currentInstruction) {
                 case 'A9': // Load acc with constant 
                     this.PC ++;
-                    this.Acc = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.Acc = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
                     this.PC ++;
                     break;
                 case 'AD': // Load acc from memory 
                     this.PC++;
-                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
+                    var newaddr = this.adjustAddr(addr);
                     this.PC++;
-                    this.Acc = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.Acc = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
                     this.PC++;
                     break;
                 case '8D': // Store acc in memory
                     this.PC++;
-                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
+                    var newaddr = this.adjustAddr(addr);
                     this.PC++;
-                    _MemoryManager.writeByte(addr, this.Acc.toString(16));
+                    _MemoryManager.writeByte(newaddr, this.Acc.toString(16));
                     this.PC++;
                     break;
                 case '6D': // Add with carry
                     this.PC++;
-                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
+                    var newaddr = this.adjustAddr(addr);
                     this.PC++;
-                    this.Acc += parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.Acc += parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
                     this.PC++;
                     break;
                 case 'A2': // Load X Register with constant 
                     this.PC++;
-                    this.Xreg = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.Xreg = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
                     this.PC++;
                     break;
                 case 'AE': // Load X Register from memory 
                     this.PC++;
-                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
+                    var newaddr = this.adjustAddr(addr);
                     this.PC++;
-                    this.Xreg = parseInt(_MemoryManager.readByte(addr), 16);
+                    this.Xreg = parseInt(_MemoryManager.readByte(newaddr), 16);
                     this.PC++;
                     break;
                 case 'A0': // Load Y Register with constant 
                     this.PC++;
-                    this.Yreg = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    this.Yreg = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
                     this.PC++;
                     break;
                 case 'AC': // Load Y Register from memory 
                     this.PC++;
-                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.read(this.workingPCB, this.PC), 16);
+                    var newaddr = this.adjustAddr(addr);
                     this.PC++;
-                    this.Yreg = parseInt(_MemoryManager.readByte(addr), 16);
+                    this.Yreg = parseInt(_MemoryManager.readByte(newaddr), 16);
                     this.PC++;
                     break;
                 case 'EC': // Compare byte at addr to xreg, if equal set Z true
                     this.PC++;
-                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
+                    var newaddr = this.adjustAddr(addr);
                     this.PC++;
-                    this.Zflag = (this.Xreg === parseInt(_MemoryManager.readByte(addr), 16)) ? 1 : 0;
+                    this.Zflag = (this.Xreg === parseInt(_MemoryManager.readByte(newaddr), 16)) ? 1 : 0;
                     this.PC++;
                     break;
                 case 'D0': // Branch N if Z true
-                    if(this.Zflag === 0){
-                        let n = parseInt(_MemoryManager.read(this.workingPCB, this.PC + 1), 16);
-                        this.PC = (this.PC + n + 2) % 256;
-                    } else {
-                        this.PC += 2;
-                    }
+                if(this.Zflag === 0){
+                    let n = parseInt(_MemoryManager.read(this.workingPCB, this.PC + 1), 16);
+                    this.PC = (this.PC + n + 2) % (this.workingPCB.endMem + 1);
+                    this.PC = this.PC - this.workingPCB.startMem;
+                } else {
+                    this.PC += 2;
+                }
                     break;
                 case 'EE': // Increment byte
                     this.PC++;
-                    var addr = parseInt(_MemoryManager.readByte(this.PC), 16);
+                    var addr = parseInt(_MemoryManager.readByte(this.PC + this.workingPCB.startMem), 16);
+                    var newaddr = this.adjustAddr(addr);
                     this.PC++;
-                    var value = parseInt(_MemoryManager.readByte(addr), 16);
+                    var value = parseInt(_MemoryManager.readByte(newaddr), 16);
                     value++;
-                    _MemoryManager.writeByte(addr, value.toString(16));
+                    _MemoryManager.writeByte(newaddr, value.toString(16));
                     this.PC++;
                     break;
                 case 'FF': // System call
@@ -184,8 +196,13 @@ module TSOS {
                     this.Yreg = 0;
                     this.Zflag = 0;
                     this.PC = 0;
+                    _Console.advanceLine();
+                    _Console.putText("PCB " + this.workingPCB.pid + " EXECUTED TO COMPLETION.")
                     this.workingPCB = null;
                     this.isExecuting = false;
+                    TSOS.Control.updateCPUDisplay();
+                    _Console.advanceLine()
+                    _OsShell.putPrompt();
                     break;
 
                 default:
@@ -194,6 +211,10 @@ module TSOS {
                     this.isExecuting = false;
                     break;
             }
+        }
+
+        adjustAddr(addr){
+            return addr + this.workingPCB.startMem;
         }
             
     }

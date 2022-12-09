@@ -54,7 +54,7 @@ var canvas = document.getElementById("display");
 var _YDisplaySize = 500;
 var _XDisplaySize = 500;
 //Memory
-var _DefaultMemorySize = 256;
+var _DefaultMemorySize = 768;
 var _MemoryAccessor;
 var _MemoryManager;
 var _Memory;

@@ -74,7 +74,7 @@ var _YDisplaySize: number = 500;
 var _XDisplaySize: number = 500;
 
 //Memory
-var _DefaultMemorySize: number = 256;
+var _DefaultMemorySize: number = 768;
 var _MemoryAccessor: TSOS.MemoryAccessor;
 var _MemoryManager: TSOS.MemoryManager;
 var _Memory: TSOS.Memory;

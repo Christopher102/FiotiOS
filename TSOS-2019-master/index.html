@@ -138,368 +138,1100 @@
                </div>
             </div> 
             <div class="col d-flex justify-content-center border">
-               <div id="memoryDiv" class="card" style="height: 505px; width:500px; overflow: scroll;">
-                  <div class="card-header d-flex justify-content-center">
-                     <ul class="nav nav-pills nav-justified" style="padding: 10p;">
-                        <li class="active"><a>Segment 1</a></li>
-                        <li><a>Segment 2</a></li>
-                        <li><a>Segment 3</a></li>
-                     </ul>
+               <div id="carouselId" class="carousel slide" data-bs-ride="true" data-bs-interval=5000000 style="height: 505px; width:500px; overflow:hidden">
+                  <div class="carousel-inner" role="listbox">
+                     <div class="carousel-item active">
+                        <div id="memoryDiv" class="card" style="height: 505px; width:500px; overflow: scroll;">
+                           <div class="card-header d-flex justify-content-center">
+                              <a> Memory Segment 1</a>
+                           </div>
+                           <table id="memoryTable" class="table" style="color:white">
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x08</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x10</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x18</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x20</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x28</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x30</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x38</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x40</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x48</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x50</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x58</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x60</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x68</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x70</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x78</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x80</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x88</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x90</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x98</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xA0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xA8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xB0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xB8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xC0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xC8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xD0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xE0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xE8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xF0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xF8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x100</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                           </table>
+                        </div>
+                     </div>
+                     <div class="carousel-item">
+                        <div id="memoryDiv" class="card" style="height: 505px; width:500px; overflow: scroll;">
+                           <div class="card-header d-flex justify-content-center">
+                              <a> Memory Segment 2</a>
+                           </div>
+                           <table id="memoryTable2" class="table" style="color:white">
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x100</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x108</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x110</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x118</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x120</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x128</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x130</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x138</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x140</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x148</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x150</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x158</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x160</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x168</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x170</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x178</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x180</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x188</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x190</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x198</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1A0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1A8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1B0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1B8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1C0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1C8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1D0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1E0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1E8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1F0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x1F8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x200</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                           </table>
+                        </div>
+                     </div>
+                     <div class="carousel-item">
+                        <div id="memoryDiv" class="card" style="height: 505px; width:500px; overflow: scroll;">
+                           <div class="card-header d-flex justify-content-center">
+                              <a> Memory Segment 3</a>
+                           </div>
+                           <table id="memoryTable3" class="table" style="color:white">
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x08</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x10</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x18</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x20</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x28</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x30</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x38</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x40</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x48</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x50</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x58</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x60</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x68</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x70</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x78</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x80</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x88</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x90</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x98</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xA0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xA8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xB0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xB8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xC0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xC8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xD0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xE0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xE8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xF0</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0xF8</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                              <tr>
+                                 <td style="font-weight:bold" class="memoryHead">0x100</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                                 <td>00</td>
+                              </tr>
+                           </table>
+                        </div>
+                     </div>
                   </div>
-                  <table id="memoryTable" class="table" style="color:white">
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x08</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x10</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x18</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x20</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x28</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x30</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x38</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x40</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x48</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x50</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x58</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x60</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x68</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x70</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x78</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x80</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x88</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x90</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x98</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xA0</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xA8</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xB0</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xB8</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xC0</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xC8</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xD0</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xE0</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xE8</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xF0</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0xF8</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                     <tr>
-                        <td style="font-weight:bold" class="memoryHead">0x100</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                        <td>00</td>
-                     </tr>
-                  </table>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                     <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                     <span class="visually-hidden">Next</span>
+                  </button>
                </div>
             </div> 
          </div>

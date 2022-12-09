@@ -98,9 +98,24 @@ var TSOS;
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
         }
-        static updateMemory() {
-            var memoryDisplay = document.getElementById('memoryTable');
-            var memoryIndex = 0;
+        static updateMemory(PID) {
+            let table = 'memoryTable';
+            let memoryIndex = 0;
+            switch (PID) {
+                case 0:
+                    table = 'memoryTable';
+                    memoryIndex = 0;
+                    break;
+                case 1:
+                    table = 'memoryTable2';
+                    memoryIndex = 256;
+                    break;
+                case 2:
+                    table = 'memoryTable3';
+                    memoryIndex = 512;
+                    break;
+            }
+            var memoryDisplay = document.getElementById(table);
             for (let i = 0; i < 32; i++) {
                 for (let j = 1; j < 9; j++) {
                     memoryDisplay.rows[i].cells[j].innerHTML = _MemoryAccessor.getMemory(memoryIndex);

@@ -19,7 +19,7 @@ module TSOS{
             this.endMem = endMem;
             this.xreg = 0;
             this.yreg = 0;
-            this.pc = startMem;
+            this.pc = 0;
             this.ir = _MemoryAccessor.getMemory(startMem).toString();
             this.acc = 0;
             this.zflag = 0;
