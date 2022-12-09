@@ -188,7 +188,7 @@ module TSOS {
 
         }
 
-        // This one function working to updated the PCB display made me so incredibly happy I started tearing up. It's such a simple solution for what was a massive annoyance.
+        // This one function working to updated the PCB display made me so incredibly happy I started tearing up. It's such a simple solution for what was a massive annoyance. I hate HTML so much
         public static updatePCBDisplay(pcb : TSOS.PCB){
             let row = <HTMLTableRowElement>document.querySelector('#tablePcb tr[id="' + pcb.pid + '"]');
             row.cells[1].innerHTML = pcb.state.toLocaleUpperCase();

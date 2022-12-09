@@ -380,9 +380,11 @@ module TSOS {
             try {
                 // I really need to be more creative in my nomenclature, but this works. It's just sending in the grabbed PCB from the ProcessController using it's PID.
                 let runPCB: TSOS.PCB = _PCBController.grabResidentByPID(args[0]);
+                alert(runPCB);
                 _CPU.runPCB(runPCB);
             } catch (e) {
                 alert("WARNING: NO PCB BY THAT PID. PLEASE RETRY");
+                _CPU.isExecuting = false;
             }
 
 

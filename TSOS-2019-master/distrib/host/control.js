@@ -160,6 +160,7 @@ var TSOS;
             }
             table.replaceChild(newTbody, table.firstChild);
         }
+        // This one function working to updated the PCB display made me so incredibly happy I started tearing up. It's such a simple solution for what was a massive annoyance. I hate HTML so much
         static updatePCBDisplay(pcb) {
             let row = document.querySelector('#tablePcb tr[id="' + pcb.pid + '"]');
             row.cells[1].innerHTML = pcb.state.toLocaleUpperCase();

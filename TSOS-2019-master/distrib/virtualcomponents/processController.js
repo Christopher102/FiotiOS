@@ -4,6 +4,7 @@ var TSOS;
         constructor() {
             this.ResidentQueue = new TSOS.Queue();
             this.ReadyQueue = new TSOS.Queue();
+            this.tempQueue = new TSOS.Queue();
         }
         init() {
         }
@@ -38,8 +39,21 @@ var TSOS;
             this.ReadyQueue.enqueue(movingPCB);
         }
         grabResidentByPID(PID) {
-            let numPID = parseInt(PID);
-            return this.ResidentQueue.dequeue();
+            var toRun;
+            var i = 0;
+            while (i < this.ResidentQueue.getSize()) {
+                var tempPCB = this.ResidentQueue.dequeue();
+                if (tempPCB.pid.toString() === PID) {
+                    toRun = tempPCB;
+                }
+                else {
+                    this.tempQueue.enqueue(tempPCB);
+                }
+            }
+            for (let i = 0; i < this.tempQueue.getSize(); i++) {
+                this.ResidentQueue.enqueue(this.tempQueue.dequeue());
+            }
+            return toRun;
         }
         grabReadyByPID(PID) {
             let numPID = parseInt(PID);

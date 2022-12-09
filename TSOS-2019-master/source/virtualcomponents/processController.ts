@@ -3,10 +3,12 @@ module TSOS{
 
         public ResidentQueue: Queue;
         public ReadyQueue: Queue;
+        public tempQueue: Queue;
 
         constructor(){
             this.ResidentQueue = new TSOS.Queue();
             this.ReadyQueue = new TSOS.Queue();
+            this.tempQueue = new TSOS.Queue();
         }
 
         init(){
@@ -50,8 +52,20 @@ module TSOS{
         }
 
         public grabResidentByPID(PID: string){
-            let numPID = parseInt(PID);
-            return this.ResidentQueue.dequeue();
+            var toRun : TSOS.PCB;
+            var i = 0;
+            while (i < this.ResidentQueue.getSize()) {
+                var tempPCB : TSOS.PCB = this.ResidentQueue.dequeue();
+                if(tempPCB.pid.toString() === PID){
+                    toRun = tempPCB;
+                } else {
+                    this.tempQueue.enqueue(tempPCB);
+                }
+            }
+            for(let i = 0; i < this.tempQueue.getSize(); i ++){
+                this.ResidentQueue.enqueue(this.tempQueue.dequeue());
+            }
+            return toRun;
         }
 
         public grabReadyByPID(PID: string){
