@@ -35,7 +35,6 @@ var TSOS;
         }
         moveToReady() {
             let movingPCB = this.ResidentQueue.dequeue();
-            alert(movingPCB.pid);
             movingPCB.state = "READY";
             TSOS.Control.updatePCBDisplay(movingPCB);
             this.ReadyQueue.enqueue(movingPCB);
@@ -84,7 +83,6 @@ var TSOS;
         }
         moveAllToReady() {
             while (!this.ResidentQueue.isEmpty()) {
-                alert("HERE");
                 this.moveToReady();
             }
         }

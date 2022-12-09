@@ -47,7 +47,6 @@ module TSOS{
 
         public moveToReady(){
             let movingPCB: TSOS.PCB = this.ResidentQueue.dequeue();
-            alert(movingPCB.pid);
             movingPCB.state = "READY";
             TSOS.Control.updatePCBDisplay(movingPCB);
             this.ReadyQueue.enqueue(movingPCB);
