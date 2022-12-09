@@ -135,7 +135,7 @@ var TSOS;
             table.rows[1].cells[4].innerHTML = _CPU.Yreg.toString();
             table.rows[1].cells[5].innerHTML = _CPU.Zflag.toString();
         }
-        static updatePcbDisplay() {
+        static createPcbDisplay() {
             let table = document.getElementById("tablePcb");
             let newTbody = document.createElement('tbody');
             table.style.display = 'block';
@@ -145,6 +145,7 @@ var TSOS;
             for (let i = 0; i < _PCBController.ResidentQueue.getSize(); i++) {
                 let tempPCB = _PCBController.ResidentQueue.dequeue();
                 row = newTbody.insertRow(-1);
+                row.id = tempPCB.pid.toString();
                 // PCB info
                 row.insertCell(-1).innerHTML = tempPCB.pid.toString();
                 row.insertCell(-1).innerHTML = tempPCB.state.toLocaleUpperCase();
@@ -158,6 +159,15 @@ var TSOS;
                 _PCBController.ResidentQueue.enqueue(tempPCB);
             }
             table.replaceChild(newTbody, table.firstChild);
+        }
+        static updatePCBDisplay(pcb) {
+            let row = document.querySelector('#tablePcb tr[id="' + pcb.pid + '"]');
+            row.cells[1].innerHTML = pcb.state.toLocaleUpperCase();
+            row.cells[4].innerHTML = pcb.pc.toString();
+            row.cells[5].innerHTML = pcb.acc.toString(16);
+            row.cells[6].innerHTML = pcb.xreg.toString(16);
+            row.cells[7].innerHTML = pcb.yreg.toString(16);
+            row.cells[8].innerHTML = pcb.zflag.toString(16);
         }
     }
     TSOS.Control = Control;

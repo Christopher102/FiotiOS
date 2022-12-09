@@ -161,7 +161,7 @@ module TSOS {
             table.rows[1].cells[5].innerHTML = _CPU.Zflag.toString();
         }
 
-        static updatePcbDisplay() {
+        static createPcbDisplay() {
             let table = <HTMLTableElement>document.getElementById("tablePcb");
             let newTbody = <HTMLTableSectionElement>document.createElement('tbody');
             table.style.display = 'block';
@@ -171,6 +171,7 @@ module TSOS {
             for (let i = 0; i < _PCBController.ResidentQueue.getSize(); i++) {
                 let tempPCB: TSOS.PCB = _PCBController.ResidentQueue.dequeue();
                 row = <HTMLTableRowElement>newTbody.insertRow(-1);
+                row.id = tempPCB.pid.toString();
                 // PCB info
                 row.insertCell(-1).innerHTML = tempPCB.pid.toString();
                 row.insertCell(-1).innerHTML = tempPCB.state.toLocaleUpperCase();
@@ -184,6 +185,18 @@ module TSOS {
                 _PCBController.ResidentQueue.enqueue(tempPCB);
             }
             table.replaceChild(newTbody, table.firstChild);
+
+        }
+
+        // This one function working to updated the PCB display made me so incredibly happy I started tearing up. It's such a simple solution for what was a massive annoyance.
+        public static updatePCBDisplay(pcb : TSOS.PCB){
+            let row = <HTMLTableRowElement>document.querySelector('#tablePcb tr[id="' + pcb.pid + '"]');
+            row.cells[1].innerHTML = pcb.state.toLocaleUpperCase();
+            row.cells[4].innerHTML = pcb.pc.toString();
+            row.cells[5].innerHTML = pcb.acc.toString(16);
+            row.cells[6].innerHTML = pcb.xreg.toString(16);
+            row.cells[7].innerHTML = pcb.yreg.toString(16);
+            row.cells[8].innerHTML = pcb.zflag.toString(16);
 
         }
     }

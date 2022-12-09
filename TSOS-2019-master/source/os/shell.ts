@@ -367,7 +367,7 @@ module TSOS {
                 // Creates PCB
                 _PCBController.newPCB(globalPIDCount);
                 //Display PCB
-                TSOS.Control.updatePcbDisplay();
+                TSOS.Control.createPcbDisplay();
                 _Console.putText("PCB Generated Successfully! PID: " + globalPIDCount);
                 TSOS.Control.updateMemory(globalPIDCount % 3);
                 // Increases pid counter

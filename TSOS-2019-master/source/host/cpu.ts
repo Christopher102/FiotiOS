@@ -39,15 +39,16 @@ module TSOS {
             if(this.workingPCB != null){
                 let oldPCB: TSOS.PCB = this.workingPCB;
                 this.workingPCB = newPCB;
+                this.workingPCB.state = "RUNNING";
+                oldPCB.state = "READY";
                 this.isExecuting = true;
                 this.refreshCPU();
-                TSOS.Control.updatePcbDisplay();
                 return oldPCB;
             } else {
                 this.workingPCB = newPCB;
                 this.isExecuting = true;
+                this.workingPCB.state = "RUNNING";
                 this.refreshCPU();
-                TSOS.Control.updatePcbDisplay();
             }
         }
 
@@ -79,7 +80,7 @@ module TSOS {
                 this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
                 this.fetchdecodeexecute();
                 this.refreshWorkingPCB();
-                TSOS.Control.updatePcbDisplay();
+                TSOS.Control.updatePCBDisplay(this.workingPCB);
                 TSOS.Control.updateCPUDisplay();
             }
         }
@@ -198,9 +199,11 @@ module TSOS {
                     this.PC = 0;
                     _Console.advanceLine();
                     _Console.putText("PCB " + this.workingPCB.pid + " EXECUTED TO COMPLETION.")
+                    TSOS.Control.updatePCBDisplay(this.workingPCB);
                     this.workingPCB = null;
                     this.isExecuting = false;
                     TSOS.Control.updateCPUDisplay();
+                    
                     _Console.advanceLine()
                     _OsShell.putPrompt();
                     break;
