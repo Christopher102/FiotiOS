@@ -59,6 +59,14 @@ var TSOS;
             let numPID = parseInt(PID);
             return this.ReadyQueue[numPID];
         }
+        emptyQueues() {
+            for (let i = 0; i < this.ReadyQueue.getSize(); i++) {
+                this.ReadyQueue.dequeue();
+            }
+            for (let i = 0; i < this.ResidentQueue.getSize(); i++) {
+                this.ResidentQueue.dequeue();
+            }
+        }
     }
     TSOS.ProcessController = ProcessController;
 })(TSOS || (TSOS = {}));

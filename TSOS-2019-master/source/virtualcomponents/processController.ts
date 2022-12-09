@@ -72,5 +72,14 @@ module TSOS{
             let numPID = parseInt(PID);
             return this.ReadyQueue[numPID];
         }
+
+        public emptyQueues(){
+            for(let i = 0; i < this.ReadyQueue.getSize(); i++){
+                this.ReadyQueue.dequeue();
+            }
+            for(let i = 0; i < this.ResidentQueue.getSize(); i++){
+                this.ResidentQueue.dequeue();
+            }
+        }
     }
 }

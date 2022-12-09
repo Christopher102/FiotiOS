@@ -103,6 +103,11 @@ module TSOS {
                 "run",
                 "<string> - runs PCB by PID");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellClearMem,
+                "clearmem",
+                "Clears all memory and queues");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -388,6 +393,16 @@ module TSOS {
             }
 
 
+        }
+
+        public shellClearMem(){
+            _Kernel.krnTrace("COMMAND HEARD LOUD AND CLEAR: CLEARING MEMORY");
+            _MemoryManager.clearMemory();
+            _Kernel.krnTrace("CLEARING QUEUES");
+            _PCBController.emptyQueues();
+            _Kernel.krnTrace("UPDATING DISPLAYS");
+            TSOS.Control.updateMemory(-1);
+            TSOS.Control.updatePCBDisplay(null);
         }
 
     }

@@ -105,23 +105,35 @@ var TSOS;
                 case 0:
                     table = 'memoryTable';
                     memoryIndex = 0;
+                    this.updateMemTable(table, memoryIndex);
                     break;
                 case 1:
                     table = 'memoryTable2';
                     memoryIndex = 256;
+                    this.updateMemTable(table, memoryIndex);
                     break;
                 case 2:
                     table = 'memoryTable3';
                     memoryIndex = 512;
+                    this.updateMemTable(table, memoryIndex);
+                    break;
+                case -1:
+                    for (let i = 0; i < 3; i++) {
+                        var indexList = [0, 256, 512];
+                        if (i > 1) {
+                            table = table + i;
+                        }
+                        memoryIndex = indexList[i];
+                        this.updateMemTable(table, memoryIndex);
+                    }
                     break;
             }
+        }
+        static updateMemTable(table, memoryIndex) {
             var memoryDisplay = document.getElementById(table);
             for (let i = 0; i < 32; i++) {
                 for (let j = 1; j < 9; j++) {
                     memoryDisplay.rows[i].cells[j].innerHTML = _MemoryAccessor.getMemory(memoryIndex);
-                    // if(_MemoryAccessor.getValueAtAddr(memoryIndex) == undefined){
-                    //     memoryDisplay.rows[i].cells[j].innerHTML = '00';
-                    // }
                     memoryIndex += 1;
                 }
             }
@@ -162,13 +174,19 @@ var TSOS;
         }
         // This one function working to updated the PCB display made me so incredibly happy I started tearing up. It's such a simple solution for what was a massive annoyance. I hate HTML so much
         static updatePCBDisplay(pcb) {
-            let row = document.querySelector('#tablePcb tr[id="' + pcb.pid + '"]');
-            row.cells[1].innerHTML = pcb.state.toLocaleUpperCase();
-            row.cells[4].innerHTML = pcb.pc.toString();
-            row.cells[5].innerHTML = pcb.acc.toString(16);
-            row.cells[6].innerHTML = pcb.xreg.toString(16);
-            row.cells[7].innerHTML = pcb.yreg.toString(16);
-            row.cells[8].innerHTML = pcb.zflag.toString(16);
+            if (pcb === null) {
+                let table = document.getElementById("tablePcb");
+                table.replaceChild(document.createElement('tbody'), table.firstChild);
+            }
+            else {
+                let row = document.querySelector('#tablePcb tr[id="' + pcb.pid + '"]');
+                row.cells[1].innerHTML = pcb.state.toLocaleUpperCase();
+                row.cells[4].innerHTML = pcb.pc.toString();
+                row.cells[5].innerHTML = pcb.acc.toString(16);
+                row.cells[6].innerHTML = pcb.xreg.toString(16);
+                row.cells[7].innerHTML = pcb.yreg.toString(16);
+                row.cells[8].innerHTML = pcb.zflag.toString(16);
+            }
         }
     }
     TSOS.Control = Control;
