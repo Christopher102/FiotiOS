@@ -11,10 +11,12 @@ module TSOS{
             this.tempQueue = new TSOS.Queue();
         }
 
+        //Won't work without this. No idea why. Going to ignore.
         init(){
 
         }
 
+        //Generates a new PCB, and sets the memory segment. If you get an error here, dear god in heaven help you.
         public newPCB(PID){
             let startMem = 0;
             let endMem =  0;
@@ -45,6 +47,7 @@ module TSOS{
             this.ResidentQueue.enqueue(freshPCB);
         }
 
+        //Moves a PCB from Resident to ready
         public moveToReady(){
             let movingPCB: TSOS.PCB = this.ResidentQueue.dequeue();
             movingPCB.state = "READY";
@@ -52,6 +55,8 @@ module TSOS{
             this.ReadyQueue.enqueue(movingPCB);
         }
 
+
+        // Grabs a resident PCB by it's PID by moving all PCBs between two queues until it finds the correct one.
         public grabResidentByPID(PID: string){
             var toRun : TSOS.PCB;
             var i = 0;
@@ -69,11 +74,14 @@ module TSOS{
             return toRun;
         }
 
+
+        //Honestly? Could remove this. But it's fine for now.
         public grabReadyByPID(PID: string){
             let numPID = parseInt(PID);
             return this.ReadyQueue[numPID];
         }
 
+        //Empties out both queues entirely
         public emptyQueues(){
             for(let i = 0; i < this.ReadyQueue.getSize(); i++){
                 this.ReadyQueue.dequeue();
@@ -83,12 +91,14 @@ module TSOS{
             }
         }
         
+        //Empties only resident
         public emptyResidentQueue(){
             for(let i = 0; i < this.ResidentQueue.getSize(); i++){
                 this.ResidentQueue.dequeue();
             }
         }
 
+        // Requests a new PCB from controller. If ReadyQueue is empty, returns null
         public requestNewPCB(){
             if(this.ReadyQueue.isEmpty()){
                 return null;
@@ -97,6 +107,7 @@ module TSOS{
             }
         }
 
+        // Moves all PCBs in resident to Ready and updates status
         public moveAllToReady(){
             while(!this.ResidentQueue.isEmpty()){
                 this.moveToReady();

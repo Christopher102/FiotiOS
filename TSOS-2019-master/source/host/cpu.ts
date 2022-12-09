@@ -35,6 +35,7 @@ module TSOS {
             this.isExecuting = false;
         }
 
+        //Runs a new passed PCB. Figure it fits here because it'll set all CPU info for us.
         public runPCB(newPCB: TSOS.PCB){
             if(this.workingPCB != null){
                 let oldPCB: TSOS.PCB = this.workingPCB;
@@ -52,6 +53,7 @@ module TSOS {
             }
         }
 
+        //Updates CPU
         public refreshCPU(){
             this.PC = this.workingPCB.pc;
             this.Acc = this.workingPCB.acc;
@@ -62,6 +64,7 @@ module TSOS {
             TSOS.Control.updateCPUDisplay();
         }
 
+        //Refreshes currently used PCB
         public refreshWorkingPCB(){
             this.workingPCB.pc = this.PC
             this.workingPCB.acc = this.Acc
@@ -73,12 +76,14 @@ module TSOS {
 
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle: Instruction: ' + this.currentInstruction);
+            //Updates Memory. Happens before next cycle because reasons (I have none)
             TSOS.Control.updateMemory(this.workingPCB.pid);
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             if(this.isExecuting){
                 this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
                 this.fetchdecodeexecute();
+                //Updates displays and PCB itself.
                 this.refreshWorkingPCB();
                 TSOS.Control.updatePCBDisplay(this.workingPCB);
                 TSOS.Control.updateCPUDisplay();
@@ -191,21 +196,29 @@ module TSOS {
                     break;
 
                 case '00': // Break Out
+                    // Resets the CPU and sets PCB status to terminated
                     this.workingPCB.state = "Terminated";
                     this.Acc = 0;
                     this.Xreg = 0;
                     this.Yreg = 0;
                     this.Zflag = 0;
                     this.PC = 0;
+                    //Console Output
                     _Console.advanceLine();
-                    _Console.putText("PCB " + this.workingPCB.pid + " EXECUTED TO COMPLETION.")
+                    _Console.putText("PCB " + this.workingPCB.pid + " EXECUTED TO COMPLETION.");
+                    ///Updates PCB display
                     TSOS.Control.updatePCBDisplay(this.workingPCB);
+                    //Clears working PCB and sets executiong to false.
                     this.workingPCB = null;
                     this.isExecuting = false;
+                    //Updates CPU display
                     TSOS.Control.updateCPUDisplay();
+                    // Newline for either next input or next function
                     _Console.advanceLine()
                     _OsShell.putPrompt();
+                    // Requests new PCB
                     var nextPCB = _PCBController.requestNewPCB();
+                    //If recieved, assume Runall command. If not, ends execution cycle.
                     if(nextPCB === null){
                         this.isExecuting = false;
                     } else {
@@ -215,13 +228,14 @@ module TSOS {
                     break;
 
                 default:
-                    alert('Incorrect instruction');
-                    alert(this.currentInstruction);
+                    // Pray if you get here.
+                    _Kernel.krnTrace("ERROR: Incorrect Instruction " + this.currentInstruction);
                     this.isExecuting = false;
                     break;
             }
         }
 
+        //Adjusts the addr to match the startMem point. It won't work without this, and I don't understand why. But here we are.
         adjustAddr(addr){
             return addr + this.workingPCB.startMem;
         }

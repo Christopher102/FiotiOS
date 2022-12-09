@@ -5,6 +5,7 @@ var TSOS;
             this.counter = 0;
             this.quantum = _Quantum;
         }
+        //Switches oldPCB and newPCB(Whatever that may be)
         contextSwitch(oldPCB, newPCB) {
             oldPCB.state = "READY";
             newPCB.state = "RUNNING";
@@ -14,8 +15,9 @@ var TSOS;
             TSOS.Control.updatePCBDisplay(newPCB);
             TSOS.Control.updatePCBDisplay(oldPCB);
         }
+        //Checks the counter value. Increment if unequal, switch if equal
         checkCounter() {
-            if (this.counter === this.quantum) {
+            if (this.counter === this.quantum && !_PCBController.ReadyQueue.isEmpty()) {
                 _Kernel.krnTrace("Quantum met. Switching Context");
                 this.contextSwitch(_CPU.workingPCB, this.getNextPCB());
             }
@@ -23,8 +25,9 @@ var TSOS;
                 this.counter++;
             }
         }
+        //Requests the next PCB from the PCBController.
         getNextPCB() {
-            return _PCBController.ReadyQueue.dequeue();
+            return _PCBController.requestNewPCB();
         }
     }
     TSOS.cpuScheduler = cpuScheduler;

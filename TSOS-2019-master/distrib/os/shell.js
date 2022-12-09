@@ -276,6 +276,7 @@ var TSOS;
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
             TSOS.Control.hostBtnHaltOS_click(true);
         }
+        //Updates status
         shellStatus(args) {
             let statusHtml = document.getElementById("status");
             statusHtml.innerHTML = args.join(" ");
@@ -329,6 +330,7 @@ var TSOS;
                 _CPU.isExecuting = false;
             }
         }
+        //Clears all memory points, PCBs, and queues.
         shellClearMem() {
             _Kernel.krnTrace("COMMAND HEARD LOUD AND CLEAR: CLEARING MEMORY");
             _MemoryManager.clearMemory();
@@ -338,6 +340,7 @@ var TSOS;
             TSOS.Control.updateMemory(-1);
             TSOS.Control.updatePCBDisplay(null);
         }
+        //Runs all PCBs in resident.
         shellRunAll() {
             _PCBController.moveAllToReady();
             _CPU.runPCB(_PCBController.requestNewPCB());

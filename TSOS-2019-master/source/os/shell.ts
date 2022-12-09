@@ -343,6 +343,7 @@ module TSOS {
             TSOS.Control.hostBtnHaltOS_click(true);
         }
 
+        //Updates status
         public shellStatus(args: string[]){
             let statusHtml = document.getElementById("status");
             statusHtml.innerHTML = args.join(" ");
@@ -369,7 +370,7 @@ module TSOS {
                 }
             }
             if(!isValid){
-                alert("ERROR: INVALID INPUT.")
+                _Kernel.krnTrace("Error: Invalid input");
             }
             if(isValid){
                 // Loads into memory
@@ -390,16 +391,16 @@ module TSOS {
             try {
                 // I really need to be more creative in my nomenclature, but this works. It's just sending in the grabbed PCB from the ProcessController using it's PID.
                 let runPCB: TSOS.PCB = _PCBController.grabResidentByPID(args[0]);
-                alert(runPCB);
                 _CPU.runPCB(runPCB);
             } catch (e) {
-                alert("WARNING: NO PCB BY THAT PID. PLEASE RETRY");
+                _Kernel.krnTrace("Error: No PCB by that PID");
                 _CPU.isExecuting = false;
             }
 
 
         }
 
+        //Clears all memory points, PCBs, and queues.
         public shellClearMem(){
             _Kernel.krnTrace("COMMAND HEARD LOUD AND CLEAR: CLEARING MEMORY");
             _MemoryManager.clearMemory();
@@ -410,6 +411,7 @@ module TSOS {
             TSOS.Control.updatePCBDisplay(null);
         }
 
+        //Runs all PCBs in resident.
         public shellRunAll(){
             _PCBController.moveAllToReady();
             _CPU.runPCB(_PCBController.requestNewPCB());

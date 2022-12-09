@@ -100,6 +100,7 @@ var TSOS;
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
         }
+        //Updates memory tables seperated by PID. Have to do PID % 3 first, before passing. -1 will update all of the tables.
         static updateMemory(PID) {
             let table = 'memoryTable';
             let memoryIndex = 0;
@@ -131,6 +132,7 @@ var TSOS;
                     break;
             }
         }
+        // Supporter function to UpdateMemory. This does the heavy lifting, and will ensure all elements are up to date
         static updateMemTable(table, memoryIndex) {
             var memoryDisplay = document.getElementById(table);
             for (let i = 0; i < 32; i++) {
@@ -140,6 +142,7 @@ var TSOS;
                 }
             }
         }
+        //Updates the CPU display. Simple.
         static updateCPUDisplay() {
             var table = document.getElementById('cpuTable');
             table.rows[1].cells[0].innerHTML = _CPU.PC.toString();
@@ -149,6 +152,7 @@ var TSOS;
             table.rows[1].cells[4].innerHTML = _CPU.Yreg.toString();
             table.rows[1].cells[5].innerHTML = _CPU.Zflag.toString();
         }
+        //Creates a new Tbody by adding onto the old one and replacing the first child. 
         static createPcbDisplay() {
             let table = document.getElementById("tablePcb");
             let newTbody = document.createElement('tbody');
@@ -174,7 +178,8 @@ var TSOS;
             }
             table.replaceChild(newTbody, table.firstChild);
         }
-        // This one function working to updated the PCB display made me so incredibly happy I started tearing up. It's such a simple solution for what was a massive annoyance. I hate HTML so much
+        //Updates PCB display using PID number.
+        // This one function working to update the PCB display made me so incredibly happy I started tearing up. It's such a simple solution for what was a massive annoyance. I hate HTML so much
         static updatePCBDisplay(pcb) {
             if (pcb === null) {
                 let table = document.getElementById("tablePcb");
