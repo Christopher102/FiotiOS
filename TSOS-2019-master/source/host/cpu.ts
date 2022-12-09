@@ -203,9 +203,15 @@ module TSOS {
                     this.workingPCB = null;
                     this.isExecuting = false;
                     TSOS.Control.updateCPUDisplay();
-                    
                     _Console.advanceLine()
                     _OsShell.putPrompt();
+                    var nextPCB = _PCBController.requestNewPCB();
+                    if(nextPCB === null){
+                        this.isExecuting = false;
+                    } else {
+                        this.isExecuting = true;
+                        this.runPCB(nextPCB);
+                    }
                     break;
 
                 default:

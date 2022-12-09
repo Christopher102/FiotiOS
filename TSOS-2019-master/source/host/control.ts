@@ -97,6 +97,10 @@ module TSOS {
 
             _PCBController = new ProcessController();
             _PCBController.init();
+
+            // Initialize PCB Scheduler
+            _CPUScheduler = new cpuScheduler();
+            
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.

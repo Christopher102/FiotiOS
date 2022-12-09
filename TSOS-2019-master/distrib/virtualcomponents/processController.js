@@ -35,7 +35,9 @@ var TSOS;
         }
         moveToReady() {
             let movingPCB = this.ResidentQueue.dequeue();
+            alert(movingPCB.pid);
             movingPCB.state = "READY";
+            TSOS.Control.updatePCBDisplay(movingPCB);
             this.ReadyQueue.enqueue(movingPCB);
         }
         grabResidentByPID(PID) {
@@ -65,6 +67,25 @@ var TSOS;
             }
             for (let i = 0; i < this.ResidentQueue.getSize(); i++) {
                 this.ResidentQueue.dequeue();
+            }
+        }
+        emptyResidentQueue() {
+            for (let i = 0; i < this.ResidentQueue.getSize(); i++) {
+                this.ResidentQueue.dequeue();
+            }
+        }
+        requestNewPCB() {
+            if (this.ReadyQueue.isEmpty()) {
+                return null;
+            }
+            else {
+                return this.ReadyQueue.dequeue();
+            }
+        }
+        moveAllToReady() {
+            while (!this.ResidentQueue.isEmpty()) {
+                alert("HERE");
+                this.moveToReady();
             }
         }
     }

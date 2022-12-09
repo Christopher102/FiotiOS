@@ -108,6 +108,11 @@ module TSOS {
                 "clearmem",
                 "Clears all memory and queues");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellRunAll,
+                "runall",
+                "Runs all programs in resident queue");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -403,6 +408,11 @@ module TSOS {
             _Kernel.krnTrace("UPDATING DISPLAYS");
             TSOS.Control.updateMemory(-1);
             TSOS.Control.updatePCBDisplay(null);
+        }
+
+        public shellRunAll(){
+            _PCBController.moveAllToReady();
+            _CPU.runPCB(_PCBController.requestNewPCB());
         }
 
     }

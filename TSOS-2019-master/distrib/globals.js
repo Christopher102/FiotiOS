@@ -64,6 +64,9 @@ var globalPIDCount = 0;
 var _PCBController;
 //Status
 var _Status = "";
+//Scheduler
+var _Quantum = 6;
+var _CPUScheduler;
 var onDocumentLoad = function () {
     TSOS.Control.hostInit();
 };

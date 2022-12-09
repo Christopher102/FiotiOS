@@ -87,6 +87,10 @@ var _PCBController: TSOS.ProcessController;
 
 //Status
 var _Status = "";
+
+//Scheduler
+var _Quantum = 6;
+var _CPUScheduler: TSOS.cpuScheduler;
 var onDocumentLoad = function() {
 	TSOS.Control.hostInit();
 };

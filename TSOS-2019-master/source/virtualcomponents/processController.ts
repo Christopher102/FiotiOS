@@ -47,7 +47,9 @@ module TSOS{
 
         public moveToReady(){
             let movingPCB: TSOS.PCB = this.ResidentQueue.dequeue();
+            alert(movingPCB.pid);
             movingPCB.state = "READY";
+            TSOS.Control.updatePCBDisplay(movingPCB);
             this.ReadyQueue.enqueue(movingPCB);
         }
 
@@ -80,6 +82,26 @@ module TSOS{
             for(let i = 0; i < this.ResidentQueue.getSize(); i++){
                 this.ResidentQueue.dequeue();
             }
+        }
+        
+        public emptyResidentQueue(){
+            for(let i = 0; i < this.ResidentQueue.getSize(); i++){
+                this.ResidentQueue.dequeue();
+            }
+        }
+
+        public requestNewPCB(){
+            if(this.ReadyQueue.isEmpty()){
+                return null;
+            } else {
+                return this.ReadyQueue.dequeue();
+            }
+        }
+
+        public moveAllToReady(){
+            while(!this.ResidentQueue.isEmpty()){
+                this.moveToReady();
+            }           
         }
     }
 }

@@ -76,6 +76,8 @@ var TSOS;
             //Initialize PCB Controller
             _PCBController = new TSOS.ProcessController();
             _PCBController.init();
+            // Initialize PCB Scheduler
+            _CPUScheduler = new TSOS.cpuScheduler();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
