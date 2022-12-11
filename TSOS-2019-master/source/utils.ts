@@ -43,5 +43,14 @@ module TSOS {
             }
             return retVal;
         }
+
+
+        // Like hell I'm not using cheap string fixes. The fact that string[index] = value doesn't work in typescript makes me very very very annoyed. I refuse to accept this.
+        public static replaceAtIndex(string: string, index, replacement){
+            let startsub = string.substring(0, index);
+            let endsub = string.substring(index, string.length);
+            return startsub + replacement + endsub;
+        }
+        // I realize this is almost illegible due to me naming to the variable string. So, it basically splits the string at the index, then puts in the replacement at that index. 
     }
 }

@@ -222,10 +222,10 @@ var TSOS;
             let row = document.querySelector('#tableHD tr[id="' + track + ":" + sector + ":" + block + '"]');
             row.cells[1].innerHTML = next;
             if (Data != _DSDD.emptyDataSet) {
-                row.cells[2].innerHTML = "01";
+                row.cells[2].innerHTML = "1";
             }
             else {
-                row.cells[2].innerHTML = "00";
+                row.cells[2].innerHTML = "0";
             }
             row.cells[3].innerHTML = Data;
         }

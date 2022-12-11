@@ -118,6 +118,11 @@ module TSOS {
                 "format",
                 "Formats the hard disk");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellCreate,
+                "create",
+                "<string> - Creates a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -426,6 +431,11 @@ module TSOS {
         public shellFormat(){
             _DSDD.format();
             _Console.putText("Formatted Disk Drive");
+        }
+
+        // Creates a file on hard disk
+        public shellCreate(args: string[]){
+            _DSDD.create(args[0]);
         }
 
     }
