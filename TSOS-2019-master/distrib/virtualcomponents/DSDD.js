@@ -2,107 +2,85 @@ var TSOS;
 (function (TSOS) {
     class DSDD {
         constructor() {
-            this.emptyDataSet = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
         }
-        getAddr(string) {
-            let t = string[0];
-            let s = string[1];
-            let b = string[2];
+        createEmptyDataset() {
+            let set = ["0", "0", "0", "0"];
+            let i = 0;
+            while (i < 64) {
+                set.push("--");
+                i++;
+            }
+            return set;
+        }
+        createAddr(t, s, b) {
             return t + ":" + s + ":" + b;
+        }
+        getTSB(addr) {
+            alert(addr);
+            let t = addr[0];
+            let s = addr[2];
+            let b = addr[4];
+            return [t, s, b];
+        }
+        createDataArray(data) {
+            let set = data.split(" ");
+            return set;
         }
         format() {
             for (let i = 0; i < 4; i++) {
                 for (let j = 0; j < 8; j++) {
                     for (let k = 0; k < 8; k++) {
-                        sessionStorage.setItem(i + ":" + j + ":" + k, this.emptyDataSet);
-                        TSOS.Control.updateHardDisk(i, j, k, "0,0,0", sessionStorage.getItem(i + ":" + j + ":" + k));
+                        let addr = i + ":" + j + ":" + k;
+                        let dataset = this.createEmptyDataset();
+                        sessionStorage.setItem(addr, dataset.join(" "));
+                        TSOS.Control.updateHardDisk(addr, sessionStorage.getItem(addr));
                     }
                 }
             }
         }
         create(filename) {
-            var emptyblock = this.findEmptyBlock(0, 0);
-            if (emptyblock === "Sector Full") {
-                _Kernel.krnTrace("Tried Creation, Sector Full");
-            }
-            else if (emptyblock === "Track Full") {
-                _Kernel.krnTrace("Tried Creation, Track Full");
-            }
-            else if (emptyblock === "Disk Full") {
-                _Kernel.krnTrace("Tried Creation, Disk Full");
-                _Kernel.krnTrace("Please delete some files.");
+            let hexArray = TSOS.Utils.stringToHexArray(filename);
+            let fileblock = this.findEmptyBlock();
+            let writeblock = this.findEmptyBlock();
+            if (fileblock === "" || writeblock === "") {
+                _Kernel.krnTrace("No space availible. Please delete before continuing to add.");
             }
             else {
-                let charCodeArray = [];
-                for (let i = 0; i < filename.length; i++) {
-                    let char = filename.charCodeAt(i);
-                    let stringchar = char.toString(16);
-                    charCodeArray.push(stringchar);
+                let filedata = this.updateData(hexArray, writeblock, "1");
+                sessionStorage.setItem(fileblock, filedata.join(" "));
+                TSOS.Control.updateHardDisk(fileblock, filedata.join(" "));
+                let writedata = this.updateData([], '*:*:*', "1");
+                sessionStorage.setItem(writeblock, writedata.join(" "));
+                TSOS.Control.updateHardDisk(writeblock, writedata.join(" "));
+            }
+        }
+        updateData(hexArray, writeaddr, allocation) {
+            let newData = this.createEmptyDataset();
+            let tsb = this.getTSB(writeaddr);
+            newData[0] = tsb[0];
+            newData[1] = tsb[1];
+            newData[2] = tsb[2];
+            newData[3] = allocation;
+            if (hexArray.length != 0) {
+                for (let i = 0; i < hexArray.length; i++) {
+                    newData[i + 4] = hexArray[i];
                 }
-                this.write(emptyblock, this.findEmptyBlock(1, 0), charCodeArray);
-                _Console.putText("File " + filename + " Successfully Created!");
             }
+            return newData;
         }
-        write(addr, nextaddr, values) {
-            let newData = this.emptyDataSet;
-            alert(values);
-            for (let i = 0; i < values.length; i++) {
-                alert(values[i]);
-                // Custom string replacement. See my insane comments in Utils to understand my madness
-                newData = TSOS.Utils.replaceAtIndex(newData, i, " " + values[i] + " ");
-            }
-            sessionStorage.setItem(addr, newData);
-            TSOS.Control.updateHardDisk(addr[0], addr[2], addr[4], nextaddr, newData);
-            _Kernel.krnTrace("Created file");
-        }
-        findEmptyBlock(track, sector) {
-            var returntrack = 0;
-            var returnsector = 0;
-            if (track != undefined) {
-                if (sector != undefined) {
-                    returntrack = track;
-                    returnsector = sector;
-                    for (let i = 0; i < 8; i++) {
-                        let addr = returntrack + ":" + returnsector + ":" + i;
-                        let block = sessionStorage.getItem(addr);
-                        if (block === this.emptyDataSet) {
+        findEmptyBlock() {
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 8; j++) {
+                    for (let k = 0; k < 8; k++) {
+                        let addr = this.createAddr(i, j, k);
+                        let block = sessionStorage.getItem(addr).split(" ");
+                        if (block[3] === "0") {
+                            // This is only temporary, otherwise the next find would overwrite this one during a create.
+                            sessionStorage.setItem(addr, this.updateData([], "*.*.*", "1").join(" "));
                             return addr;
                         }
-                        else if (i === 7 && block != this.emptyDataSet) {
-                            return "Sector Full";
-                        }
-                    }
-                }
-                else {
-                    returntrack = track;
-                    for (let j = 0; j < 8; j++) {
-                        for (let i = 0; i < 8; i++) {
-                            let addr = this.getAddr(returntrack + j + i.toString());
-                            // This line is going to cause problems. Double check it.
-                            let block = sessionStorage.getItem(addr);
-                            if (block === this.emptyDataSet) {
-                                return addr;
-                            }
-                            else if (i === 7 && block != this.emptyDataSet && j === 7) {
-                                return "Track Full";
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                for (let k = 0; k < 4; k++) {
-                    for (let j = 0; j < 8; j++) {
-                        for (let i = 0; i < 8; i++) {
-                            let addr = this.getAddr(k + j + i.toString());
-                            // This line is going to cause problems. Double check it.
-                            let block = sessionStorage.getItem(addr);
-                            if (block === this.emptyDataSet) {
-                                return addr;
-                            }
-                            else if (i === 7 && block != this.emptyDataSet && j === 7 && k === 3) {
-                                return "Disk Full";
-                            }
+                        else if (block[3] === "1" && i === 3 && j === 7 && k === 7) {
+                            return "";
                         }
                     }
                 }

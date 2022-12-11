@@ -51,6 +51,18 @@ module TSOS {
             let endsub = string.substring(index, string.length);
             return startsub + replacement + endsub;
         }
-        // I realize this is almost illegible due to me naming to the variable string. So, it basically splits the string at the index, then puts in the replacement at that index. 
+        // I realize this is almost illegible due to me naming to the variable string. So, it basically splits the string at the index, then puts in the replacement at that index.
+
+        public static stringToHexArray(str: string){
+            let charArray = [];
+            for(let i = 0; i < str.length; i++){
+                charArray.push(str.charCodeAt(i));
+            }
+            let hexArray = [];
+            for(let i = 0; i < charArray.length; i++){
+                hexArray.push(charArray[i].toString(16));
+            }
+            return hexArray;
+        }
     }
 }

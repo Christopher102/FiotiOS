@@ -218,16 +218,21 @@ var TSOS;
             }
         }
         //Updates the hard disk in HTML. Feel like I need to create a better method.
-        static updateHardDisk(track, sector, block, next, Data) {
-            let row = document.querySelector('#tableHD tr[id="' + track + ":" + sector + ":" + block + '"]');
-            row.cells[1].innerHTML = next;
-            if (Data != _DSDD.emptyDataSet) {
-                row.cells[2].innerHTML = "1";
+        static updateHardDisk(addr, Data) {
+            let t = addr[0];
+            let s = addr[2];
+            let b = addr[4];
+            let splitData = Data.split(" ");
+            Data = splitData.join("");
+            let row = document.querySelector('#tableHD tr[id="' + t + ":" + s + ":" + b + '"]');
+            row.cells[1].innerHTML = Data[0] + ":" + Data[1] + ":" + Data[2];
+            row.cells[2].innerHTML = Data[3];
+            let actualData = Data.substring(4);
+            let bytes = [];
+            for (let i = 0; i < actualData.length; i += 2) {
+                bytes.push(actualData.substring(i, i + 2));
             }
-            else {
-                row.cells[2].innerHTML = "0";
-            }
-            row.cells[3].innerHTML = Data;
+            row.cells[3].innerHTML = bytes.join(" ");
         }
     }
     TSOS.Control = Control;
