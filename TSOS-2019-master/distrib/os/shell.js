@@ -302,7 +302,7 @@ var TSOS;
                 }
             }
             if (!isValid) {
-                alert("ERROR: INVALID INPUT.");
+                _Kernel.krnTrace("Error: Invalid input");
             }
             if (isValid) {
                 // Loads into memory
@@ -322,11 +322,10 @@ var TSOS;
             try {
                 // I really need to be more creative in my nomenclature, but this works. It's just sending in the grabbed PCB from the ProcessController using it's PID.
                 let runPCB = _PCBController.grabResidentByPID(args[0]);
-                alert(runPCB);
                 _CPU.runPCB(runPCB);
             }
             catch (e) {
-                alert("WARNING: NO PCB BY THAT PID. PLEASE RETRY");
+                _Kernel.krnTrace("Error: No PCB by that PID");
                 _CPU.isExecuting = false;
             }
         }

@@ -50,6 +50,8 @@
       }, 1000)
       
    </script>
+
+   <!-- I'm not as dumb as I was ~3 months ago. I'm writing a script to generate the harddrive table for me.-->
 </head>
  
 <body onload="onDocumentLoad()">
@@ -1288,7 +1290,28 @@
                </div>
             </label>
             </div> 
-            <div class="col d-flex justify-content-center"></div> 
+            <div class="col d-flex justify-content-center">
+               <label style="color:white"> Hard Disk
+               <div id="divHD" class="table border" style="color:white; height: 505px; width:400px; overflow: scroll;">
+                  <table id="tableHD" style="color:white; height: 505px; width:400px; overflow: scroll;">
+                     <thead>
+                        <tr>
+                           <th>Track</th>
+                           <th>Sector</th>
+                           <th>Block</th>
+                           <th>NT</th>
+                           <th>NS</th>
+                           <th>NB</th>
+                           <th>Allocation</th>
+                           <th>Data</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                     </tbody>
+                  </table>
+               </div>
+               </label>
+            </div> 
          </div>
       </div>
      </div>

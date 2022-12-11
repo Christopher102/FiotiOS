@@ -78,6 +78,8 @@ var TSOS;
             _PCBController.init();
             // Initialize PCB Scheduler
             _CPUScheduler = new TSOS.cpuScheduler();
+            //Initialize Hard Disk
+            this.startHardDisk();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -193,6 +195,25 @@ var TSOS;
                 row.cells[6].innerHTML = pcb.xreg.toString(16);
                 row.cells[7].innerHTML = pcb.yreg.toString(16);
                 row.cells[8].innerHTML = pcb.zflag.toString(16);
+            }
+        }
+        //This is used to initialize the HTML hard disk table. I'm lazy, and have no intention of manually creating those rows.
+        static startHardDisk() {
+            let table = document.getElementById('tableHD');
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 8; j++) {
+                    for (let k = 0; k < 8; k++) {
+                        let row = table.insertRow(-1);
+                        row.insertCell(-1).innerHTML = i.toString();
+                        row.insertCell(-1).innerHTML = j.toString();
+                        row.insertCell(-1).innerHTML = k.toString();
+                        row.insertCell(-1).innerHTML = '&nbsp';
+                        row.insertCell(-1).innerHTML = '&nbsp';
+                        row.insertCell(-1).innerHTML = '&nbsp';
+                        row.insertCell(-1).innerHTML = '&nbsp';
+                        row.insertCell(-1).innerHTML = '&nbsp';
+                    }
+                }
             }
         }
     }
