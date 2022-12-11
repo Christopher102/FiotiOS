@@ -88,6 +88,9 @@ var _PCBController: TSOS.ProcessController;
 //Status
 var _Status = "";
 
+//Disk
+var _Disk: TSOS.HDD;
+var _DSDD: TSOS.DSDD;
 //Scheduler
 var _Quantum = 6;
 var _CPUScheduler: TSOS.cpuScheduler;

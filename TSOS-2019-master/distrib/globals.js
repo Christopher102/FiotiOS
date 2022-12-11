@@ -64,6 +64,9 @@ var globalPIDCount = 0;
 var _PCBController;
 //Status
 var _Status = "";
+//Disk
+var _Disk;
+var _DSDD;
 //Scheduler
 var _Quantum = 6;
 var _CPUScheduler;

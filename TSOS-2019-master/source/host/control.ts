@@ -103,6 +103,8 @@ module TSOS {
 
             //Initialize Hard Disk
             this.startHardDisk();
+            _Disk = new HDD();
+            _DSDD = new DSDD();
 
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
@@ -239,9 +241,8 @@ module TSOS {
                 for(let j = 0; j < 8; j++){
                    for(let k = 0; k < 8; k++){
                       let row = <HTMLTableRowElement>table.insertRow(-1);
-                      row.insertCell(-1).innerHTML = i.toString();
-                      row.insertCell(-1).innerHTML = j.toString();
-                      row.insertCell(-1).innerHTML = k.toString();
+                      row.id = i + ":" + j + ":" + k;
+                      row.insertCell(-1).innerHTML = i.toString() + ":" + j.toString() + ":" + k.toString();
                       row.insertCell(-1).innerHTML = '&nbsp';
                       row.insertCell(-1).innerHTML = '&nbsp';
                       row.insertCell(-1).innerHTML = '&nbsp';
@@ -250,6 +251,18 @@ module TSOS {
                    }
                 }
              }
+        }
+
+        //Updates the hard disk in HTML. Feel like I need to create a better method.
+        public static updateHardDisk(track, sector, block, next, Data: string){
+            let row = <HTMLTableRowElement>document.querySelector('#tableHD tr[id="' + track + ":" + sector + ":" + block + '"]');
+            row.cells[1].innerHTML = next;
+            if(Data != _DSDD.emptyDataSet){
+                row.cells[2].innerHTML = "01";   
+            } else {
+                row.cells[2].innerHTML = "00";   
+            }
+            row.cells[3].innerHTML = Data;
         }
     }
 }

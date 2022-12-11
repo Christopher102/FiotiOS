@@ -62,6 +62,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "Runs all programs in resident queue");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellFormat, "format", "Formats the hard disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -343,6 +345,11 @@ var TSOS;
         shellRunAll() {
             _PCBController.moveAllToReady();
             _CPU.runPCB(_PCBController.requestNewPCB());
+        }
+        //Formats hard disk
+        shellFormat() {
+            _DSDD.format();
+            _Console.putText("Formatted Disk Drive");
         }
     }
     TSOS.Shell = Shell;
