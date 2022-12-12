@@ -66,6 +66,10 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellCreate, "create", "<string> - Creates a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellWrite, "write", "<string> <string> - Writes to a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellRead, "read", "<string> - Reads a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -356,6 +360,12 @@ var TSOS;
         // Creates a file on hard disk
         shellCreate(args) {
             _DSDD.create(args[0]);
+        }
+        shellWrite(args) {
+            _DSDD.writeFile(args[0], args[1]);
+        }
+        shellRead(args) {
+            _DSDD.readFile(args[0]);
         }
     }
     TSOS.Shell = Shell;

@@ -123,6 +123,17 @@ module TSOS {
                 "create",
                 "<string> - Creates a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
+
+            
+            sc = new ShellCommand(this.shellWrite,
+                "write",
+                "<string> <string> - Writes to a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellRead,
+                "read",
+                "<string> - Reads a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -436,6 +447,14 @@ module TSOS {
         // Creates a file on hard disk
         public shellCreate(args: string[]){
             _DSDD.create(args[0]);
+        }
+
+        public shellWrite(args: string[]){
+            _DSDD.writeFile(args[0], args[1]);
+        }
+
+        public shellRead(args: string[]){
+            _DSDD.readFile(args[0]);
         }
 
     }

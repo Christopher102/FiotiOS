@@ -97,6 +97,61 @@ module TSOS{
             }
 
         }
+
+        public getNext(addr){
+            let file = sessionStorage.getItem(addr).split(" ");
+            let t = file[0];
+            let s = file[1];
+            let b = file[2];
+            return this.createAddr(t,s,b);
+
+        }
+
+        public findFile(filename: string){
+            let hexArray = TSOS.Utils.stringToHexArray(filename);
+            let compareData = this.updateData(hexArray, "*.*.*", "1").join(" ");
+            for(let i = 0; i < 4; i++){
+                for(let j = 0; j < 8; j++){
+                    for(let k = 0; k < 8; k++){
+                        let addr = this.createAddr(i,j,k);
+                        let block = sessionStorage.getItem(addr);
+                        if(block.substring(8) === compareData.substring(8)){
+                            return addr;
+                        }
+
+
+                    }
+                }
+            }
+        }
+
+        public writeFile(filename: string, data: string){
+            let filenameaddr = this.findFile(filename);
+            let nextAddr = this.getNext(filenameaddr);
+            let hexArray = TSOS.Utils.stringToHexArray(data);
+            let pulledData = sessionStorage.getItem(nextAddr).split(" ");
+            for(let i = 0; i < hexArray.length; i++){
+                pulledData[i + 4] = hexArray[i];
+            }
+            sessionStorage.setItem(nextAddr, pulledData.join(" "));
+            TSOS.Control.updateHardDisk(nextAddr, pulledData.join(" "));
+            _Console.putText("Successfully wrote to file " + filename);
+        }
+
+        public readFile(filename:string){
+            let filenameaddr = this.findFile(filename);
+            let nextAddr = this.getNext(filenameaddr);
+            let pulledData = sessionStorage.getItem(nextAddr).split(" ");
+            let returnArray = [];
+            let i = 4;
+            while(pulledData[i] != "--"){
+                returnArray.push(String.fromCharCode(parseInt(pulledData[i], 16)));
+                i++;
+            }
+            _Console.putText("Contents of file " + filename + ":")
+            _Console.advanceLine();
+            _Console.putText(returnArray.join(""));
+        }
     }
 
 }
