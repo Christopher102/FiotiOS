@@ -72,6 +72,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellDelete, "delete", "<string> - Deletes a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellRename, "rename", "<string> - Renames a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -363,14 +365,21 @@ var TSOS;
         shellCreate(args) {
             _DSDD.create(args[0]);
         }
+        // Writes to a file on the hard disk
         shellWrite(args) {
             _DSDD.writeFile(args[0], args[1]);
         }
+        // Reads a file on the hard disk
         shellRead(args) {
             _DSDD.readFile(args[0]);
         }
+        //Deletes a file on hard disk
         shellDelete(args) {
             _DSDD.deleteFile(args[0]);
+        }
+        // Renaming a file on the hard disk
+        shellRename(args) {
+            _DSDD.renameFile(args[0], args[1]);
         }
     }
     TSOS.Shell = Shell;

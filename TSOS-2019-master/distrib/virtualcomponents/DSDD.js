@@ -142,6 +142,19 @@ var TSOS;
             TSOS.Control.updateHardDisk(nextAddr, sessionStorage.getItem(nextAddr));
             TSOS.Control.updateHardDisk(filenameaddr, sessionStorage.getItem(filenameaddr));
         }
+        renameFile(oldfilename, newfilename) {
+            let filenameaddr = this.findFile(oldfilename);
+            let hexArray = TSOS.Utils.stringToHexArray(newfilename);
+            let olddata = sessionStorage.getItem(filenameaddr).split(" ");
+            for (let i = 0; i < hexArray.length; i++) {
+                olddata[i + 4] = hexArray[i];
+            }
+            for (let i = hexArray.length + 4; i < olddata.length; i++) {
+                olddata[i] = "--";
+            }
+            sessionStorage.setItem(filenameaddr, olddata.join(" "));
+            TSOS.Control.updateHardDisk(filenameaddr, olddata.join(" "));
+        }
     }
     TSOS.DSDD = DSDD;
 })(TSOS || (TSOS = {}));

@@ -139,6 +139,11 @@ module TSOS {
                 "delete",
                 "<string> - Deletes a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellRename,
+                "rename",
+                "<string> - Renames a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -467,6 +472,11 @@ module TSOS {
         //Deletes a file on hard disk
         public shellDelete(args: string[]){
             _DSDD.deleteFile(args[0]);
+        }
+
+        // Renaming a file on the hard disk
+        public shellRename(args: string[]){
+            _DSDD.renameFile(args[0], args[1]);
         }
 
     }
