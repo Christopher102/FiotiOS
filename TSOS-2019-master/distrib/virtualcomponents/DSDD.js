@@ -155,6 +155,38 @@ var TSOS;
             sessionStorage.setItem(filenameaddr, olddata.join(" "));
             TSOS.Control.updateHardDisk(filenameaddr, olddata.join(" "));
         }
+        listFiles() {
+            let list = [];
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 8; j++) {
+                    for (let k = 0; k < 8; k++) {
+                        let addr = this.createAddr(i, j, k);
+                        let data = sessionStorage.getItem(addr).split(" ");
+                        if (this.checkNext(data, "*") || this.checkNext(data, "0")) {
+                            //ignore
+                        }
+                        else {
+                            list.push(this.getFileName(data).join(""));
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+        checkNext(data, checkValue) {
+            let value = false;
+            if (data[0] === checkValue && data[1] === checkValue && data[2] === checkValue) {
+                value = true;
+            }
+            return value;
+        }
+        getFileName(data) {
+            let nameArray = [];
+            for (let i = 4; i < data.indexOf("--"); i++) {
+                nameArray.push(String.fromCharCode(parseInt(data[i], 16)));
+            }
+            return nameArray;
+        }
     }
     TSOS.DSDD = DSDD;
 })(TSOS || (TSOS = {}));

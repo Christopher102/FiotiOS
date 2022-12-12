@@ -144,6 +144,11 @@ module TSOS {
                 "rename",
                 "<string> - Renames a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellList,
+                "ls",
+                "Lists all files on the disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -477,6 +482,16 @@ module TSOS {
         // Renaming a file on the hard disk
         public shellRename(args: string[]){
             _DSDD.renameFile(args[0], args[1]);
+        }
+
+        public shellList(){
+            _Console.putText("Current Files: ");
+            _Console.advanceLine();
+            let list = _DSDD.listFiles();
+            for(let i = 0; i < list.length; i++){
+                _Console.putText(list[i]);
+                _Console.advanceLine();
+            }
         }
 
     }

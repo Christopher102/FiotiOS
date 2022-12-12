@@ -74,6 +74,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellRename, "rename", "<string> - Renames a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellList, "ls", "Lists all files on the disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -380,6 +382,15 @@ var TSOS;
         // Renaming a file on the hard disk
         shellRename(args) {
             _DSDD.renameFile(args[0], args[1]);
+        }
+        shellList() {
+            _Console.putText("Current Files: ");
+            _Console.advanceLine();
+            let list = _DSDD.listFiles();
+            for (let i = 0; i < list.length; i++) {
+                _Console.putText(list[i]);
+                _Console.advanceLine();
+            }
         }
     }
     TSOS.Shell = Shell;
