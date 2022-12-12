@@ -26,6 +26,7 @@ var TSOS;
             return set;
         }
         format() {
+            // Before you get upset at the triple nested loop, understand that I originally wanted to do either hashing or a tree, but ran out of time
             for (let i = 0; i < 4; i++) {
                 for (let j = 0; j < 8; j++) {
                     for (let k = 0; k < 8; k++) {
@@ -132,6 +133,14 @@ var TSOS;
             _Console.putText("Contents of file " + filename + ":");
             _Console.advanceLine();
             _Console.putText(returnArray.join(""));
+        }
+        deleteFile(filename) {
+            let filenameaddr = this.findFile(filename);
+            let nextAddr = this.getNext(filenameaddr);
+            sessionStorage.setItem(filenameaddr, this.createEmptyDataset().join(" "));
+            sessionStorage.setItem(nextAddr, this.createEmptyDataset().join(" "));
+            TSOS.Control.updateHardDisk(nextAddr, sessionStorage.getItem(nextAddr));
+            TSOS.Control.updateHardDisk(filenameaddr, sessionStorage.getItem(filenameaddr));
         }
     }
     TSOS.DSDD = DSDD;

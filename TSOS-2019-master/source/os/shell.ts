@@ -134,6 +134,11 @@ module TSOS {
                 "read",
                 "<string> - Reads a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellDelete,
+                "delete",
+                "<string> - Deletes a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -449,12 +454,19 @@ module TSOS {
             _DSDD.create(args[0]);
         }
 
+        // Writes to a file on the hard disk
         public shellWrite(args: string[]){
             _DSDD.writeFile(args[0], args[1]);
         }
 
+        // Reads a file on the hard disk
         public shellRead(args: string[]){
             _DSDD.readFile(args[0]);
+        }
+
+        //Deletes a file on hard disk
+        public shellDelete(args: string[]){
+            _DSDD.deleteFile(args[0]);
         }
 
     }
