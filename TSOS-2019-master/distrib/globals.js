@@ -64,6 +64,9 @@ var globalPIDCount = 0;
 var _PCBController;
 //Status
 var _Status = "";
+//SS
+var _SingleStep = false;
+var _Next = false;
 //Disk
 var _Disk;
 var _DSDD;

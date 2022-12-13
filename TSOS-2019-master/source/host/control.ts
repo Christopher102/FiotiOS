@@ -80,6 +80,8 @@ module TSOS {
             // .. enable the Halt and Reset buttons ...
             (<HTMLButtonElement>document.getElementById("btnHaltOS")).disabled = false;
             (<HTMLButtonElement>document.getElementById("btnReset")).disabled = false;
+            (<HTMLButtonElement>document.getElementById("btnSSO")).disabled = false;
+            (<HTMLButtonElement>document.getElementById("btnNext")).disabled = false;
 
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();
@@ -129,6 +131,16 @@ module TSOS {
             // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
+        }
+
+        // SSO activation
+        public static hostBtnSSO_click(btn): void {
+            _SingleStep = true;
+        }
+
+        // Next button for SSO
+        public static hostBtnNext_click(btn): void {
+            _Next = true;
         }
 
         //Updates memory tables seperated by PID. Have to do PID % 3 first, before passing. -1 will update all of the tables.

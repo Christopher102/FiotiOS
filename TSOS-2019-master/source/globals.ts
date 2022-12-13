@@ -88,6 +88,9 @@ var _PCBController: TSOS.ProcessController;
 //Status
 var _Status = "";
 
+//SS
+var _SingleStep = false;
+var _Next = false;
 //Disk
 var _Disk: TSOS.HDD;
 var _DSDD: TSOS.DSDD;

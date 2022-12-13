@@ -81,6 +81,9 @@ module TSOS {
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             if(this.isExecuting){
+                if(_SingleStep){
+
+                }
                 this.currentInstruction = _MemoryManager.read(this.workingPCB, this.PC);
                 this.fetchdecodeexecute();
                 //Updates displays and PCB itself.
@@ -156,12 +159,16 @@ module TSOS {
                     this.PC++;
                     break;
                 case 'D0': // Branch N if Z true
+                this.PC++;
                 if(this.Zflag === 0){
-                    let n = parseInt(_MemoryManager.read(this.workingPCB, this.PC + 1), 16);
-                    this.PC = (this.PC + n + 2) % (this.workingPCB.endMem + 1);
-                    this.PC = this.PC - this.workingPCB.startMem;
+                    let n = parseInt(_MemoryManager.read(this.workingPCB, this.PC), 16);
+                    this.PC += n;
+                    if(this.PC > 256){
+                        this.PC = this.PC % 256
+                    }
+                    this.PC++;
                 } else {
-                    this.PC += 2;
+                    this.PC ++;
                 }
                     break;
                 case 'EE': // Increment byte
