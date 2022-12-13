@@ -108,10 +108,16 @@ var TSOS;
                 }
             }
         }
-        writeFile(filename, data) {
+        writeFile(filename, data, inHex = false) {
+            let hexArray = [];
+            if (inHex) {
+                hexArray = data.split(" ");
+            }
+            else {
+                hexArray = TSOS.Utils.stringToHexArray(data);
+            }
             let filenameaddr = this.findFile(filename);
             let nextAddr = this.getNext(filenameaddr);
-            let hexArray = TSOS.Utils.stringToHexArray(data);
             let pulledData = sessionStorage.getItem(nextAddr).split(" ");
             for (let i = 0; i < hexArray.length; i++) {
                 pulledData[i + 4] = hexArray[i];
@@ -186,6 +192,13 @@ var TSOS;
                 nameArray.push(String.fromCharCode(parseInt(data[i], 16)));
             }
             return nameArray;
+        }
+        rollOut(PID, data) {
+            let filename = "~" + PID;
+            this.create(filename);
+            this.writeFile(filename, data.join(" "), true);
+        }
+        rollIn(PID) {
         }
     }
     TSOS.DSDD = DSDD;

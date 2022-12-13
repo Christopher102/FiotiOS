@@ -11,7 +11,7 @@ module TSOS{
         public ir: string;
         public acc: number;
         public zflag: number;
-        public location: number;
+        public location: string;
         constructor(pid, startMem, endMem){
             this.pid = pid;
             this.priority = 0;
@@ -24,7 +24,7 @@ module TSOS{
             this.ir = _MemoryAccessor.getMemory(startMem).toString();
             this.acc = 0;
             this.zflag = 0;
-            this.location = 0;
+            this.location = "MEM";
 
         }
     }

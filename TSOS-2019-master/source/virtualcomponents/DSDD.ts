@@ -126,10 +126,15 @@ module TSOS{
             }
         }
 
-        public writeFile(filename: string, data: string){
+        public writeFile(filename: string, data: string, inHex = false){
+            let hexArray = [];
+            if(inHex){
+                hexArray = data.split(" ");
+            } else {
+                hexArray = TSOS.Utils.stringToHexArray(data);
+            }
             let filenameaddr = this.findFile(filename);
             let nextAddr = this.getNext(filenameaddr);
-            let hexArray = TSOS.Utils.stringToHexArray(data);
             let pulledData = sessionStorage.getItem(nextAddr).split(" ");
             for(let i = 0; i < hexArray.length; i++){
                 pulledData[i + 4] = hexArray[i];
@@ -212,6 +217,16 @@ module TSOS{
                 nameArray.push(String.fromCharCode(parseInt(data[i], 16)));
             }
             return nameArray;
+        }
+
+        public rollOut(PID, data: string[]){
+            let filename = "~" + PID;
+            this.create(filename);
+            this.writeFile(filename, data.join(" "), true);
+        }
+
+        public rollIn(PID){
+
         }
     }
 

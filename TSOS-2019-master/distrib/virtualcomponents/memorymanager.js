@@ -39,20 +39,22 @@ var TSOS;
                     this.segments[2] = 1;
                     break;
                 case -1:
-                    startMem = -1;
-                    endMem = -1;
+                    startMem = 0;
+                    endMem = 0;
                     break;
                 default:
                     break;
             }
-            if (startMem === -1) {
+            if (segmentSelection === -1) {
                 //Roll out into HDD. Something Something Useful Comment
+                _PCBController.newPCB(globalPIDCount, startMem, endMem, "HDD");
+                _DSDD.rollOut(globalPIDCount, valuelist);
             }
             else {
                 for (let i = 0; i < valuelist.length; i++) {
                     _Memory.memorySet[i + startMem] = valuelist[i];
                 }
-                return [startMem, endMem];
+                _PCBController.newPCB(globalPIDCount, startMem, endMem);
             }
         }
         readByte(location) {

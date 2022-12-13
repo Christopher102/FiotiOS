@@ -409,10 +409,8 @@ module TSOS {
                 _Kernel.krnTrace("Error: Invalid input");
             }
             if(isValid){
-                // Loads into memory
-                let memBounds = _MemoryManager.loadSegment(textArray);
-                // Creates PCB
-                _PCBController.newPCB(globalPIDCount, memBounds[0], memBounds[1]);
+                // Loads into memory and creates the PCB. Had to wrap it in one in order to support rool in / roll out
+                _MemoryManager.loadSegment(textArray);
                 //Display PCB
                 TSOS.Control.createPcbDisplay();
                 _Console.putText("PCB Generated Successfully! PID: " + globalPIDCount);

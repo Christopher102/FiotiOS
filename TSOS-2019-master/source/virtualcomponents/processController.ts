@@ -17,8 +17,9 @@ module TSOS{
         }
 
         //Generates a new PCB, and sets the memory segment. If you get an error here, dear god in heaven help you.
-        public newPCB(PID, startMem, endMem){
+        public newPCB(PID, startMem, endMem, location = "MEM"){
             let freshPCB = new TSOS.PCB(PID, startMem, endMem);
+            freshPCB.location = location;
             this.ResidentQueue.enqueue(freshPCB);
         }
 

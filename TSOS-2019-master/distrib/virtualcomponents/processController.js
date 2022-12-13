@@ -10,8 +10,9 @@ var TSOS;
         init() {
         }
         //Generates a new PCB, and sets the memory segment. If you get an error here, dear god in heaven help you.
-        newPCB(PID, startMem, endMem) {
+        newPCB(PID, startMem, endMem, location = "MEM") {
             let freshPCB = new TSOS.PCB(PID, startMem, endMem);
+            freshPCB.location = location;
             this.ResidentQueue.enqueue(freshPCB);
         }
         //Moves a PCB from Resident to ready

@@ -181,7 +181,7 @@ var TSOS;
                 // PCB info
                 row.insertCell(-1).innerHTML = tempPCB.pid.toString();
                 row.insertCell(-1).innerHTML = tempPCB.state.toLocaleUpperCase();
-                row.insertCell(-1).innerHTML = tempPCB.startMem.toString(16);
+                row.insertCell(-1).innerHTML = tempPCB.location;
                 row.insertCell(-1).innerHTML = tempPCB.priority.toString(16);
                 row.insertCell(-1).innerHTML = tempPCB.pc.toString(16);
                 row.insertCell(-1).innerHTML = tempPCB.acc.toString(16).toLocaleUpperCase();
@@ -202,6 +202,7 @@ var TSOS;
             else {
                 let row = document.querySelector('#tablePcb tr[id="' + pcb.pid + '"]');
                 row.cells[1].innerHTML = pcb.state.toLocaleUpperCase();
+                row.cells[3].innerHTML = pcb.location;
                 row.cells[4].innerHTML = pcb.pc.toString();
                 row.cells[5].innerHTML = pcb.acc.toString(16);
                 row.cells[6].innerHTML = pcb.xreg.toString(16);

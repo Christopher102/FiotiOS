@@ -13,7 +13,7 @@ var TSOS;
             this.ir = _MemoryAccessor.getMemory(startMem).toString();
             this.acc = 0;
             this.zflag = 0;
-            this.location = 0;
+            this.location = "MEM";
         }
     }
     TSOS.PCB = PCB;
