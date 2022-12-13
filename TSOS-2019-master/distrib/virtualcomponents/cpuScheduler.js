@@ -20,6 +20,7 @@ var TSOS;
             if (this.counter === this.quantum && !_PCBController.ReadyQueue.isEmpty()) {
                 _Kernel.krnTrace("Quantum met. Switching Context");
                 this.contextSwitch(_CPU.workingPCB, this.getNextPCB());
+                this.counter = 0;
             }
             else {
                 this.counter++;
