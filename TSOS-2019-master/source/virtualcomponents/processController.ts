@@ -17,32 +17,7 @@ module TSOS{
         }
 
         //Generates a new PCB, and sets the memory segment. If you get an error here, dear god in heaven help you.
-        public newPCB(PID){
-            let startMem = 0;
-            let endMem =  0;
-            //  checking segments by checking PID number
-            switch (PID % 3) {
-                case 0:
-                    startMem = 0;
-                    endMem = 255;
-                    break;
-                
-                case 1:
-                    startMem = 256;
-                    endMem = 511;
-                    break;
-                
-                case 2:
-                    startMem = 512;
-                    endMem = 767;
-                    break;
-            
-                default:
-                    alert("You managed to break a mod. Congrats.");
-                    _Kernel.krnTrapError("GLOBAL PID PCB ERROR: OUT OF RANGE MOD");
-                    break;
-            }
-
+        public newPCB(PID, startMem, endMem){
             let freshPCB = new TSOS.PCB(PID, startMem, endMem);
             this.ResidentQueue.enqueue(freshPCB);
         }

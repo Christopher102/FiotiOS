@@ -14,51 +14,45 @@ var TSOS;
                 _Memory.memorySet[i] = "00";
             }
         }
+        checkEmptySegment() {
+            let segmentIndex = this.segments.indexOf(-1);
+            return segmentIndex;
+        }
         loadSegment(valuelist) {
+            let segmentSelection = this.checkEmptySegment();
             let startMem = 0;
             let endMem = 0;
-            //  checking segments by checking PID number
-            switch (globalPIDCount % 3) {
+            switch (segmentSelection) {
                 case 0:
                     startMem = 0;
                     endMem = 255;
+                    this.segments[0] = 1;
                     break;
                 case 1:
                     startMem = 256;
                     endMem = 511;
+                    this.segments[1] = 1;
                     break;
                 case 2:
                     startMem = 512;
                     endMem = 767;
-                    break;
-                default:
-                    alert("You managed to break a mod. Congrats.");
-                    _Kernel.krnTrapError("GLOBAL PID MEMORY ERROR: OUT OF RANGE MOD");
-                    break;
-            }
-            this.clearMemorySegment(startMem, endMem);
-            switch (startMem) {
-                case startMem = 0:
-                    for (let i = 0; i < valuelist.length; i++) {
-                        _MemoryAccessor.setMemory(valuelist[i], i);
-                    }
-                    this.segments[0] = 1;
-                    break;
-                case startMem = 256:
-                    for (let i = 0; i < valuelist.length; i++) {
-                        _MemoryAccessor.setMemory(valuelist[i], i + 256);
-                    }
-                    this.segments[1] = 1;
-                    break;
-                case startMem = 512:
-                    for (let i = 0; i < valuelist.length; i++) {
-                        _MemoryAccessor.setMemory(valuelist[i], i + 512);
-                    }
                     this.segments[2] = 1;
                     break;
-                default:
-                    alert("ERROR: START VALUE NOT 0, 256, or 712");
+                case -1:
+                    startMem = -1;
+                    endMem = -1;
                     break;
+                default:
+                    break;
+            }
+            if (startMem === -1) {
+                //Roll out into HDD. Something Something Useful Comment
+            }
+            else {
+                for (let i = 0; i < valuelist.length; i++) {
+                    _Memory.memorySet[i + startMem] = valuelist[i];
+                }
+                return [startMem, endMem];
             }
         }
         readByte(location) {

@@ -320,13 +320,15 @@ var TSOS;
             }
             if (isValid) {
                 // Loads into memory
-                _MemoryManager.loadSegment(textArray);
+                let memBounds = _MemoryManager.loadSegment(textArray);
                 // Creates PCB
-                _PCBController.newPCB(globalPIDCount);
+                _PCBController.newPCB(globalPIDCount, memBounds[0], memBounds[1]);
                 //Display PCB
                 TSOS.Control.createPcbDisplay();
                 _Console.putText("PCB Generated Successfully! PID: " + globalPIDCount);
-                TSOS.Control.updateMemory(globalPIDCount % 3);
+                if (globalPIDCount < 4) {
+                    TSOS.Control.updateMemory(globalPIDCount % 3);
+                }
                 // Increases pid counter
                 globalPIDCount += 1;
                 //Updates visual memory
