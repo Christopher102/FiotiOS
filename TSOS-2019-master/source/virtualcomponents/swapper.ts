@@ -14,10 +14,10 @@ module TSOS{
             this.outPCB = oldPCB;
             this.inPCB = _PCBController.ReadyQueue.popTail();
             let outdata = _MemoryManager.getSegmentAndClear(this.outPCB);
-            _DSDD.rollIn(this.inPCB.pid);
             this.inPCB.location = "MEM";
             this.inPCB.startMem = this.outPCB.startMem;
             this.inPCB.endMem = this.outPCB.endMem;
+            _DSDD.rollIn(this.inPCB.pid);
             _DSDD.rollOut(this.outPCB.pid, outdata);
             this.outPCB.location = "HDD";
             this.outPCB.startMem = 0;

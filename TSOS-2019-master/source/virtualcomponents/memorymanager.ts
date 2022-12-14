@@ -32,8 +32,7 @@ module TSOS{
         }
 
         public checkEmptySegment(){
-            let segmentIndex = this.segments.indexOf(-1);
-            alert(segmentIndex);
+            let segmentIndex = this.segments.findIndex(i => i === -1);
             return segmentIndex;
         }
 
@@ -61,6 +60,7 @@ module TSOS{
                 case -1:
                     startMem = 0;
                     endMem = 0;
+                    alert("NO EMPTY SEGMENTS");
                     break;
                 default:
                     break;
@@ -110,7 +110,6 @@ module TSOS{
                 storedMemory.push(value);
             }
             this.clearMemorySegment(PCB.startMem, PCB.endMem);
-            this.segments[PCB.pid % 3] = -1;
             return storedMemory;
 
         }
@@ -125,16 +124,19 @@ module TSOS{
                     startMem = 0;
                     endMem = 255;
                     segmentIndex = 0;
+                    this.segments[segmentIndex] = 1;
                     break;
                 case 1:
                     startMem = 256;
                     endMem = 511;
                     segmentIndex = 1;
+                    this.segments[segmentIndex] = 1;
                     break;
                 case 2:
                     startMem = 512;
                     endMem = 767;
                     segmentIndex = 2;
+                    this.segments[segmentIndex] = 1;
                     break;
                 case -1:
                     startMem = 0;
@@ -146,7 +148,6 @@ module TSOS{
             for(let i = 0; i < valuelist.length; i++){
                 _Memory.memorySet[i + startMem] = valuelist[i];
             }
-            this.segments[segmentIndex] = globalPIDCount;
             return [startMem, endMem];
         }
     }

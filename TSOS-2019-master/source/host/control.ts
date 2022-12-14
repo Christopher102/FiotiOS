@@ -221,6 +221,7 @@ module TSOS {
                 row.insertCell(-1).innerHTML = tempPCB.xreg.toString(16).toLocaleUpperCase();
                 row.insertCell(-1).innerHTML = tempPCB.yreg.toString(16).toLocaleUpperCase();
                 row.insertCell(-1).innerHTML = tempPCB.zflag.toString(16)
+                row.insertCell(-1).innerHTML = tempPCB.startMem.toString();
                 _PCBController.ResidentQueue.enqueue(tempPCB);
             }
             table.replaceChild(newTbody, table.firstChild);
@@ -243,6 +244,7 @@ module TSOS {
                 row.cells[6].innerHTML = pcb.xreg.toString(16);
                 row.cells[7].innerHTML = pcb.yreg.toString(16);
                 row.cells[8].innerHTML = pcb.zflag.toString(16);
+                row.cells[9].innerHTML = pcb.startMem.toString();
             }
 
         }
