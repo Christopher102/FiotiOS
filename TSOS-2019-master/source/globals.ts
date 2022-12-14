@@ -94,6 +94,9 @@ var _Next = false;
 //Disk
 var _Disk: TSOS.HDD;
 var _DSDD: TSOS.DSDD;
+var HDDSwap = false;
+var _Swapper: TSOS.Swapper;
+var _SwapIndex = 0;
 //Scheduler
 var _Quantum = 6;
 var _CPUScheduler: TSOS.cpuScheduler;

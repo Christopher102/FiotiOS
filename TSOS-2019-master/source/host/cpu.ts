@@ -224,7 +224,7 @@ module TSOS {
                     _Console.advanceLine()
                     _OsShell.putPrompt();
                     // Requests new PCB
-                    var nextPCB = _PCBController.requestNewPCB();
+                    var nextPCB: TSOS.PCB = _PCBController.requestNewPCB();
                     //If recieved, assume Runall command. If not, ends execution cycle.
                     if(nextPCB === null){
                         this.isExecuting = false;

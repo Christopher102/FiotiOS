@@ -124,7 +124,7 @@ var TSOS;
             }
             sessionStorage.setItem(nextAddr, pulledData.join(" "));
             TSOS.Control.updateHardDisk(nextAddr, pulledData.join(" "));
-            _Console.putText("Successfully wrote to file " + filename);
+            //_Console.putText("Successfully wrote to file " + filename);
         }
         readFile(filename) {
             let filenameaddr = this.findFile(filename);
@@ -179,6 +179,16 @@ var TSOS;
             }
             return list;
         }
+        readFileWithoutOutput(filename) {
+            let filenameaddr = this.findFile(filename);
+            let nextAddr = this.getNext(filenameaddr);
+            let pulledData = sessionStorage.getItem(nextAddr).split(" ");
+            let returnArray = [];
+            returnArray = pulledData.filter(i => i !== "--");
+            returnArray = returnArray.filter(i => i !== "*");
+            returnArray = returnArray.filter(i => i.length > 1);
+            return returnArray;
+        }
         checkNext(data, checkValue) {
             let value = false;
             if (data[0] === checkValue && data[1] === checkValue && data[2] === checkValue) {
@@ -199,6 +209,12 @@ var TSOS;
             this.writeFile(filename, data.join(" "), true);
         }
         rollIn(PID) {
+            let filename = "~" + PID;
+            let data = this.readFileWithoutOutput(filename);
+            let memorySeg = _MemoryManager.loadIntoMemorySegment(data);
+            TSOS.Control.updateMemory(PID % 3);
+            this.deleteFile(filename);
+            return memorySeg;
         }
     }
     TSOS.DSDD = DSDD;

@@ -107,6 +107,7 @@ module TSOS {
             this.startHardDisk();
             _Disk = new HDD();
             _DSDD = new DSDD();
+            _Swapper = new Swapper();
 
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
@@ -236,7 +237,7 @@ module TSOS {
             } else {
                 let row = <HTMLTableRowElement>document.querySelector('#tablePcb tr[id="' + pcb.pid + '"]');
                 row.cells[1].innerHTML = pcb.state.toLocaleUpperCase();
-                row.cells[3].innerHTML = pcb.location;
+                row.cells[2].innerHTML = pcb.location;
                 row.cells[4].innerHTML = pcb.pc.toString();
                 row.cells[5].innerHTML = pcb.acc.toString(16);
                 row.cells[6].innerHTML = pcb.xreg.toString(16);

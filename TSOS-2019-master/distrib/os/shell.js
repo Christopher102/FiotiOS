@@ -392,6 +392,9 @@ var TSOS;
                 _Console.advanceLine();
             }
         }
+        storeProcess() {
+            _DSDD.storeProcess(0);
+        }
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));

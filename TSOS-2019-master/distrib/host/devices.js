@@ -52,6 +52,8 @@ var TSOS;
                 _KernelInterruptQueue.enqueue(new TSOS.Interrupt(KEYBOARD_IRQ, params));
             }
         }
+        static hostEnablehardDrive() {
+        }
     }
     TSOS.Devices = Devices;
 })(TSOS || (TSOS = {}));

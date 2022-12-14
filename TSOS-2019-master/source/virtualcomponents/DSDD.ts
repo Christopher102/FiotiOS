@@ -141,7 +141,7 @@ module TSOS{
             }
             sessionStorage.setItem(nextAddr, pulledData.join(" "));
             TSOS.Control.updateHardDisk(nextAddr, pulledData.join(" "));
-            _Console.putText("Successfully wrote to file " + filename);
+            //_Console.putText("Successfully wrote to file " + filename);
         }
 
         public readFile(filename:string){
@@ -203,6 +203,17 @@ module TSOS{
             return list;
         }
 
+        public readFileWithoutOutput(filename : string){
+            let filenameaddr = this.findFile(filename);
+            let nextAddr = this.getNext(filenameaddr);
+            let pulledData = sessionStorage.getItem(nextAddr).split(" ");
+            let returnArray = [];
+            returnArray = pulledData.filter(i => i !== "--");
+            returnArray = returnArray.filter(i => i !== "*");
+            returnArray = returnArray.filter(i => i.length > 1);
+            return returnArray;
+        }
+
         public checkNext(data: string[], checkValue: string){
             let value = false;
             if(data[0] === checkValue && data[1] === checkValue && data[2] === checkValue){
@@ -226,8 +237,16 @@ module TSOS{
         }
 
         public rollIn(PID){
+            let filename = "~" + PID;
+            let data = this.readFileWithoutOutput(filename);
+            let memorySeg = _MemoryManager.loadIntoMemorySegment(data);
+            TSOS.Control.updateMemory(PID % 3);
+            this.deleteFile(filename);
+            return memorySeg;
+
 
         }
+    
     }
 
 }

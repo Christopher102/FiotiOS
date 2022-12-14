@@ -53,8 +53,20 @@ module TSOS{
 
         //Honestly? Could remove this. But it's fine for now.
         public grabReadyByPID(PID: string){
-            let numPID = parseInt(PID);
-            return this.ReadyQueue[numPID];
+            var toRun : TSOS.PCB;
+            var i = 0;
+            while (i < this.ReadyQueue.getSize()) {
+                var tempPCB : TSOS.PCB = this.ReadyQueue.dequeue();
+                if(tempPCB.pid.toString() === PID){
+                    toRun = tempPCB;
+                } else {
+                    this.tempQueue.enqueue(tempPCB);
+                }
+            }
+            for(let i = 0; i < this.tempQueue.getSize(); i ++){
+                this.ReadyQueue.enqueue(this.tempQueue.dequeue());
+            }
+            return toRun;
         }
 
         //Empties out both queues entirely
@@ -88,6 +100,37 @@ module TSOS{
             while(!this.ResidentQueue.isEmpty()){
                 this.moveToReady();
             }           
+        }
+
+        //Grabs from the first instance of a HDD PCB. This may solve my issue.
+        public requestHDDPCB(){
+            var toRun : TSOS.PCB;
+            var i = 0;
+            while (i < this.ReadyQueue.getSize()) {
+                var tempPCB : TSOS.PCB = this.ReadyQueue.dequeue();
+                if(tempPCB.location === "HDD"){
+                    toRun = tempPCB;
+                } else {
+                    this.tempQueue.enqueue(tempPCB);
+                }
+            }
+            for(let i = 0; i < this.tempQueue.getSize(); i ++){
+                this.ReadyQueue.enqueue(this.tempQueue.dequeue());
+            }
+            return toRun;
+        }
+
+        public getPIDSOfReady(){
+            var PIDL = [];
+            var i = 0;
+            while (i < this.ReadyQueue.getSize() + 2) {
+                var tempPCB : TSOS.PCB = this.ReadyQueue.dequeue();
+                alert(tempPCB.pid);
+                this.tempQueue.enqueue(tempPCB);
+            }
+            for(let i = 0; i < this.tempQueue.getSize(); i ++){
+                this.ReadyQueue.enqueue(this.tempQueue.dequeue());
+            }
         }
     }
 }
