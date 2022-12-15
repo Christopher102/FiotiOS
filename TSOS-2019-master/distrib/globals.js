@@ -58,6 +58,7 @@ var _DefaultMemorySize = 768;
 var _MemoryAccessor;
 var _MemoryManager;
 var _Memory;
+var _LoadCount = 0;
 //PID
 var globalPIDCount = 0;
 //PCB

@@ -5,23 +5,140 @@ var TSOS;
             this.outPCB = null;
             this.inPCB = null;
         }
-        swapMemory(oldPCB) {
+        swap(oldPCB) {
             this.outPCB = oldPCB;
             this.inPCB = _PCBController.ReadyQueue.popTail();
-            let outdata = _MemoryManager.getSegmentAndClear(this.outPCB);
-            this.inPCB.location = "MEM";
-            this.inPCB.startMem = this.outPCB.startMem;
-            this.inPCB.endMem = this.outPCB.endMem;
-            _DSDD.rollIn(this.inPCB.pid);
-            _DSDD.rollOut(this.outPCB.pid, outdata);
-            this.outPCB.location = "HDD";
-            this.outPCB.startMem = 0;
-            this.outPCB.endMem = 0;
-            _PCBController.ReadyQueue.enqueue(this.inPCB);
-            _PCBController.ReadyQueue.enqueue(this.outPCB);
-            TSOS.Control.updatePCBDisplay(this.outPCB);
-            TSOS.Control.updatePCBDisplay(this.inPCB);
-            TSOS.Control.updateMemory(this.inPCB.pid);
+            try {
+                // Get Memory Array
+                let memoryArray = this.getMemoryForSwap(this.outPCB);
+                // Get HDD Array
+                let hddArray = this.getHDDForSwap(this.inPCB);
+                // Get Memory min and max to set
+                let memoryStart = this.outPCB.startMem;
+                let memoryEnd = this.outPCB.endMem;
+                // write Memory Array to HDD
+                let filename = "~" + this.outPCB.pid;
+                this.setHDD(filename, memoryArray);
+                // write HDD Array to Memory
+                let memorySeg = this.getMemorySeg(memoryStart);
+                _MemoryManager.loadbySegment(memorySeg, hddArray);
+                //Update InPCB location value
+                this.inPCB.location = "MEM";
+                // Update InPCB memory values
+                this.inPCB.startMem = memoryStart;
+                this.inPCB.endMem = memoryEnd;
+                // Update OutPCB location value
+                this.outPCB.location = "HDD";
+                // Update OutPCB memory values
+                this.outPCB.startMem = -1;
+                this.outPCB.endMem = -1;
+                // Update visuals(?)
+                TSOS.Control.updatePCBDisplay(this.outPCB);
+                TSOS.Control.updatePCBDisplay(this.inPCB);
+                _PCBController.ReadyQueue.enqueue(this.inPCB);
+                _PCBController.ReadyQueue.enqueue(this.outPCB);
+            }
+            catch (e) {
+                alert("HEY, YOU GOT IT WRONG IN SWAP");
+            }
+        }
+        setHDD(filename, memoryArray) {
+            try {
+                _DSDD.createFile(filename);
+                _DSDD.writeInSwapBlock(filename, memoryArray);
+            }
+            catch (error) {
+                alert("ERROR IN THE SET HDD BOZO");
+            }
+        }
+        getMemorySeg(memoryStart) {
+            try {
+                let memorySeg = 0;
+                switch (memoryStart) {
+                    case 0:
+                        memorySeg = 0;
+                        break;
+                    case 256:
+                        memorySeg = 1;
+                        break;
+                    case 512:
+                        memorySeg = 2;
+                        break;
+                }
+                return memorySeg;
+            }
+            catch (e) {
+                alert("Segment Get Error");
+            }
+        }
+        getMemoryForSwap(pcb) {
+            try {
+                // Get the memory segment for this PCB
+                let memorySeg = this.getMemorySeg(pcb.startMem);
+                // Get the entirety of the memory
+                let memoryArray = _MemoryManager.getSegment(memorySeg);
+                // Clear that segment of memory
+                //_MemoryManager.clearBySegment(memorySeg);
+                //Cry
+                //Waaah Waah Wahh Stop Fucking Crying
+                // Update visuals(?)
+                TSOS.Control.updateMemory(memorySeg);
+                //Return Array containing memory
+                return memoryArray;
+            }
+            catch (e) {
+                alert(" Memory Get Swap Error " + e);
+            }
+        }
+        getHDDForSwap(pcb) {
+            try {
+                // Get the swap file's location in the HDD
+                let filename = "~" + pcb.pid;
+                let fileAddr = _DSDD.filenameSearch(filename);
+                // Get the data files location in the HDD
+                let dataAddr = _DSDD.getNext(fileAddr);
+                //Check for more than one data local.
+                let secondaryAddr = _DSDD.getNext(dataAddr);
+                // if(secondaryAddr !== "00:00:00"){
+                //     // Get the data itself
+                //     let dataArray = this.getMoreThanOneDataFile(secondaryAddr, _DSDD.getData(dataAddr));
+                //     // Empty the hdd blocks
+                //     _DSDD.deleteFile(filename);
+                //     //cry
+                //     //Waaah wahh wahhh stop fucking crying
+                //     // Update visuals(?)
+                //     //return the data
+                //     return dataArray;
+                // } else {
+                let dataArray = _DSDD.getData(dataAddr);
+                // Empty the hdd blocks
+                _DSDD.deleteFile(filename);
+                //cry
+                //Waaah wahh wahhh stop fucking crying
+                // Update visuals(?)
+                //return the data
+                return dataArray;
+                //}
+            }
+            catch (e) {
+                alert("HDD Get error " + e);
+            }
+        }
+        getMoreThanOneDataFile(addr, dataArray) {
+            try {
+                let nextAddr = _DSDD.getNext(addr);
+                if (nextAddr === "00:00:00") {
+                    dataArray.concat(_DSDD.getData(addr));
+                    return dataArray;
+                }
+                else {
+                    dataArray.concat(_DSDD.getData(addr));
+                    return dataArray;
+                }
+            }
+            catch (e) {
+                alert("ERROR IN GETTING MORE THAN ONE DATAFILE" + e);
+            }
         }
     }
     TSOS.Swapper = Swapper;

@@ -74,8 +74,10 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellRename, "rename", "<string> - Renames a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
-            sc = new TSOS.ShellCommand(this.shellList, "ls", "Lists all files on the disk");
-            this.commandList[this.commandList.length] = sc;
+            // sc = new ShellCommand(this.shellList,
+            //     "ls",
+            //     "Lists all files on the disk");
+            // this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -321,6 +323,7 @@ var TSOS;
             if (isValid) {
                 // Loads into memory and creates the PCB. Had to wrap it in one in order to support rool in / roll out
                 _MemoryManager.loadSegment(textArray);
+                _LoadCount++;
                 //Display PCB
                 TSOS.Control.createPcbDisplay();
                 _Console.putText("PCB Generated Successfully! PID: " + globalPIDCount);
@@ -360,20 +363,20 @@ var TSOS;
         }
         //Formats hard disk
         shellFormat() {
-            _DSDD.format();
+            _DSDD.initializeBlocks();
             _Console.putText("Formatted Disk Drive");
         }
         // Creates a file on hard disk
         shellCreate(args) {
-            _DSDD.create(args[0]);
+            _DSDD.createFile(args[0]);
         }
         // Writes to a file on the hard disk
         shellWrite(args) {
-            _DSDD.writeFile(args[0], args[1]);
+            _DSDD.writeIntoBlock(args[0], args[1]);
         }
         // Reads a file on the hard disk
         shellRead(args) {
-            _DSDD.readFile(args[0]);
+            _DSDD.readFromBlockUsingFilename(args[0]);
         }
         //Deletes a file on hard disk
         shellDelete(args) {
@@ -382,15 +385,6 @@ var TSOS;
         // Renaming a file on the hard disk
         shellRename(args) {
             _DSDD.renameFile(args[0], args[1]);
-        }
-        shellList() {
-            _Console.putText("Current Files: ");
-            _Console.advanceLine();
-            let list = _DSDD.listFiles();
-            for (let i = 0; i < list.length; i++) {
-                _Console.putText(list[i]);
-                _Console.advanceLine();
-            }
         }
     }
     TSOS.Shell = Shell;

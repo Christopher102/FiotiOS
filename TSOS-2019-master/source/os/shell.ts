@@ -145,10 +145,10 @@ module TSOS {
                 "<string> - Renames a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
 
-            sc = new ShellCommand(this.shellList,
-                "ls",
-                "Lists all files on the disk");
-            this.commandList[this.commandList.length] = sc;
+            // sc = new ShellCommand(this.shellList,
+            //     "ls",
+            //     "Lists all files on the disk");
+            // this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -411,6 +411,7 @@ module TSOS {
             if(isValid){
                 // Loads into memory and creates the PCB. Had to wrap it in one in order to support rool in / roll out
                 _MemoryManager.loadSegment(textArray);
+                _LoadCount ++;
                 //Display PCB
                 TSOS.Control.createPcbDisplay();
                 _Console.putText("PCB Generated Successfully! PID: " + globalPIDCount);
@@ -455,23 +456,23 @@ module TSOS {
 
         //Formats hard disk
         public shellFormat(){
-            _DSDD.format();
+            _DSDD.initializeBlocks();
             _Console.putText("Formatted Disk Drive");
         }
 
         // Creates a file on hard disk
         public shellCreate(args: string[]){
-            _DSDD.create(args[0]);
+            _DSDD.createFile(args[0]);
         }
 
         // Writes to a file on the hard disk
         public shellWrite(args: string[]){
-            _DSDD.writeFile(args[0], args[1]);
+            _DSDD.writeIntoBlock(args[0], args[1]);
         }
 
         // Reads a file on the hard disk
         public shellRead(args: string[]){
-            _DSDD.readFile(args[0]);
+            _DSDD.readFromBlockUsingFilename(args[0]);
         }
 
         //Deletes a file on hard disk
@@ -484,15 +485,15 @@ module TSOS {
             _DSDD.renameFile(args[0], args[1]);
         }
 
-        public shellList(){
-            _Console.putText("Current Files: ");
-            _Console.advanceLine();
-            let list = _DSDD.listFiles();
-            for(let i = 0; i < list.length; i++){
-                _Console.putText(list[i]);
-                _Console.advanceLine();
-            }
-        }
+        // public shellList(){
+        //     _Console.putText("Current Files: ");
+        //     _Console.advanceLine();
+        //     let list = _DSDD.listFiles();
+        //     for(let i = 0; i < list.length; i++){
+        //         _Console.putText(list[i]);
+        //         _Console.advanceLine();
+        //     }
+        // }
 
     }
 }

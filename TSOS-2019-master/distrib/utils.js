@@ -60,6 +60,13 @@ var TSOS;
             }
             return hexArray;
         }
+        static stringFromHexArray(hexArray) {
+            let charArray = [];
+            for (let i = 0; i < hexArray.length; i++) {
+                charArray.push(String.fromCharCode(parseInt(hexArray[i], 16)));
+            }
+            return charArray.join("");
+        }
     }
     TSOS.Utils = Utils;
 })(TSOS || (TSOS = {}));

@@ -78,6 +78,7 @@ var _DefaultMemorySize: number = 768;
 var _MemoryAccessor: TSOS.MemoryAccessor;
 var _MemoryManager: TSOS.MemoryManager;
 var _Memory: TSOS.Memory;
+var _LoadCount = 0;
 
 //PID
 var globalPIDCount = 0;
@@ -93,7 +94,7 @@ var _SingleStep = false;
 var _Next = false;
 //Disk
 var _Disk: TSOS.HDD;
-var _DSDD: TSOS.DSDD;
+var _DSDD: TSOS.DSDD2;
 var HDDSwap = false;
 var _Swapper: TSOS.Swapper;
 var _SwapIndex = 0;

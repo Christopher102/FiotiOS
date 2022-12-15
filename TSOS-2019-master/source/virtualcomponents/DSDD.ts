@@ -135,13 +135,40 @@ module TSOS{
             }
             let filenameaddr = this.findFile(filename);
             let nextAddr = this.getNext(filenameaddr);
-            let pulledData = sessionStorage.getItem(nextAddr).split(" ");
-            for(let i = 0; i < hexArray.length; i++){
-                pulledData[i + 4] = hexArray[i];
+            if(hexArray.length > 60){
+                hexArray.length = 120;
+                let addAddr = this.findEmptyBlock();
+                this.updateTSB(nextAddr, addAddr);
+                let firstArray = hexArray.splice(0, 60);
+                let secondArray = hexArray.splice(61);
+                let updatedFirst = this.updateData(firstArray, addAddr, 1);
+                let updatedSecond = this.updateData(secondArray, "*:*:*", 1);
+                sessionStorage.setItem(nextAddr, updatedFirst.join(" "));
+                sessionStorage.setItem(addAddr, updatedSecond.join(" "));
+                TSOS.Control.updateHardDisk(nextAddr, updatedFirst.join(" "));
+                TSOS.Control.updateHardDisk(addAddr, updatedSecond.join(" "));
+            } else {
+                let pulledData = sessionStorage.getItem(nextAddr).split(" ");
+                for(let i = 0; i < hexArray.length; i++){
+                    pulledData[i + 4] = hexArray[i];
+                }
+                sessionStorage.setItem(nextAddr, pulledData.join(" "));
+                TSOS.Control.updateHardDisk(nextAddr, pulledData.join(" ")); 
             }
-            sessionStorage.setItem(nextAddr, pulledData.join(" "));
-            TSOS.Control.updateHardDisk(nextAddr, pulledData.join(" "));
             //_Console.putText("Successfully wrote to file " + filename);
+        }
+
+
+        public updateTSB(updateAddr: string, updateTSB: string){
+            let data = sessionStorage.getItem(updateAddr).split(" ");
+            alert(data);
+            let tsb = this.getTSB(updateTSB);
+            data[0] = tsb[0];
+            data[1] = tsb[1];
+            data[2] = tsb[2];
+            sessionStorage.setItem(updateAddr, data.join(" "));
+            TSOS.Control.updateHardDisk(updateAddr, data.join(" "));
+
         }
 
         public readFile(filename:string){
@@ -163,6 +190,10 @@ module TSOS{
         public deleteFile(filename:string){
             let filenameaddr = this.findFile(filename);
             let nextAddr = this.getNext(filenameaddr);
+            let addAddr = this.getNext(nextAddr);
+            if(addAddr !== "*:*:*"){
+                sessionStorage.setItem(addAddr, this.createEmptyDataset().join());
+            }
             sessionStorage.setItem(filenameaddr, this.createEmptyDataset().join(" "));
             sessionStorage.setItem(nextAddr, this.createEmptyDataset().join(" "));
             TSOS.Control.updateHardDisk(nextAddr, sessionStorage.getItem(nextAddr));
@@ -207,6 +238,13 @@ module TSOS{
             let filenameaddr = this.findFile(filename);
             let nextAddr = this.getNext(filenameaddr);
             let pulledData = sessionStorage.getItem(nextAddr).split(" ");
+            let addAddr = this.getNext(nextAddr);
+            if(addAddr !== "*:*:*"){
+                alert("ADDITIONAL");
+                let secondaryData = sessionStorage.getItem(addAddr).split(" ");
+                secondaryData.splice(0, 3);
+                pulledData = pulledData.concat(sessionStorage.getItem(addAddr).split(" "));
+            }
             let returnArray = [];
             returnArray = pulledData.filter(i => i !== "--");
             returnArray = returnArray.filter(i => i !== "*");
@@ -233,12 +271,14 @@ module TSOS{
         public rollOut(PID, data: string[]){
             let filename = "~" + PID;
             this.create(filename);
+            alert("OUTGOING DATA W/ JOIN: " + data.join(" "));
             this.writeFile(filename, data.join(" "), true);
         }
 
         public rollIn(PID){
             let filename = "~" + PID;
             let data = this.readFileWithoutOutput(filename);
+            alert("INCOMING DATA: " + data);
             let memorySeg = _MemoryManager.loadIntoMemorySegment(data);
             TSOS.Control.updateMemory(PID % 3);
             this.deleteFile(filename);

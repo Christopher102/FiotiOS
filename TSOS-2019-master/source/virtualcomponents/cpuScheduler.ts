@@ -14,10 +14,17 @@ module TSOS{
             oldPCB.state = "READY";
             newPCB.state = "RUNNING";
             _Kernel.krnTrace("Context Switch PCB " + oldPCB.pid + " FOR PCB " + newPCB.pid);
-            _Swapper.swapMemory(oldPCB);
-            _CPU.runPCB(newPCB);
-            TSOS.Control.updatePCBDisplay(newPCB);
-            TSOS.Control.updatePCBDisplay(oldPCB);
+            if(_LoadCount > 3){
+                _CPU.runPCB(newPCB);
+                TSOS.Control.updatePCBDisplay(newPCB);
+                TSOS.Control.updatePCBDisplay(oldPCB);
+                _Swapper.swap(oldPCB);
+            } else {
+                _CPU.runPCB(newPCB);
+                _PCBController.ReadyQueue.enqueue(oldPCB);
+                TSOS.Control.updatePCBDisplay(newPCB);
+                TSOS.Control.updatePCBDisplay(oldPCB);
+            }
 
         }
 
@@ -26,7 +33,6 @@ module TSOS{
             if(this.counter === this.quantum && !_PCBController.ReadyQueue.isEmpty()){
                 _Kernel.krnTrace("Quantum met. Switching Context");
                 this.contextSwitch(_CPU.workingPCB, this.getNextPCB());
-                HDDSwap = true;
                 this.counter = 0;
             } else {
                 this.counter ++;

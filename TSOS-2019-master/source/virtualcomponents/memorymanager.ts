@@ -60,7 +60,6 @@ module TSOS{
                 case -1:
                     startMem = 0;
                     endMem = 0;
-                    alert("NO EMPTY SEGMENTS");
                     break;
                 default:
                     break;
@@ -68,7 +67,7 @@ module TSOS{
             if(segmentSelection === -1){
                 //Roll out into HDD. Something Something Useful Comment
                 _PCBController.newPCB(globalPIDCount, startMem, endMem, "HDD");
-                _DSDD.rollOut(globalPIDCount, valuelist);
+                _Swapper.setHDD("~" + globalPIDCount, valuelist)
             } else {
                 for(let i = 0; i < valuelist.length; i++){
                     _Memory.memorySet[i + startMem] = valuelist[i];
@@ -81,6 +80,7 @@ module TSOS{
         public readByte(location){
             if(location > _CPU.workingPCB.endMem || location < _CPU.workingPCB.startMem){
                 _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
+                alert("READBYTE: " + location);
             } else {
                 return _MemoryAccessor.getMemory(location);
             }
@@ -89,6 +89,7 @@ module TSOS{
         public writeByte(location, value){
             if(location > _CPU.workingPCB.endMem || location < _CPU.workingPCB.startMem){
                 _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
+                alert("WRITEBYTE: " + location +" "+ value);
             } else {
                 return _MemoryAccessor.setMemory(value, location);
             }
@@ -97,6 +98,7 @@ module TSOS{
         public read(pcb : TSOS.PCB, addr){
             if(pcb.startMem + addr > _CPU.workingPCB.endMem || pcb.endMem + addr < _CPU.workingPCB.startMem){
                 _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
+                alert("READ" + addr + " "  + pcb.pid +" "+ pcb.startMem + " " + pcb.endMem);
             } else {
                 return _MemoryAccessor.getMemory(pcb.startMem + addr);
             }
@@ -149,6 +151,91 @@ module TSOS{
                 _Memory.memorySet[i + startMem] = valuelist[i];
             }
             return [startMem, endMem];
+        }
+
+
+        public getSegment(memorySegment: number){
+            let memoryArray = [];
+            switch(memorySegment){
+                case 0:
+                    for(let i = 0; i < 256; i++){
+                        memoryArray.push(_MemoryAccessor.getMemory(i));
+                    }
+                    TSOS.Control.updateMemory(memorySegment);
+                    return memoryArray;
+                case 1:
+                    for(let i = 256; i < 512; i++){
+                        memoryArray.push(_MemoryAccessor.getMemory(i));
+                    }
+                    TSOS.Control.updateMemory(memorySegment);
+                    return memoryArray;
+                case 2:
+                    for(let i = 0; i < 768; i++){
+                        memoryArray.push(_MemoryAccessor.getMemory(i));
+                    }
+                    TSOS.Control.updateMemory(memorySegment);
+                    return memoryArray;
+            }
+        }
+
+        public clearBySegment(memorySegment: number){
+            switch(memorySegment){
+                case 0:
+                    for(let i = 0; i < 256; i++){
+                        _MemoryAccessor.setMemory("00", i)
+                    }
+                    this.segments[memorySegment] = -1;
+                    TSOS.Control.updateMemory(memorySegment);
+                    break;
+                case 1:
+                    for(let i = 256; i < 512; i++){
+                        _MemoryAccessor.setMemory("00", i)
+                    }
+                    this.segments[memorySegment] = -1;
+                    TSOS.Control.updateMemory(memorySegment);
+                    break;
+                case 2:
+                    for(let i = 0; i < 768; i++){
+                        _MemoryAccessor.setMemory("00", i)
+                    }
+                    this.segments[memorySegment] = -1;
+                    TSOS.Control.updateMemory(memorySegment);
+                    break;
+            }
+        }
+
+
+        public loadbySegment(memorySegment: number, data: Array<string>){
+            try{
+            switch(memorySegment){
+                case 0:
+                    for(let i = 0; i < data.length; i++){
+                        _Memory.memorySet[i] = data[i];
+                    }
+                    this.segments[memorySegment] = 1;
+                    TSOS.Control.updateMemory(memorySegment);
+                    break;
+                case 1:
+                    for(let i = 256; i < data.length; i++){
+                        _Memory.memorySet[i] = data[i - 256];
+                    }
+                    this.segments[memorySegment] = 1;
+                    TSOS.Control.updateMemory(memorySegment);
+                    break;
+                case 2:
+                    for(let i = 512; i < data.length; i++){
+                        _Memory.memorySet[i] = data[i - 512];
+                    }
+                    this.segments[memorySegment] = 1;
+                    TSOS.Control.updateMemory(memorySegment);
+                    break;
+                default:
+                    alert("Error: Mem Segment not caught");
+                    break;
+                }
+            } catch(e){
+                alert("ERROR IN LOAD BY SEGMENT " + e);
+            }
         }
     }
 }

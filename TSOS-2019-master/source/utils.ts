@@ -65,5 +65,13 @@ module TSOS {
             return hexArray;
         }
 
+        public static stringFromHexArray(hexArray : Array<string>){
+            let charArray = [];
+            for(let i = 0; i < hexArray.length; i++){
+                charArray.push(String.fromCharCode(parseInt(hexArray[i], 16)));
+            }
+            return charArray.join("");
+        }
+
     }
 }
