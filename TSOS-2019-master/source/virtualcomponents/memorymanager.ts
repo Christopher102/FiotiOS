@@ -80,7 +80,7 @@ module TSOS{
         public readByte(location){
             if(location > _CPU.workingPCB.endMem || location < _CPU.workingPCB.startMem){
                 _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
-                alert("READBYTE: " + location);
+                _Kernel.krnTrace("READBYTE: " + location);
             } else {
                 return _MemoryAccessor.getMemory(location);
             }
@@ -89,7 +89,7 @@ module TSOS{
         public writeByte(location, value){
             if(location > _CPU.workingPCB.endMem || location < _CPU.workingPCB.startMem){
                 _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
-                alert("WRITEBYTE: " + location +" "+ value);
+                _Kernel.krnTrace("WRITEBYTE: " + location +" "+ value);
             } else {
                 return _MemoryAccessor.setMemory(value, location);
             }
@@ -97,8 +97,7 @@ module TSOS{
 
         public read(pcb : TSOS.PCB, addr){
             if(pcb.startMem + addr > _CPU.workingPCB.endMem || pcb.endMem + addr < _CPU.workingPCB.startMem){
-                _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
-                alert("READ" + addr + " "  + pcb.pid +" "+ pcb.startMem + " " + pcb.endMem);
+                _Kernel.krnTrace("OUT OF BOUNDS READ " + addr + " "  + pcb.pid +" "+ pcb.startMem + " " + pcb.endMem);
             } else {
                 return _MemoryAccessor.getMemory(pcb.startMem + addr);
             }
@@ -230,11 +229,11 @@ module TSOS{
                     TSOS.Control.updateMemory(memorySegment);
                     break;
                 default:
-                    alert("Error: Mem Segment not caught");
+                    _Kernel.krnTrace("Error: Mem Segment not caught");
                     break;
                 }
             } catch(e){
-                alert("ERROR IN LOAD BY SEGMENT " + e);
+                _Kernel.krnTrace("ERROR IN LOAD BY SEGMENT " + e);
             }
         }
     }

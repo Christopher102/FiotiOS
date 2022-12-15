@@ -90,8 +90,7 @@ var TSOS;
         }
         read(pcb, addr) {
             if (pcb.startMem + addr > _CPU.workingPCB.endMem || pcb.endMem + addr < _CPU.workingPCB.startMem) {
-                _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
-                alert("READ" + addr + " " + pcb.pid + " " + pcb.startMem + " " + pcb.endMem);
+                _Kernel.krnTrace("OUT OF BOUNDS READ " + addr + " " + pcb.pid + " " + pcb.startMem + " " + pcb.endMem);
             }
             else {
                 return _MemoryAccessor.getMemory(pcb.startMem + addr);
@@ -215,12 +214,12 @@ var TSOS;
                         TSOS.Control.updateMemory(memorySegment);
                         break;
                     default:
-                        alert("Error: Mem Segment not caught");
+                        _Kernel.krnTrace("Error: Mem Segment not caught");
                         break;
                 }
             }
             catch (e) {
-                alert("ERROR IN LOAD BY SEGMENT " + e);
+                _Kernel.krnTrace("ERROR IN LOAD BY SEGMENT " + e);
             }
         }
     }

@@ -39,7 +39,7 @@ var TSOS;
                 _PCBController.ReadyQueue.enqueue(this.outPCB);
             }
             catch (e) {
-                alert("HEY, YOU GOT IT WRONG IN SWAP");
+                _Kernel.krnTrace("Swap Error");
             }
         }
         setHDD(filename, memoryArray) {
@@ -48,7 +48,7 @@ var TSOS;
                 _DSDD.writeInSwapBlock(filename, memoryArray);
             }
             catch (error) {
-                alert("ERROR IN THE SET HDD BOZO");
+                _Kernel.krnTrace("Error in setHDD " + error);
             }
         }
         getMemorySeg(memoryStart) {
@@ -68,7 +68,7 @@ var TSOS;
                 return memorySeg;
             }
             catch (e) {
-                alert("Segment Get Error");
+                _Kernel.krnTrace("Segment Get Error " + e);
             }
         }
         getMemoryForSwap(pcb) {
@@ -87,7 +87,7 @@ var TSOS;
                 return memoryArray;
             }
             catch (e) {
-                alert(" Memory Get Swap Error " + e);
+                _Kernel.krnTrace(" Memory Get Swap Error " + e);
             }
         }
         getHDDForSwap(pcb) {
@@ -105,7 +105,6 @@ var TSOS;
                 //     // Empty the hdd blocks
                 //     _DSDD.deleteFile(filename);
                 //     //cry
-                //     //Waaah wahh wahhh stop fucking crying
                 //     // Update visuals(?)
                 //     //return the data
                 //     return dataArray;
@@ -114,14 +113,13 @@ var TSOS;
                 // Empty the hdd blocks
                 _DSDD.deleteFile(filename);
                 //cry
-                //Waaah wahh wahhh stop fucking crying
                 // Update visuals(?)
                 //return the data
                 return dataArray;
                 //}
             }
             catch (e) {
-                alert("HDD Get error " + e);
+                _Kernel.krnTrace("HDD Get error " + e);
             }
         }
         getMoreThanOneDataFile(addr, dataArray) {
@@ -137,7 +135,7 @@ var TSOS;
                 }
             }
             catch (e) {
-                alert("ERROR IN GETTING MORE THAN ONE DATAFILE" + e);
+                _Kernel.krnTrace("ERROR IN GETTING MORE THAN ONE DATAFILE" + e);
             }
         }
         swapFromHDD(pcb) {

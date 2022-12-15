@@ -42,7 +42,7 @@ module TSOS{
             _PCBController.ReadyQueue.enqueue(this.inPCB);
             _PCBController.ReadyQueue.enqueue(this.outPCB);
             } catch(e){
-                alert("HEY, YOU GOT IT WRONG IN SWAP");
+                _Kernel.krnTrace("Swap Error");
             }
 
         }
@@ -52,7 +52,7 @@ module TSOS{
                 _DSDD.createFile(filename);
                 _DSDD.writeInSwapBlock(filename, memoryArray);
             } catch (error) {
-                alert("ERROR IN THE SET HDD BOZO");
+                _Kernel.krnTrace("Error in setHDD " + error);
             }
         }
 
@@ -72,7 +72,7 @@ module TSOS{
                 }
                 return memorySeg;
             } catch (e) {
-                alert("Segment Get Error")
+                _Kernel.krnTrace("Segment Get Error " + e)
             }
 
         }
@@ -92,7 +92,7 @@ module TSOS{
             //Return Array containing memory
             return memoryArray;
             } catch (e) {
-             alert(" Memory Get Swap Error " + e);   
+                _Kernel.krnTrace(" Memory Get Swap Error " + e);   
             }
 
         }
@@ -113,7 +113,6 @@ module TSOS{
             //     // Empty the hdd blocks
             //     _DSDD.deleteFile(filename);
             //     //cry
-            //     //Waaah wahh wahhh stop fucking crying
             //     // Update visuals(?)
             //     //return the data
             //     return dataArray;
@@ -122,13 +121,12 @@ module TSOS{
                 // Empty the hdd blocks
                 _DSDD.deleteFile(filename);
                 //cry
-                //Waaah wahh wahhh stop fucking crying
                 // Update visuals(?)
                 //return the data
                 return dataArray;
             //}
             } catch (e) {
-                alert("HDD Get error " + e);
+                _Kernel.krnTrace("HDD Get error " + e);
             }
         }
 
@@ -143,7 +141,7 @@ module TSOS{
                 return dataArray;
             }
         } catch(e){
-            alert("ERROR IN GETTING MORE THAN ONE DATAFILE" + e);
+            _Kernel.krnTrace("ERROR IN GETTING MORE THAN ONE DATAFILE" + e);
         }
         }
 
