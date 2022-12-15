@@ -11,16 +11,34 @@ var TSOS;
             newPCB.state = "RUNNING";
             _Kernel.krnTrace("Context Switch PCB " + oldPCB.pid + " FOR PCB " + newPCB.pid);
             if (_LoadCount > 3) {
-                _CPU.runPCB(newPCB);
-                TSOS.Control.updatePCBDisplay(newPCB);
-                TSOS.Control.updatePCBDisplay(oldPCB);
-                _Swapper.swap(oldPCB);
+                if (newPCB.location === "HDD") {
+                    newPCB = _Swapper.swapFromHDD(newPCB);
+                    _CPU.runPCB(newPCB);
+                    _PCBController.ReadyQueue.enqueue(oldPCB);
+                    TSOS.Control.updatePCBDisplay(newPCB);
+                    TSOS.Control.updatePCBDisplay(oldPCB);
+                }
+                else {
+                    _CPU.runPCB(newPCB);
+                    TSOS.Control.updatePCBDisplay(newPCB);
+                    TSOS.Control.updatePCBDisplay(oldPCB);
+                    _Swapper.swap(oldPCB);
+                }
             }
             else {
-                _CPU.runPCB(newPCB);
-                _PCBController.ReadyQueue.enqueue(oldPCB);
-                TSOS.Control.updatePCBDisplay(newPCB);
-                TSOS.Control.updatePCBDisplay(oldPCB);
+                if (newPCB.location === "HDD") {
+                    newPCB = _Swapper.swapFromHDD(newPCB);
+                    _CPU.runPCB(newPCB);
+                    _PCBController.ReadyQueue.enqueue(oldPCB);
+                    TSOS.Control.updatePCBDisplay(newPCB);
+                    TSOS.Control.updatePCBDisplay(oldPCB);
+                }
+                else {
+                    _CPU.runPCB(newPCB);
+                    _PCBController.ReadyQueue.enqueue(oldPCB);
+                    TSOS.Control.updatePCBDisplay(newPCB);
+                    TSOS.Control.updatePCBDisplay(oldPCB);
+                }
             }
         }
         //Checks the counter value. Increment if unequal, switch if equal

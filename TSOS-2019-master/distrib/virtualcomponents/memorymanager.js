@@ -73,7 +73,7 @@ var TSOS;
         readByte(location) {
             if (location > _CPU.workingPCB.endMem || location < _CPU.workingPCB.startMem) {
                 _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
-                alert("READBYTE: " + location);
+                _Kernel.krnTrace("READBYTE: " + location);
             }
             else {
                 return _MemoryAccessor.getMemory(location);
@@ -82,7 +82,7 @@ var TSOS;
         writeByte(location, value) {
             if (location > _CPU.workingPCB.endMem || location < _CPU.workingPCB.startMem) {
                 _Kernel.krnTrapError("ERROR: OUT OF BOUNDS MEMORY ACCESS");
-                alert("WRITEBYTE: " + location + " " + value);
+                _Kernel.krnTrace("WRITEBYTE: " + location + " " + value);
             }
             else {
                 return _MemoryAccessor.setMemory(value, location);

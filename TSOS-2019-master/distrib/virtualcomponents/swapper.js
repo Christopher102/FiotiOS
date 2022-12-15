@@ -18,6 +18,8 @@ var TSOS;
                 let memoryEnd = this.outPCB.endMem;
                 // write Memory Array to HDD
                 let filename = "~" + this.outPCB.pid;
+                let previousfilename = "~" + this.inPCB.pid;
+                _DSDD.deleteFile(previousfilename);
                 this.setHDD(filename, memoryArray);
                 // write HDD Array to Memory
                 let memorySeg = this.getMemorySeg(memoryStart);
@@ -141,17 +143,34 @@ var TSOS;
         swapFromHDD(pcb) {
             // Get HDD Array
             let hddArray = this.getHDDForSwap(pcb);
+            //Find an empty segment
+            let memorySeg = _MemoryManager.checkEmptySegment();
             // Get Memory min and max to set
-            let memoryStart = this.outPCB.startMem;
-            let memoryEnd = this.outPCB.endMem;
+            let memoryStart = 0;
+            let memoryEnd = 255;
+            switch (memorySeg) {
+                case 0:
+                    memoryStart = 0;
+                    memoryEnd = 255;
+                    _MemoryManager.segments[0] = 1;
+                case 1:
+                    memoryStart = 256;
+                    memoryEnd = 511;
+                    _MemoryManager.segments[1] = 1;
+                case 2:
+                    memoryStart = 512;
+                    memoryEnd = 767;
+                    _MemoryManager.segments[2] = 1;
+                default:
+                    _Kernel.krnTrace("Error: Mem Segment not caught");
+            }
             // write Memory Array to HDD
             // write HDD Array to Memory
-            let memorySeg = this.getMemorySeg(memoryStart);
             _MemoryManager.loadbySegment(memorySeg, hddArray);
             pcb.startMem = memoryStart;
             pcb.endMem = memoryEnd;
             pcb.location = "MEM";
-            _CPU.runPCB(pcb);
+            return pcb;
         }
     }
     TSOS.Swapper = Swapper;

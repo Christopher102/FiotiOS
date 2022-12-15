@@ -37,9 +37,6 @@ module TSOS {
 
         //Runs a new passed PCB. Figure it fits here because it'll set all CPU info for us.
         public runPCB(newPCB: TSOS.PCB){
-            if(newPCB.location === "HDD"){
-                _Swapper.swapFromHDD(newPCB);
-            } else {
             if(this.workingPCB != null){
                 let oldPCB: TSOS.PCB = this.workingPCB;
                 this.workingPCB = newPCB;
@@ -54,7 +51,6 @@ module TSOS {
                 this.workingPCB.state = "RUNNING";
                 this.refreshCPU();
             }
-        }
         }
 
         //Updates CPU
