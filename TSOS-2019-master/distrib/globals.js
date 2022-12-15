@@ -71,9 +71,8 @@ var _Next = false;
 //Disk
 var _Disk;
 var _DSDD;
-var HDDSwap = false;
 var _Swapper;
-var _SwapIndex = 0;
+var Formatted = false;
 //Scheduler
 var _Quantum = 6;
 var _CPUScheduler;

@@ -145,10 +145,10 @@ module TSOS {
                 "<string> - Renames a file on the hard disk");
             this.commandList[this.commandList.length] = sc;
 
-            // sc = new ShellCommand(this.shellList,
-            //     "ls",
-            //     "Lists all files on the disk");
-            // this.commandList[this.commandList.length] = sc;
+            sc = new ShellCommand(this.shellList,
+                "ls",
+                "Lists all files on the disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -458,42 +458,67 @@ module TSOS {
         public shellFormat(){
             _DSDD.initializeBlocks();
             _Console.putText("Formatted Disk Drive");
+            Formatted = true;
         }
 
         // Creates a file on hard disk
         public shellCreate(args: string[]){
-            _DSDD.createFile(args[0]);
+            if(Formatted){
+                _DSDD.createFile(args[0]);
+            } else {
+                _Console.putText("Please format the drive first!");
+            }
         }
 
         // Writes to a file on the hard disk
         public shellWrite(args: string[]){
-            _DSDD.writeIntoBlock(args[0], args[1]);
+            if(Formatted){
+                _DSDD.writeIntoBlock(args[0], args[1]);
+            } else {
+                _Console.putText("Please format the drive first!");
+            }
         }
 
         // Reads a file on the hard disk
         public shellRead(args: string[]){
-            _DSDD.readFromBlockUsingFilename(args[0]);
+            if(Formatted){
+                _DSDD.readFromBlockUsingFilename(args[0]);
+            } else {
+                _Console.putText("Please format the drive first!");
+            }
         }
 
         //Deletes a file on hard disk
         public shellDelete(args: string[]){
-            _DSDD.deleteFile(args[0]);
+            if(Formatted){
+                _DSDD.deleteFile(args[0]);
+            } else {
+                _Console.putText("Please format the drive first!");
+            }
         }
 
         // Renaming a file on the hard disk
         public shellRename(args: string[]){
-            _DSDD.renameFile(args[0], args[1]);
+            if(Formatted){
+                _DSDD.renameFile(args[0], args[1]);
+            } else {
+                _Console.putText("Please format the drive first!");
+            }
         }
 
-        // public shellList(){
-        //     _Console.putText("Current Files: ");
-        //     _Console.advanceLine();
-        //     let list = _DSDD.listFiles();
-        //     for(let i = 0; i < list.length; i++){
-        //         _Console.putText(list[i]);
-        //         _Console.advanceLine();
-        //     }
-        // }
+        public shellList(){
+            if(Formatted){
+                _Console.putText("Current Files: ");
+                _Console.advanceLine();
+                let list = _DSDD.listFiles();
+                for(let i = 0; i < list.length; i++){
+                _Console.putText(list[i]);
+                _Console.advanceLine();
+            }
+            } else {
+                _Console.putText("Please format the drive first!");
+            }
+        }
 
     }
 }

@@ -106,7 +106,7 @@ module TSOS {
             //Initialize Hard Disk
             this.startHardDisk();
             _Disk = new HDD();
-            _DSDD = new DSDD2();
+            _DSDD = new DSDD();
             _Swapper = new Swapper();
 
             // ... then set the host clock pulse ...

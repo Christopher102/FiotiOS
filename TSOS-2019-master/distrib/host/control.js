@@ -83,7 +83,7 @@ var TSOS;
             //Initialize Hard Disk
             this.startHardDisk();
             _Disk = new TSOS.HDD();
-            _DSDD = new TSOS.DSDD2();
+            _DSDD = new TSOS.DSDD();
             _Swapper = new TSOS.Swapper();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);

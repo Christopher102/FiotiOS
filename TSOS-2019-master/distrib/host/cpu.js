@@ -33,20 +33,25 @@ var TSOS;
         }
         //Runs a new passed PCB. Figure it fits here because it'll set all CPU info for us.
         runPCB(newPCB) {
-            if (this.workingPCB != null) {
-                let oldPCB = this.workingPCB;
-                this.workingPCB = newPCB;
-                this.workingPCB.state = "RUNNING";
-                oldPCB.state = "READY";
-                this.isExecuting = true;
-                this.refreshCPU();
-                return oldPCB;
+            if (newPCB.location === "HDD") {
+                _Swapper.swapFromHDD(newPCB);
             }
             else {
-                this.workingPCB = newPCB;
-                this.isExecuting = true;
-                this.workingPCB.state = "RUNNING";
-                this.refreshCPU();
+                if (this.workingPCB != null) {
+                    let oldPCB = this.workingPCB;
+                    this.workingPCB = newPCB;
+                    this.workingPCB.state = "RUNNING";
+                    oldPCB.state = "READY";
+                    this.isExecuting = true;
+                    this.refreshCPU();
+                    return oldPCB;
+                }
+                else {
+                    this.workingPCB = newPCB;
+                    this.isExecuting = true;
+                    this.workingPCB.state = "RUNNING";
+                    this.refreshCPU();
+                }
             }
         }
         //Updates CPU

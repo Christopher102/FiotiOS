@@ -199,6 +199,31 @@ var TSOS;
                 this.readFromBlockUsingAddr(nextAddr, previousOutcomes);
             }
         }
+        listFiles() {
+            let list = [];
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 8; j++) {
+                    for (let k = 0; k < 8; k++) {
+                        let addr = this.createAddr(i, j, k);
+                        let data = sessionStorage.getItem(addr).split(" ");
+                        if (this.getNext(addr) === "00:00:00") {
+                            //ignore
+                        }
+                        else {
+                            list.push(this.getFileName(data).join(""));
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+        getFileName(data) {
+            let nameArray = [];
+            for (let i = 4; i < data.indexOf("--"); i++) {
+                nameArray.push(String.fromCharCode(parseInt(data[i], 16)));
+            }
+            return nameArray;
+        }
         deleteFile(filename) {
             try {
                 // This is just to call a possibly recursive function

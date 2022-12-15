@@ -146,5 +146,22 @@ module TSOS{
             alert("ERROR IN GETTING MORE THAN ONE DATAFILE" + e);
         }
         }
+
+
+        public swapFromHDD(pcb: TSOS.PCB){
+               // Get HDD Array
+               let hddArray =  this.getHDDForSwap(pcb);
+               // Get Memory min and max to set
+               let memoryStart = this.outPCB.startMem;
+               let memoryEnd = this.outPCB.endMem;
+               // write Memory Array to HDD
+               // write HDD Array to Memory
+               let memorySeg = this.getMemorySeg(memoryStart);
+               _MemoryManager.loadbySegment(memorySeg, hddArray);
+               pcb.startMem = memoryStart;
+               pcb.endMem = memoryEnd;
+               pcb.location = "MEM";
+               _CPU.runPCB(pcb);
+        }
     }
 }
