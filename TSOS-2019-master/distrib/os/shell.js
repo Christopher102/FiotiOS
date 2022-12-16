@@ -76,6 +76,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellList, "ls", "Lists all files on the disk");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellCopy, "copy", "Copies files on the disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -377,7 +379,17 @@ var TSOS;
         // Writes to a file on the hard disk
         shellWrite(args) {
             if (Formatted) {
-                _DSDD.writeIntoBlock(args[0], args[1]);
+                let data = args[1];
+                if (args.length > 2) {
+                    for (let i = 2; i < args.length; i++) {
+                        data = data + " " + args[i];
+                    }
+                }
+                if (data.charAt(0) != "'" || data.charAt(data.length - 1) != "'") {
+                    _Console.putText('Please enclose your write with a quotation mark');
+                    return;
+                }
+                _DSDD.writeIntoBlock(args[0], data.substring(1, data.length - 2));
             }
             else {
                 _Console.putText("Please format the drive first!");
@@ -430,6 +442,14 @@ var TSOS;
             let segment;
             dequeuedPCB.location = "MURD";
             TSOS.Control.updatePCBDisplay(dequeuedPCB);
+        }
+        shellCopy(args) {
+            if (Formatted) {
+                _DSDD.copyFile(args[0]);
+            }
+            else {
+                _Console.putText("Please format the drive first!");
+            }
         }
     }
     TSOS.Shell = Shell;

@@ -149,6 +149,11 @@ module TSOS {
                 "ls",
                 "Lists all files on the disk");
             this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellCopy,
+                "copy",
+                "Copies files on the disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -473,7 +478,17 @@ module TSOS {
         // Writes to a file on the hard disk
         public shellWrite(args: string[]){
             if(Formatted){
-                _DSDD.writeIntoBlock(args[0], args[1]);
+                let data = args[1];
+                if(args.length > 2){
+                    for(let i = 2; i < args.length; i ++){
+                        data = data + " " + args[i];
+                    }
+                }
+                if(data.charAt(0) != "'" || data.charAt(data.length - 1) != "'") {
+                    _Console.putText('Please enclose your write with a quotation mark');
+                    return;
+                }
+                _DSDD.writeIntoBlock(args[0], data.substring(1, data.length - 2));
             } else {
                 _Console.putText("Please format the drive first!");
             }
@@ -526,6 +541,14 @@ module TSOS {
             let segment;
             dequeuedPCB.location = "MURD";
             TSOS.Control.updatePCBDisplay(dequeuedPCB);
+        }
+
+        public shellCopy(args: string[]){
+            if(Formatted){
+                _DSDD.copyFile(args[0]);
+            } else {
+                _Console.putText("Please format the drive first!");
+            }
         }
 
     }

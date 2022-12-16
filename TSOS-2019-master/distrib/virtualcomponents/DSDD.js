@@ -277,6 +277,14 @@ var TSOS;
             // Update visuals
             this.updateVisuals(fileAddr);
         }
+        copyFile(filename) {
+            //Find the file
+            let originalFileAddr = this.filenameSearch(filename);
+            let originalDataAddr = this.getNext(originalFileAddr);
+            let originalDataData = this.getData(originalDataAddr);
+            this.createFile(filename + 1);
+            this.writeInSwapBlock(filename + 1, originalDataData);
+        }
         createAddr(t, s, b) {
             return t + ":" + s + ":" + b;
         }
