@@ -216,6 +216,7 @@ var TSOS;
                     // Newline for either next input or next function
                     _Console.advanceLine();
                     _OsShell.putPrompt();
+                    _LoadCount--;
                     // Requests new PCB
                     var nextPCB = _PCBController.requestNewPCB();
                     //If recieved, assume Runall command. If not, ends execution cycle.

@@ -424,6 +424,13 @@ var TSOS;
                 _Console.putText("Please format the drive first!");
             }
         }
+        shellKill(args) {
+            let dequeuedPCB = _PCBController.grabReadyByPID(args[0]);
+            dequeuedPCB.state = "MURD";
+            let segment;
+            dequeuedPCB.location = "MURD";
+            TSOS.Control.updatePCBDisplay(dequeuedPCB);
+        }
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));

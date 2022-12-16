@@ -1,15 +1,28 @@
 module TSOS {
-    export class DSDD{
+    export class DSDD extends DeviceDriver{
 
         public emptyDataset: Array<string>;
 
         constructor(){
+            super();
+            this.driverEntry = this.krnDiskDriverEntry;
+            this.isr = this.krnDeviceDriverRequest;
+            
             this.emptyDataset = [];
-            for(let i = 0; i < 65; i++){
+            for(let i = 0; i < 61; i++){
                 this.emptyDataset.push("00");
             }
         }
+        
+        public krnDiskDriverEntry() {
+            // Initialization routine for this, the kernel-mode Keyboard Device Driver.
+            this.status = "loaded";
+            // More?
+        }
 
+        public krnDeviceDriverRequest(){
+
+        }
         public filenameSearch(filename: string){
             // Convert filename to hex
             let hexFilename = TSOS.Utils.stringToHexArray(filename);
@@ -52,10 +65,10 @@ module TSOS {
 
         public createFile(filename: string){
                 // Gets a new empty file block, and sets it's allocation to 1.
-                let newBlockAddr = this.findEmptyBlock();
+                let newBlockAddr = this.findEmptyBlock(0);
                 this.setAllocated(newBlockAddr, "01");
                 // Gets a new empty data block, and sets it's allocation to 1.
-                let dataBlockAddr = this.findEmptyBlock();
+                let dataBlockAddr = this.findEmptyBlock(1);
                 this.setAllocated(dataBlockAddr, "01");
                 // Sets the next values for the newBlockAddr to connect it to the dataBlockAddr
                 this.setNext(newBlockAddr, dataBlockAddr);
@@ -131,12 +144,11 @@ module TSOS {
         }
         }
 
-        public findEmptyBlock(){
-            for(let i = 0; i < 4; i++){
+        public findEmptyBlock(trackSet = 0){
                 for(let j = 0; j < 8; j++){
                     for(let k = 0; k < 8; k++){
                         // Checks each track / sector / block combo for the allocated bit, and when finding an unallocated spot, return it's addr
-                        let track = i;
+                        let track = trackSet;
                         let sector = j;
                         let block = k;
                         // Creates an addr from those three values
@@ -147,7 +159,6 @@ module TSOS {
                         }
                     }
                 }
-            }
 
         }
 
@@ -158,7 +169,7 @@ module TSOS {
             let dataArray = TSOS.Utils.stringToHexArray(data);
             //First, check if the data is too big for one block
             let dataLength = data.length;
-            if(dataLength > 60){
+            if(dataLength > 4000){
                 //Get the original datablock
                 //Split data at the 60th index
                 //Assign first 60 values to the original datablock
@@ -218,10 +229,9 @@ module TSOS {
 
         public listFiles(){
             let list = [];
-            for(let i = 0; i < 4; i++){
                 for(let j = 0; j < 8; j++){
                     for(let k = 0; k < 8; k++){
-                        let addr = this.createAddr(i,j,k);
+                        let addr = this.createAddr(0,j,k);
                         let data = sessionStorage.getItem(addr).split(" ");
                         if(this.getNext(addr) === "00:00:00"){
                             //ignore
@@ -229,14 +239,13 @@ module TSOS {
                             list.push(this.getFileName(data).join(""));
                         }
                     }
-                }
-            }
+                }   
             return list;
         }
 
         public getFileName(data: Array<string>){
             let nameArray = [];
-            for(let i = 4; i < data.indexOf("--"); i++){
+            for(let i = 4; i < data.indexOf("00"); i++){
                 nameArray.push(String.fromCharCode(parseInt(data[i], 16)));
             }
             return nameArray;
@@ -396,5 +405,10 @@ module TSOS {
         public updateVisuals(addr: string){
             TSOS.Control.updateHardDisk(addr, sessionStorage.getItem(addr));
         }
+
+
+
+
+        ///// THIS IS ME TRYING A DIFFERENT SWAP METHOD, ONLY SWAPPING WHEN NEEDED
     }
 }

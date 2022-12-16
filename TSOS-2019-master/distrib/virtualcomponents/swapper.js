@@ -5,6 +5,7 @@ var TSOS;
             this.outPCB = null;
             this.inPCB = null;
         }
+        // This is my roll-in-roll-out
         swap(oldPCB) {
             this.outPCB = oldPCB;
             this.inPCB = _PCBController.ReadyQueue.popTail();

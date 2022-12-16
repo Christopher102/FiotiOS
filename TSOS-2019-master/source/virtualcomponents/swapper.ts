@@ -9,6 +9,7 @@ module TSOS{
         }
 
 
+        // This is my roll-in-roll-out
         public swap(oldPCB: TSOS.PCB){
             this.outPCB = oldPCB;
             this.inPCB = _PCBController.ReadyQueue.popTail();

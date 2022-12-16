@@ -239,12 +239,13 @@ var TSOS;
             let splitData = Data.split(" ");
             Data = splitData.join("");
             let row = document.querySelector('#tableHD tr[id="' + t + ":" + s + ":" + b + '"]');
-            row.cells[1].innerHTML = Data[0] + ":" + Data[1] + ":" + Data[2];
-            row.cells[2].innerHTML = Data[3];
-            let actualData = Data.substring(4);
+            row.cells[1].innerHTML = splitData[0] + ":" + splitData[1] + ":" + splitData[2];
+            row.cells[2].innerHTML = splitData[3];
+            let actualData = splitData.slice(4);
+            let stringData = actualData.join("");
             let bytes = [];
             for (let i = 0; i < actualData.length; i += 2) {
-                bytes.push(actualData.substring(i, i + 2));
+                bytes.push(stringData.substring(i, i + 2));
             }
             row.cells[3].innerHTML = bytes.join(" ");
         }

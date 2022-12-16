@@ -520,5 +520,13 @@ module TSOS {
             }
         }
 
+        public shellKill(args: string[]){
+            let dequeuedPCB = _PCBController.grabReadyByPID(args[0]);
+            dequeuedPCB.state = "MURD";
+            let segment;
+            dequeuedPCB.location = "MURD";
+            TSOS.Control.updatePCBDisplay(dequeuedPCB);
+        }
+
     }
 }

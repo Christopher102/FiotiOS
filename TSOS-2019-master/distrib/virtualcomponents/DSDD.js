@@ -1,11 +1,21 @@
 var TSOS;
 (function (TSOS) {
-    class DSDD {
+    class DSDD extends TSOS.DeviceDriver {
         constructor() {
+            super();
+            this.driverEntry = this.krnDiskDriverEntry;
+            this.isr = this.krnDeviceDriverRequest;
             this.emptyDataset = [];
-            for (let i = 0; i < 65; i++) {
+            for (let i = 0; i < 61; i++) {
                 this.emptyDataset.push("00");
             }
+        }
+        krnDiskDriverEntry() {
+            // Initialization routine for this, the kernel-mode Keyboard Device Driver.
+            this.status = "loaded";
+            // More?
+        }
+        krnDeviceDriverRequest() {
         }
         filenameSearch(filename) {
             // Convert filename to hex
@@ -46,10 +56,10 @@ var TSOS;
         }
         createFile(filename) {
             // Gets a new empty file block, and sets it's allocation to 1.
-            let newBlockAddr = this.findEmptyBlock();
+            let newBlockAddr = this.findEmptyBlock(0);
             this.setAllocated(newBlockAddr, "01");
             // Gets a new empty data block, and sets it's allocation to 1.
-            let dataBlockAddr = this.findEmptyBlock();
+            let dataBlockAddr = this.findEmptyBlock(1);
             this.setAllocated(dataBlockAddr, "01");
             // Sets the next values for the newBlockAddr to connect it to the dataBlockAddr
             this.setNext(newBlockAddr, dataBlockAddr);
@@ -122,20 +132,18 @@ var TSOS;
                 alert(" ERROR WHEN WRITING MUTLIPLES " + e);
             }
         }
-        findEmptyBlock() {
-            for (let i = 0; i < 4; i++) {
-                for (let j = 0; j < 8; j++) {
-                    for (let k = 0; k < 8; k++) {
-                        // Checks each track / sector / block combo for the allocated bit, and when finding an unallocated spot, return it's addr
-                        let track = i;
-                        let sector = j;
-                        let block = k;
-                        // Creates an addr from those three values
-                        let addr = this.createAddr(track, sector, block);
-                        // If unallocated, it'll return that addr
-                        if (this.checkAllocated(addr)) {
-                            return addr;
-                        }
+        findEmptyBlock(trackSet = 0) {
+            for (let j = 0; j < 8; j++) {
+                for (let k = 0; k < 8; k++) {
+                    // Checks each track / sector / block combo for the allocated bit, and when finding an unallocated spot, return it's addr
+                    let track = trackSet;
+                    let sector = j;
+                    let block = k;
+                    // Creates an addr from those three values
+                    let addr = this.createAddr(track, sector, block);
+                    // If unallocated, it'll return that addr
+                    if (this.checkAllocated(addr)) {
+                        return addr;
                     }
                 }
             }
@@ -147,7 +155,7 @@ var TSOS;
             let dataArray = TSOS.Utils.stringToHexArray(data);
             //First, check if the data is too big for one block
             let dataLength = data.length;
-            if (dataLength > 60) {
+            if (dataLength > 4000) {
                 //Get the original datablock
                 //Split data at the 60th index
                 //Assign first 60 values to the original datablock
@@ -201,17 +209,15 @@ var TSOS;
         }
         listFiles() {
             let list = [];
-            for (let i = 0; i < 4; i++) {
-                for (let j = 0; j < 8; j++) {
-                    for (let k = 0; k < 8; k++) {
-                        let addr = this.createAddr(i, j, k);
-                        let data = sessionStorage.getItem(addr).split(" ");
-                        if (this.getNext(addr) === "00:00:00") {
-                            //ignore
-                        }
-                        else {
-                            list.push(this.getFileName(data).join(""));
-                        }
+            for (let j = 0; j < 8; j++) {
+                for (let k = 0; k < 8; k++) {
+                    let addr = this.createAddr(0, j, k);
+                    let data = sessionStorage.getItem(addr).split(" ");
+                    if (this.getNext(addr) === "00:00:00") {
+                        //ignore
+                    }
+                    else {
+                        list.push(this.getFileName(data).join(""));
                     }
                 }
             }
@@ -219,7 +225,7 @@ var TSOS;
         }
         getFileName(data) {
             let nameArray = [];
-            for (let i = 4; i < data.indexOf("--"); i++) {
+            for (let i = 4; i < data.indexOf("00"); i++) {
                 nameArray.push(String.fromCharCode(parseInt(data[i], 16)));
             }
             return nameArray;
