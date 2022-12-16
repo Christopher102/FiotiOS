@@ -14,14 +14,9 @@ module TSOS {
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
                     public buffer = "",
-                    public commandBuffer = [],
-                    public commandIndex = 0,
+                    public downBuffer = [""],
                     public upBuffer = [],
-                    public downBuffer = [],
-                    public tabBuffer = [],
-                    public tabFlag = false,
-                    public tabPointer = 0
-                    ) {
+                    public tabBuffer = []) {
         }
 
         public init(): void {
@@ -31,7 +26,6 @@ module TSOS {
 
         public clearScreen(): void {
             _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-            this.buffer = "";
         }
 
         public clearLine(): void {
@@ -58,15 +52,11 @@ module TSOS {
                 if (chr === String.fromCharCode(13)) { // the Enter key
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
-                    
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.upBuffer.push(this.buffer);
                     this.buffer = "";
-                    this.tabBuffer = [];
-                    this.tabFlag = false;
-                    this.tabPointer = 0;
-                }  
+                } 
                 else if (chr === String.fromCharCode(8)) {
                     // Backspace function call
                     this.backspace();
@@ -78,37 +68,14 @@ module TSOS {
                     this.putText('\n');
                     _OsShell.putPrompt();
                     this.putText(this.buffer);
-                    // Below is an attempt to make it auto-fill and tabbale through a list. I may return in the future to finish this.
-                    /*if(this.tabFlag === false){
-                        this.tabBuffer = this.tab();
-                        this.clearLine();
-                        this.putText(this.tabBuffer[this.tabPointer]);
-                        this.buffer = this.tabBuffer[this.tabPointer];
-                        this.tabFlag = true;
-                        this.tabPointer++;
-                        if(this.tabPointer > this.tabBuffer.length - 1){
-                            this.tabPointer = 0;
-                        }
-                    } else {
-                        alert("TRIGGER");
-                        this.clearLine();
-                        this.putText(this.tabBuffer[this.tabPointer]);
-                        this.buffer = this.tabBuffer[this.tabPointer];
-                        this.tabPointer++;
-                        if(this.tabPointer > this.tabBuffer.length - 1){
-                            this.tabPointer = 0;
-                        }
-
-
-                    }*/
 
                 } else if (chr === 'upArrow'){
                     this.up();
-                }
-                else if (chr === "downArrow"){
+
+                } else if (chr === "downArrow"){
                     this.down();
-                }
-                else {
+
+                } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
                     this.putText(chr);
@@ -127,16 +94,24 @@ module TSOS {
                 do the same thing, thereby encouraging confusion and decreasing readability, I
                 decided to write one function and use the term "text" to connote string or char.
             */
-           // Checks for a newline character
-            if(text == "\n"){
-                this.advanceLine();
-            }
-            else if (text !== "") {
+            if (text !== "") {
                 // Draw the text at the current X and Y coordinates.
                 _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
                 // Move the current X position.
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
-                this.currentXPosition = this.currentXPosition + offset;
+                if(this.currentXPosition + offset > _XDisplaySize){
+                    let neededspace = (this.currentXPosition + offset) - _XDisplaySize;
+                    let numberofcharacters = Math.floor(neededspace / _DefaultFontSize);
+                    let tempbuffer = [];
+                    for(let i = 0; i < numberofcharacters; i ++){
+                        tempbuffer.push(this.buffer.charAt(this.buffer.length - 1));
+                    }
+                    this.advanceLine();
+                    let tempstring = tempbuffer.join("");
+                    this.putText(tempstring);
+                } else {
+                    this.currentXPosition = this.currentXPosition + offset;
+                }
             }
          }
 
@@ -151,8 +126,7 @@ module TSOS {
             this.currentYPosition += _DefaultFontSize + 
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
-            
-           if(this.currentYPosition > _yDisplaySize){
+            if(this.currentYPosition > _YDisplaySize){
 
                 // Okay so after 10+ hours of working on this, I have this
                 let canvasContext = _Canvas.getContext("2d");
@@ -164,44 +138,38 @@ module TSOS {
                 canvasContext.putImageData(snapshot, 0, -this.currentFontSize * 2);
                 // Resets the position of the cursor at the bottom. The + 1 may become an issue down the line, but for now? I call this a victory.
                 this.currentXPosition = 0;
-                this.currentYPosition = _yDisplaySize - this.currentFontSize + 1;
+                this.currentYPosition = _YDisplaySize - this.currentFontSize;
                 
             }
 
             }
-    
+        
+        public backspace() {
+                // Gets the character width
+                let charWidth = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer.charAt(this.buffer.length - 1));
+                // Sets the x pos back by the width
+                this.currentXPosition -= charWidth;
+                // Clears out the character. The + 5 is honestly wonky, and may cause issues? But it's currently midnight. I'm listening to Rare Americans. I'm 4 redbulls deep. I'm happy it even works.
+                _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize, charWidth, this.currentYPosition + 5);
+                // Drops char from buffer
+                this.buffer = this.buffer.substring(0, this.buffer.length - 1);
+            }
         
 
-        public backspace() {
-            // Gets the character width
-            let charWidth = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer.charAt(this.buffer.length - 1));
-            // Sets the x pos back by the width
-            this.currentXPosition -= charWidth;
-            // Clears out the character. The + 5 is honestly wonky, and may cause issues? But it's currently midnight. I'm listening to Rare Americans. I'm 4 redbulls deep. I'm happy it even works.
-            _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition - _DefaultFontSize, charWidth, this.currentYPosition + 5);
-            // Drops char from buffer
-            this.buffer = this.buffer.substring(0, this.buffer.length - 1);
-        }
-
-        public tab(){
-            let possibleCommands = [];
-            let tempBuffer = this.buffer
-            if(this.buffer.length > 0){
-                for( let i = 0; i < _OsShell.commandList.length; i++){
-                    if(_OsShell.commandList[i].command.indexOf(tempBuffer) === 0){
-                        possibleCommands.push(_OsShell.commandList[i].command);
-                    }
-                }
-                return possibleCommands;
-            }
-        }
-
-        public up(){
+        public up() {
             if(this.upBuffer.length > 0){
-                    let bufferCmd = this.upBuffer.pop(); 
-                    this.clearLine();
-                    this.buffer = bufferCmd;
-                    this.putText(bufferCmd);
+                let cmd = this.upBuffer.pop();
+                if(this.buffer != "" && this.downBuffer.length > 0){
+                    this.downBuffer.push(this.buffer);
+                }
+                this.clearLine();
+                this.buffer = cmd;
+                this.putText(cmd);
+
+            } else {
+                this.clearLine();
+                this.buffer = "";
+                this.putText("");
             }
         }
 
@@ -216,6 +184,19 @@ module TSOS {
                 this.clearLine();
                 this.buffer = "";
                 this.putText("");
+            }
+        }
+
+        public tab(){
+            let possibleCommands = [];
+            let tempBuffer = this.buffer
+            if(this.buffer.length > 0){
+                for( let i = 0; i < _OsShell.commandList.length; i++){
+                    if(_OsShell.commandList[i].command.indexOf(tempBuffer) === 0){
+                        possibleCommands.push(_OsShell.commandList[i].command);
+                    }
+                }
+                return possibleCommands;
             }
         }
     }

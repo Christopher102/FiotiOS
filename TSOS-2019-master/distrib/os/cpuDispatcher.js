@@ -1,14 +1,18 @@
 var TSOS;
 (function (TSOS) {
     class CpuDispatcher {
+        constructor() {
+        }
         contextSwitch() {
-            if (_CPU.workingPCB != null && _ReadyQueue.length > 0) {
-                let currentPCB = _CPU.workingPCB;
-                let nextPCB = _ReadyQueue.reverse().pop();
-                _ReadyQueue.push(currentPCB);
-                _CpuScheduler.executingPCB = nextPCB;
-                _CPU.loadProcess(nextPCB);
-            }
+            // alert("SWITCH");
+            //     let currentPCB = _CPU.workingPCB;
+            // alert("CURRENT PCB PID: " + currentPCB.pid);
+            //     let nextPCB = _ReadyQueue[_ReadyQueue.length - currentPCB.pid - 1];
+            // alert("NEXT PCB PID: " + nextPCB.pid);
+            //     _ReadyQueue.push(currentPCB);
+            //     _CpuScheduler.executingPCB = nextPCB;
+            //     alert(nextPCB.pid);
+            //     _CPU.loadProcess(nextPCB);
         }
     }
     TSOS.CpuDispatcher = CpuDispatcher;

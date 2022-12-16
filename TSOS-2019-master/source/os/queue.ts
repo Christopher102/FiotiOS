@@ -33,6 +33,13 @@ module TSOS {
             return retVal;
         }
 
+        public popTail(){
+            let tempq = this.q.reverse();
+            let returned = tempq.shift();
+            this.q = tempq.reverse();
+            return returned;
+        }
+
         public toString() {
             var retVal = "";
             for (var i in this.q) {

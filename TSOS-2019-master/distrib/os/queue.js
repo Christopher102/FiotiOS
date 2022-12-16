@@ -29,6 +29,12 @@ var TSOS;
             }
             return retVal;
         }
+        popTail() {
+            let tempq = this.q.reverse();
+            let returned = tempq.shift();
+            this.q = tempq.reverse();
+            return returned;
+        }
         toString() {
             var retVal = "";
             for (var i in this.q) {

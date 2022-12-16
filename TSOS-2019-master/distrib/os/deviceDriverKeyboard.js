@@ -1,6 +1,5 @@
 /* ----------------------------------
    DeviceDriverKeyboard.ts
-
    The Kernel Keyboard Device Driver.
    ---------------------------------- */
 var TSOS;

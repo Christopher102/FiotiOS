@@ -45,29 +45,38 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
-            // date
-            sc = new TSOS.ShellCommand(this.shellDate, "date", "- Displays the date and time");
+            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "Mapping function to find out where you are!");
             this.commandList[this.commandList.length] = sc;
-            // WhereAmI
-            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "- Tells you where you are");
+            // whereami
+            sc = new TSOS.ShellCommand(this.shellSuprise, "suprise", "A special suprise!");
             this.commandList[this.commandList.length] = sc;
-            // Status
-            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Changes current status");
+            sc = new TSOS.ShellCommand(this.shellThrow, "throw", "- Throws a very nice error BSOD");
             this.commandList[this.commandList.length] = sc;
-            // Display Button
-            sc = new TSOS.ShellCommand(this.shellSuprise, "suprise", "- Suprise!");
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- load whats in the Input textbox");
             this.commandList[this.commandList.length] = sc;
-            // Throw OS error
-            sc = new TSOS.ShellCommand(this.shellThrow, "throw", " - Throws an OS error");
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - sets the status of the system.");
             this.commandList[this.commandList.length] = sc;
-            // Throw OS error
-            sc = new TSOS.ShellCommand(this.shellLoad, "load", " - Loads memory");
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "<string> - runs PCB by PID");
             this.commandList[this.commandList.length] = sc;
-            // Run program via PID
-            sc = new TSOS.ShellCommand(this.shellRun, "run", "<integer> - Runs a process using a PID");
+            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "Clears all memory and queues");
             this.commandList[this.commandList.length] = sc;
-            // Run all programs
-            sc = new TSOS.ShellCommand(this.runAll, "runall", " - Runs All Programs");
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "Runs all programs in resident queue");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellFormat, "format", "Formats the hard disk");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellCreate, "create", "<string> - Creates a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellWrite, "write", "<string> <string> - Writes to a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellRead, "read", "<string> - Reads a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellDelete, "delete", "<string> - Deletes a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellRename, "rename", "<string> - Renames a file on the hard disk");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellList, "ls", "Lists all files on the disk");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellCopy, "copy", "Copies files on the disk");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -84,7 +93,7 @@ var TSOS;
             //
             var userCommand = this.parseInput(buffer);
             // ... and assign the command and args to local variables.
-            var cmd = userCommand.command.toLowerCase();
+            var cmd = userCommand.command;
             var args = userCommand.args;
             //
             // Determine the command and execute it.
@@ -138,7 +147,7 @@ var TSOS;
             // 1. Remove leading and trailing spaces.
             buffer = TSOS.Utils.trim(buffer);
             // 2. Lower-case it.
-            //buffer = buffer.toLowerCase();
+            buffer = buffer.toLowerCase();
             // 3. Separate on spaces so we can determine the command and command-line args, if any.
             var tempList = buffer.split(" ");
             // 4. Take the first (zeroth) element and use that as the command.
@@ -200,15 +209,6 @@ var TSOS;
                 _StdOut.putText("  " + _OsShell.commandList[i].command + " " + _OsShell.commandList[i].description);
             }
         }
-        shellDate(args) {
-            // Uses Date function builtin to Typescript. I'm deciding whether to use this for updating the home bar as well
-            var currentDate = new Date();
-            _StdOut.putText("Currently the date is " + currentDate.toLocaleDateString());
-            _StdOut.putText("Current time is " + currentDate.toLocaleTimeString());
-        }
-        shellWhereAmI(args) {
-            _StdOut.putText("New Vegas");
-        }
         shellShutdown(args) {
             _StdOut.putText("Shutting down...");
             // Call Kernel shutdown routine.
@@ -226,40 +226,7 @@ var TSOS;
                     case "help":
                         _StdOut.putText("Help displays a list of (hopefully) valid commands.");
                         break;
-                    case "ver":
-                        _StdOut.putText("Displays the current version of the OS");
-                    case "shutdown":
-                        _StdOut.putText("Shuts down the OS without closing the underlying hardware");
-                    case "cls":
-                        _StdOut.putText("Clears the screen and resets your current cursor position");
-                    case "man":
-                        _StdOut.putText("Displays the manual for a command when combined with the other command, i.e. man ver");
-                        _StdOut.advanceLine();
-                        _StdOut.putText("Although, if you didn't know this I'd imagine you wouldn't be able to even find this message anyway");
-                    case "trace":
-                        _StdOut.putText("Turns on or off OS trace, which will display actions as the OS takes them");
-                    case "rot13":
-                        _StdOut.putText("Does rot13 obfuscation on a string, used as follows: rot13 <string>");
-                    case "prompt":
-                        _StdOut.putText("Allows you to modify the initial propmt for the OS, used as follows: prompt <string>");
-                    case "date":
-                        _StdOut.putText("Displays the current date and time");
-                    case "whereami":
-                        _StdOut.putText("Tells you where you are");
-                    case "status":
-                        _StdOut.putText("Allows you to change the current status, used as follows: status <string>");
-                    case "suprise":
-                        _StdOut.putText("It's a suprise! Just type it!");
-                    case "buffer":
-                        _StdOut.putText("Displays the buffer in an alert message");
-                    case "throw":
-                        _StdOut.putText("Throws an OS error");
-                    case "load":
-                        _StdOut.putText("Loads from memory");
-                    case "run":
-                        _StdOut.putText("Runs using a pid. Usage: run <pid>");
-                    case "runall":
-                        _StdOut.putText("Runs all programs in resident queue");
+                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -310,31 +277,30 @@ var TSOS;
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
         }
-        shellStatus(args) {
-            // Sets the status of the console.
-            document.getElementById("status").innerHTML = args.join(" ");
+        shellDate() {
+            let now = new Date();
+            _StdOut.putText("Currently it is " + now.getDate + " at " + now.getTime);
         }
-        shellSuprise(args) {
-            // I made this purposefully difficult to read by using hidden 6 times cause I thought that was funny since this is a gag.
-            let element = document.getElementById("suprise");
-            let hidden = element.getAttribute("hidden");
-            if (hidden) {
-                element.removeAttribute("hidden");
-            }
-            else {
-                element.setAttribute("hidden", "hidden");
-            }
+        shellWhereAmI() {
+            _StdOut.putText("Dude. Do I look like a map? Figure it out.");
+        }
+        shellSuprise() {
+            /// Make it so button appears, leading to rick roll
         }
         shellThrow(args) {
             // Throws a kernel error
             _Kernel.krnTrapError("TEST ERROR - MANUAL THROW");
             TSOS.Control.hostBtnHaltOS_click(true);
         }
-        shellLoad(args) {
+        //Updates status
+        shellStatus(args) {
+            let statusHtml = document.getElementById("status");
+            statusHtml.innerHTML = args.join(" ");
+        }
+        shellLoad() {
             //Grabs text from Input
             let isValid = true;
             let text = document.getElementById("taProgramInput").value.trim();
-            alert(text);
             let validChars = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '];
             for (let i = 0; i < text.length; i++) {
                 let char = text[i];
@@ -352,27 +318,137 @@ var TSOS;
                 }
             }
             if (!isValid) {
-                alert("ERROR: INVALID INPUT.");
+                _Kernel.krnTrace("Error: Invalid input");
             }
             if (isValid) {
-                alert(textArray);
-                let pid = _MemoryManager.loadIntoMemory(globalPIDcount, textArray);
-                globalPIDcount++;
-                TSOS.Control.updateMemory();
-                _StdOut.putText("Process " + pid + " Loaded");
+                // Loads into memory and creates the PCB. Had to wrap it in one in order to support rool in / roll out
+                _MemoryManager.loadSegment(textArray);
+                _LoadCount++;
+                //Display PCB
+                TSOS.Control.createPcbDisplay();
+                _Console.putText("PCB Generated Successfully! PID: " + globalPIDCount);
+                if (globalPIDCount < 4) {
+                    TSOS.Control.updateMemory(globalPIDCount % 3);
+                }
+                // Increases pid counter
+                globalPIDCount += 1;
+                //Updates visual memory
             }
-        }
-        runAll() {
-            _ReadyQueue.push(_ResidentQueue[0]);
-            _CPU.isExecuting = true;
         }
         shellRun(args) {
-            if (args.length > 0) {
-                _CPU.isExecuting = true;
-                _CPU.runPid(parseInt(args[0]));
+            try {
+                // I really need to be more creative in my nomenclature, but this works. It's just sending in the grabbed PCB from the ProcessController using it's PID.
+                let runPCB = _PCBController.grabResidentByPID(args[0]);
+                _CPU.runPCB(runPCB);
+            }
+            catch (e) {
+                _Kernel.krnTrace("Error: No PCB by that PID");
+                _CPU.isExecuting = false;
+            }
+        }
+        //Clears all memory points, PCBs, and queues.
+        shellClearMem() {
+            _Kernel.krnTrace("COMMAND HEARD LOUD AND CLEAR: CLEARING MEMORY");
+            _MemoryManager.clearMemory();
+            _Kernel.krnTrace("CLEARING QUEUES");
+            _PCBController.emptyQueues();
+            _Kernel.krnTrace("UPDATING DISPLAYS");
+            TSOS.Control.updateMemory(-1);
+            TSOS.Control.updatePCBDisplay(null);
+        }
+        //Runs all PCBs in resident.
+        shellRunAll() {
+            _PCBController.moveAllToReady();
+            _CPU.runPCB(_PCBController.requestNewPCB());
+        }
+        //Formats hard disk
+        shellFormat() {
+            _DSDD.initializeBlocks();
+            _Console.putText("Formatted Disk Drive");
+            Formatted = true;
+        }
+        // Creates a file on hard disk
+        shellCreate(args) {
+            if (Formatted) {
+                _DSDD.createFile(args[0]);
             }
             else {
-                _StdOut.putText("Usage: prompt <pid>  Please supply a PID.");
+                _Console.putText("Please format the drive first!");
+            }
+        }
+        // Writes to a file on the hard disk
+        shellWrite(args) {
+            if (Formatted) {
+                let data = args[1];
+                if (args.length > 2) {
+                    for (let i = 2; i < args.length; i++) {
+                        data = data + " " + args[i];
+                    }
+                }
+                if (data.charAt(0) != "'" || data.charAt(data.length - 1) != "'") {
+                    _Console.putText('Please enclose your write with a quotation mark');
+                    return;
+                }
+                _DSDD.writeIntoBlock(args[0], data.substring(1, data.length - 2));
+            }
+            else {
+                _Console.putText("Please format the drive first!");
+            }
+        }
+        // Reads a file on the hard disk
+        shellRead(args) {
+            if (Formatted) {
+                _DSDD.readFromBlockUsingFilename(args[0]);
+            }
+            else {
+                _Console.putText("Please format the drive first!");
+            }
+        }
+        //Deletes a file on hard disk
+        shellDelete(args) {
+            if (Formatted) {
+                _DSDD.deleteFile(args[0]);
+            }
+            else {
+                _Console.putText("Please format the drive first!");
+            }
+        }
+        // Renaming a file on the hard disk
+        shellRename(args) {
+            if (Formatted) {
+                _DSDD.renameFile(args[0], args[1]);
+            }
+            else {
+                _Console.putText("Please format the drive first!");
+            }
+        }
+        shellList() {
+            if (Formatted) {
+                _Console.putText("Current Files: ");
+                _Console.advanceLine();
+                let list = _DSDD.listFiles();
+                for (let i = 0; i < list.length; i++) {
+                    _Console.putText(list[i]);
+                    _Console.advanceLine();
+                }
+            }
+            else {
+                _Console.putText("Please format the drive first!");
+            }
+        }
+        shellKill(args) {
+            let dequeuedPCB = _PCBController.grabReadyByPID(args[0]);
+            dequeuedPCB.state = "MURD";
+            let segment;
+            dequeuedPCB.location = "MURD";
+            TSOS.Control.updatePCBDisplay(dequeuedPCB);
+        }
+        shellCopy(args) {
+            if (Formatted) {
+                _DSDD.copyFile(args[0]);
+            }
+            else {
+                _Console.putText("Please format the drive first!");
             }
         }
     }
